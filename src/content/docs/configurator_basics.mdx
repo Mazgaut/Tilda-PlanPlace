@@ -3,6 +3,14 @@ title: Основы Конфигуратора элементов
 description: Обзор вкладок Конфигуратора элементов PlanPlace — Основные, Размеры, Конструктор, Переменные, Материалы и другие, и как они связаны между собой.
 ---
 
+import Carousel from '../../components/Carousel.astro';
+import img2 from '../../assets/configurator_basics/02.jpg';
+import img3 from '../../assets/configurator_basics/03.jpg';
+import img4 from '../../assets/configurator_basics/04.jpg';
+import img5 from '../../assets/configurator_basics/05.jpg';
+import img6 from '../../assets/configurator_basics/06.jpg';
+
+
 В PlanPlace любой объект каталога настраивается через **конфигуратор элемента**. Раньше
 такие объекты часто называли **модулями**, сейчас корректнее говорить **элементы**.
 Конфигуратор нужен, чтобы задать элементу его общие свойства, размеры, конструкцию,
@@ -39,9 +47,7 @@ description: Обзор вкладок Конфигуратора элемент
 
 
 
-![1. Основные](../../assets/configurator_basics/02.jpg)
-
-![1. Основные](../../assets/configurator_basics/03.jpg)
+<Carousel images={[{src: img2, alt: "1. Основные"}, {src: img3, alt: "1. Основные"}]} />
 
 ## 2. Размеры
 
@@ -55,9 +61,7 @@ description: Обзор вкладок Конфигуратора элемент
 
 
 
-![2. Размеры](../../assets/configurator_basics/04.jpg)
-
-![2. Размеры](../../assets/configurator_basics/05.jpg)
+<Carousel images={[{src: img4, alt: "2. Размеры"}, {src: img5, alt: "2. Размеры"}]} />
 
 ## 3. Конструктор
 
@@ -75,9 +79,7 @@ description: Обзор вкладок Конфигуратора элемент
 
 
 
-![3. Конструктор](../../assets/configurator_basics/06.jpg)
-
-<img src="/Tilda-PlanPlace/media/configurator_basics/07.gif" alt="3. Конструктор" style="max-width:100%;border-radius:8px;" />
+<Carousel images={[{src: img6, alt: "3. Конструктор"}, {src: "/Tilda-PlanPlace/media/configurator_basics/07.gif", alt: "3. Конструктор"}]} />
 
 ## 4. Вычисляемые значения
 

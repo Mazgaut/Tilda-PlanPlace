@@ -1,0 +1,124 @@
+---
+/**
+ * Карусель изображений (как галереи в Tilda).
+ *
+ * Все слайды присутствуют в HTML сразу — это сохраняет индексацию
+ * поисковиками и чтение ИИ-ботами. JS отвечает только за прокрутку.
+ *
+ * Принимает массив images: { src, alt }, где src — это либо импортированное
+ * изображение (ImageMetadata из src/assets, оптимизируется в WebP), либо
+ * строка-URL (например, GIF из public/, чтобы не терять анимацию).
+ */
+import { Image } from 'astro:assets';
+
+interface Slide {
+  src: ImageMetadata | string;
+  alt?: string;
+}
+const { images = [] as Slide[] } = Astro.props;
+---
+
+<div class="pp-carousel" data-pp-carousel>
+  <div class="pp-carousel__track">
+    {images.map((img: Slide) => (
+      <figure class="pp-carousel__slide">
+        {typeof img.src === 'string'
+          ? <img src={img.src} alt={img.alt ?? ''} loading="lazy" />
+          : <Image src={img.src} alt={img.alt ?? ''} />}
+      </figure>
+    ))}
+  </div>
+
+  {images.length > 1 && (
+    <>
+      <button class="pp-carousel__btn pp-carousel__btn--prev" aria-label="Предыдущее изображение">‹</button>
+      <button class="pp-carousel__btn pp-carousel__btn--next" aria-label="Следующее изображение">›</button>
+      <div class="pp-carousel__counter"><span data-pp-current>1</span> / {images.length}</div>
+    </>
+  )}
+</div>
+
+<style>
+  .pp-carousel {
+    position: relative;
+    margin: 1.25rem 0;
+    border-radius: 8px;
+    overflow: hidden;
+    background: var(--sl-color-gray-6, #f1f1f1);
+  }
+  .pp-carousel__track {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+  }
+  .pp-carousel__track::-webkit-scrollbar { display: none; }
+  .pp-carousel__slide {
+    flex: 0 0 100%;
+    scroll-snap-align: center;
+    margin: 0;
+  }
+  .pp-carousel__slide :global(img) {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .pp-carousel__btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 2.4rem;
+    height: 2.4rem;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.55);
+    color: #fff;
+    font-size: 1.5rem;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s;
+  }
+  .pp-carousel__btn:hover { background: rgba(0, 0, 0, 0.8); }
+  .pp-carousel__btn--prev { left: 0.6rem; }
+  .pp-carousel__btn--next { right: 0.6rem; }
+  .pp-carousel__counter {
+    position: absolute;
+    right: 0.6rem;
+    bottom: 0.6rem;
+    padding: 0.15rem 0.6rem;
+    border-radius: 1rem;
+    background: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    font-size: 0.8rem;
+  }
+</style>
+
+<script>
+  // Инициализируется один раз и обслуживает все карусели на странице.
+  function initCarousels() {
+    document.querySelectorAll<HTMLElement>('[data-pp-carousel]').forEach((root) => {
+      if (root.dataset.ppReady) return;
+      root.dataset.ppReady = '1';
+      const track = root.querySelector<HTMLElement>('.pp-carousel__track');
+      const prev = root.querySelector<HTMLElement>('.pp-carousel__btn--prev');
+      const next = root.querySelector<HTMLElement>('.pp-carousel__btn--next');
+      const current = root.querySelector<HTMLElement>('[data-pp-current]');
+      if (!track) return;
+      const step = () => track.clientWidth;
+      prev?.addEventListener('click', () => track.scrollBy({ left: -step(), behavior: 'smooth' }));
+      next?.addEventListener('click', () => track.scrollBy({ left: step(), behavior: 'smooth' }));
+      if (current) {
+        track.addEventListener('scroll', () => {
+          const idx = Math.round(track.scrollLeft / step()) + 1;
+          current.textContent = String(idx);
+        }, { passive: true });
+      }
+    });
+  }
+  initCarousels();
+  document.addEventListener('astro:page-load', initCarousels);
+</script>

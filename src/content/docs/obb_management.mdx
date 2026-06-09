@@ -3,6 +3,12 @@ title: Вращение и пересечения моделей
 description: Объектно-ориентированные боксы (OBB) в PlanPlace — настройка контролируемых пересечений модулей и произвольного вращения элементов на сцене.
 ---
 
+import Carousel from '../../components/Carousel.astro';
+import img3 from '../../assets/obb_management/03.jpg';
+import img4 from '../../assets/obb_management/04.jpg';
+import img5 from '../../assets/obb_management/05.jpg';
+
+
 ## Объектно-ориентированные боксы (OBB) в конструкторе
 
 В сложных мебельных системах, где сочетается множество модулей и нужно позволять только
@@ -39,15 +45,9 @@ description: Объектно-ориентированные боксы (OBB) в
 
 
 
-<img src="/Tilda-PlanPlace/media/obb_management/01.gif" alt="Объектно-ориентированные боксы (OBB) в конструкторе" style="max-width:100%;border-radius:8px;" />
+<Carousel images={[{src: "/Tilda-PlanPlace/media/obb_management/01.gif", alt: "Объектно-ориентированные боксы (OBB) в конструкторе"}, {src: "/Tilda-PlanPlace/media/obb_management/02.gif", alt: "Объектно-ориентированные боксы (OBB) в конструкторе"}]} />
 
-<img src="/Tilda-PlanPlace/media/obb_management/02.gif" alt="Объектно-ориентированные боксы (OBB) в конструкторе" style="max-width:100%;border-radius:8px;" />
-
-![Шаг 1.](../../assets/obb_management/03.jpg)
-
-![Шаг 1.](../../assets/obb_management/04.jpg)
-
-![Шаг 1.](../../assets/obb_management/05.jpg)
+<Carousel images={[{src: img3, alt: "Шаг 1."}, {src: img4, alt: "Шаг 1."}, {src: img5, alt: "Шаг 1."}]} />
 
 ![Шаг 1.](../../assets/obb_management/06.jpg)
 

@@ -3,6 +3,11 @@ title: Вычисляемые значения
 description: Вычисляемые значения в PlanPlace — переменные, которые автоматически пересчитываются по условиям и зависят от других параметров и глобальных переменных.
 ---
 
+import Carousel from '../../components/Carousel.astro';
+import img2 from '../../assets/vychislaemie_znachenia/02.jpg';
+import img3 from '../../assets/vychislaemie_znachenia/03.jpg';
+
+
 ## Принцип работы вычисляемых значений и их зависимостей
 
 **Вычисляемые значения** представляют собой переменные, которые динамически изменяют свои
@@ -32,9 +37,7 @@ description: Вычисляемые значения в PlanPlace — перем
 
 
 
-![Условия и порядок вычисления значений](../../assets/vychislaemie_znachenia/02.jpg)
-
-![Условия и порядок вычисления значений](../../assets/vychislaemie_znachenia/03.jpg)
+<Carousel images={[{src: img2, alt: "Условия и порядок вычисления значений"}, {src: img3, alt: "Условия и порядок вычисления значений"}]} />
 
 ## Добавление нового вычисляемого значения
 

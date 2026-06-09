@@ -3,6 +3,14 @@ title: Правила расчёта цен (наценки)
 description: Раздел «Расчёт цен» в PlanPlace — управление видимостью цен, глобальная и индивидуальные наценки, способы округления и приоритет правил.
 ---
 
+import Carousel from '../../components/Carousel.astro';
+import img1 from '../../assets/price_rules/01.jpg';
+import img2 from '../../assets/price_rules/02.jpg';
+import img5 from '../../assets/price_rules/05.jpg';
+import img6 from '../../assets/price_rules/06.jpg';
+import img7 from '../../assets/price_rules/07.jpg';
+
+
 ## Назначение раздела
 
 Раздел «Расчёт цен» позволяет централизованно управлять стоимостью проектов: скрывать или
@@ -16,9 +24,7 @@ description: Раздел «Расчёт цен» в PlanPlace — управл�
 
 
 
-![🛠 Основные элементы интерфейса](../../assets/price_rules/01.jpg)
-
-![🛠 Основные элементы интерфейса](../../assets/price_rules/02.jpg)
+<Carousel images={[{src: img1, alt: "Основные элементы интерфейса"}, {src: img2, alt: "Основные элементы интерфейса"}]} />
 
 ### Переключатель видимости цен
 
@@ -62,11 +68,7 @@ description: Раздел «Расчёт цен» в PlanPlace — управл�
 
 
 
-![Детальные наценки](../../assets/price_rules/05.jpg)
-
-![Детальные наценки](../../assets/price_rules/06.jpg)
-
-![Детальные наценки](../../assets/price_rules/07.jpg)
+<Carousel images={[{src: img5, alt: "Детальные наценки"}, {src: img6, alt: "Детальные наценки"}, {src: img7, alt: "Детальные наценки"}]} />
 
 ## Добавление нового правила наценки
 

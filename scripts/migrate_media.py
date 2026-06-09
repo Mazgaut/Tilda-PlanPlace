@@ -129,65 +129,101 @@ def best_heading(anchor, headings, min_idx):
     return best if best_ratio >= 0.5 else None
 
 
+def clean_alt(s):
+    s = re.sub(r'[^\w\s().,«»/№-]', '', s or '')
+    return re.sub(r'\s+', ' ', s).strip()[:80]
+
+
+def download(u, slug, counter):
+    """Скачать картинку (если ещё нет). Вернуть (ext, fname)."""
+    ext = u.lower().rsplit('.', 1)[-1]
+    fname = f"{counter:02d}.{ext}"
+    d = os.path.join(PUBLIC, slug) if ext == 'gif' else os.path.join(ASSETS, slug)
+    os.makedirs(d, exist_ok=True)
+    path = os.path.join(d, fname)
+    if not os.path.exists(path):
+        open(path, 'wb').write(fetch(u))
+    return ext, fname
+
+
 def process(slug):
     md_path = os.path.join(DOCS, slug + ".md")
-    if not os.path.exists(md_path):
-        print(f"  ! нет файла {slug}.md — пропуск"); return
+    mdx_path = os.path.join(DOCS, slug + ".mdx")
+    src_path = md_path if os.path.exists(md_path) else mdx_path
+    if not os.path.exists(src_path):
+        print(f"  ! нет файла {slug} — пропуск"); return
     html = fetch("https://help.planplace.online/" + slug).decode('utf-8', 'ignore')
     galleries = extract_galleries(html)
     if not galleries:
         print(f"  {slug}: галерей не найдено"); return
 
-    a_dir = os.path.join(ASSETS, slug)
-    p_dir = os.path.join(PUBLIC, slug)
-    lines = open(md_path, encoding='utf-8').read().split('\n')
+    lines = open(src_path, encoding='utf-8').read().split('\n')
     heads = heading_lines(lines)
 
-    # карта: индекс заголовка -> markdown картинок (в порядке документа)
-    inserts, unplaced, counter, min_idx = {}, [], 0, 0
+    inserts, unplaced, counter, min_idx, imports = {}, [], 0, 0, []
     for anchor, urls in galleries:
         target = best_heading(anchor, heads, min_idx)
         if target is None and heads:
-            # запасной вариант: текущая секция (последний привязанный заголовок)
             cur = [h for h in heads if h[0] >= min_idx]
             target = (cur[0][0], cur[0][1]) if cur else None
         if target:
             min_idx = target[0]
-        snippets = []
-        for u in urls:
+        alt = clean_alt(anchor or slug)
+
+        if len(urls) > 1:
+            # несколько картинок → карусель
+            slides = []
+            for u in urls:
+                counter += 1
+                ext, fname = download(u, slug, counter)
+                if ext == 'gif':
+                    slides.append(f'{{src: "{BASE_URL}/media/{slug}/{fname}", alt: "{alt}"}}')
+                else:
+                    var = f"img{counter}"
+                    imports.append(f"import {var} from '../../assets/{slug}/{fname}';")
+                    slides.append(f'{{src: {var}, alt: "{alt}"}}')
+            block = "<Carousel images={[" + ", ".join(slides) + "]} />"
+        else:
+            # одна картинка → обычное изображение
             counter += 1
-            ext = u.lower().rsplit('.', 1)[-1]
-            fname = f"{counter:02d}.{ext}"
-            alt = (anchor or slug).replace(']', '').replace('[', '')[:80]
+            ext, fname = download(urls[0], slug, counter)
             if ext == 'gif':
-                os.makedirs(p_dir, exist_ok=True)
-                open(os.path.join(p_dir, fname), 'wb').write(fetch(u))
-                snippets.append(f'<img src="{BASE_URL}/media/{slug}/{fname}" alt="{alt}" '
-                                f'style="max-width:100%;border-radius:8px;" />')
+                block = (f'<img src="{BASE_URL}/media/{slug}/{fname}" alt="{alt}" '
+                         f'style="max-width:100%;border-radius:8px;" />')
             else:
-                os.makedirs(a_dir, exist_ok=True)
-                open(os.path.join(a_dir, fname), 'wb').write(fetch(u))
-                snippets.append(f'![{alt}](../../assets/{slug}/{fname})')
-        block = "\n\n".join(snippets)
+                block = f'![{alt}](../../assets/{slug}/{fname})'
+
         if target:
             inserts.setdefault(target[0], []).append(block)
         else:
             unplaced.append(block)
 
-    # вставка: с конца файла, чтобы не сдвигать индексы
+    # вставка с конца, чтобы не сдвигать индексы
     head_idx = [h[0] for h in heads]
     for hidx in sorted(inserts.keys(), reverse=True):
-        # конец секции = следующий заголовок после hidx
         nxt = next((i for i in head_idx if i > hidx), len(lines))
         payload = "\n\n" + "\n\n".join(inserts[hidx]) + "\n"
         lines[nxt:nxt] = payload.split('\n')
-
     if unplaced:
         lines += ["", "\n\n".join(unplaced), ""]
 
-    open(md_path, 'w', encoding='utf-8').write('\n'.join(lines))
+    # вставляем импорты после фронт-маттера (нужно для .mdx)
+    header = ["import Carousel from '../../components/Carousel.astro';"] + imports
+    body = '\n'.join(lines)
+    # автоссылки <url> в MDX трактуются как JSX — переводим в обычные ссылки
+    body = re.sub(r'<(https?://[^>\s]+)>', lambda m: f"[{m.group(1)}]({m.group(1)})", body)
+    if body.startswith('---'):
+        end = body.index('\n---', 3) + len('\n---')
+        out = body[:end] + "\n\n" + "\n".join(header) + "\n" + body[end:]
+    else:
+        out = "\n".join(header) + "\n\n" + body
+
+    open(mdx_path, 'w', encoding='utf-8').write(out)
+    if src_path == md_path and md_path != mdx_path:
+        os.remove(md_path)  # .md → .mdx
     placed = sum(len(v) for v in inserts.values())
-    print(f"  {slug}: галерей={len(galleries)} вставлено_групп={placed} "
+    carousels = sum(1 for v in inserts.values() for b in v if b.startswith('<Carousel'))
+    print(f"  {slug}: галерей={len(galleries)} каруселей={carousels} "
           f"без_привязки={len(unplaced)} картинок={counter}")
 
 

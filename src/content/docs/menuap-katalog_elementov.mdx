@@ -3,6 +3,13 @@ title: Каталог элементов
 description: Обзор раздела «Каталог элементов» PlanPlace — типы элементов, категории и группы для организации и массового управления мебельными модулями.
 ---
 
+import Carousel from '../../components/Carousel.astro';
+import img2 from '../../assets/menuap-katalog_elementov/02.png';
+import img3 from '../../assets/menuap-katalog_elementov/03.png';
+import img7 from '../../assets/menuap-katalog_elementov/07.png';
+import img8 from '../../assets/menuap-katalog_elementov/08.png';
+
+
 ## Структура раздела «Каталог элементов»
 
 Раздел «Каталог элементов» — это центральный раздел конфигуратора, в котором происходят
@@ -50,9 +57,7 @@ description: Обзор раздела «Каталог элементов» Pla
 
 
 
-![Работа с типами элементов и категориями](../../assets/menuap-katalog_elementov/02.png)
-
-![Работа с типами элементов и категориями](../../assets/menuap-katalog_elementov/03.png)
+<Carousel images={[{src: img2, alt: "Работа с типами элементов и категориями"}, {src: img3, alt: "Работа с типами элементов и категориями"}]} />
 
 ![Работа с типами элементов и категориями](../../assets/menuap-katalog_elementov/04.png)
 
@@ -81,9 +86,7 @@ description: Обзор раздела «Каталог элементов» Pla
 
 ![Группы и их применение](../../assets/menuap-katalog_elementov/06.png)
 
-![Группы и их применение](../../assets/menuap-katalog_elementov/07.png)
-
-![Группы и их применение](../../assets/menuap-katalog_elementov/08.png)
+<Carousel images={[{src: img7, alt: "Группы и их применение"}, {src: img8, alt: "Группы и их применение"}]} />
 
 ## Рекомендации по работе с разделом
 
