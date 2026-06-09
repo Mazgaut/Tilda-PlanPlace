@@ -38,6 +38,18 @@ description: Математические функции и формулы в Pl
 
 - `МИНИМУМ(...)`, `МАКСИМУМ(...)`, `СРЕДНЕЕ(...)`, `СУММА(...)`
 
+
+
+![Математические функции в формулах PlanPlace](../../assets/math_methods/01.jpg)
+
+![Математические функции в формулах PlanPlace](../../assets/math_methods/02.jpg)
+
+![Математические функции в формулах PlanPlace](../../assets/math_methods/03.jpg)
+
+![Математические функции в формулах PlanPlace](../../assets/math_methods/04.jpg)
+
+![Какие функции доступны](../../assets/math_methods/05.jpg)
+
 ## Как записать формулу
 
 Формулы используют ссылки в фигурных скобках. Примеры:
@@ -62,6 +74,12 @@ description: Математические функции и формулы в Pl
 
 Ввод доступен в двух режимах: сокращённой форме (строка с результатом) и расширенной форме
 (полный редактор с отдельными столбцами).
+
+
+
+<img src="/Tilda-PlanPlace/media/math_methods/06.gif" alt="Где вводятся формулы" style="max-width:100%;border-radius:8px;" />
+
+<img src="/Tilda-PlanPlace/media/math_methods/07.gif" alt="Где вводятся формулы" style="max-width:100%;border-radius:8px;" />
 
 ## Примеры
 

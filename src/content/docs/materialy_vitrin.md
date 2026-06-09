@@ -21,6 +21,18 @@ description: Настройка материалов наполнения вит
 
 ## Настройка (администратор / технолог)
 
+
+
+<img src="/Tilda-PlanPlace/media/materialy_vitrin/01.gif" alt="Настройка (выполняет администратор личного кабинета / технолог)" style="max-width:100%;border-radius:8px;" />
+
+<img src="/Tilda-PlanPlace/media/materialy_vitrin/02.gif" alt="Настройка (выполняет администратор личного кабинета / технолог)" style="max-width:100%;border-radius:8px;" />
+
+<img src="/Tilda-PlanPlace/media/materialy_vitrin/03.gif" alt="Настройка (выполняет администратор личного кабинета / технолог)" style="max-width:100%;border-radius:8px;" />
+
+<img src="/Tilda-PlanPlace/media/materialy_vitrin/04.gif" alt="Настройка (выполняет администратор личного кабинета / технолог)" style="max-width:100%;border-radius:8px;" />
+
+<img src="/Tilda-PlanPlace/media/materialy_vitrin/05.gif" alt="Настройка (выполняет администратор личного кабинета / технолог)" style="max-width:100%;border-radius:8px;" />
+
 ### Шаг 1. Создайте группу материалов для наполнения витрин
 
 Создайте отдельную группу, например «Наполнение витрины», «Материал остекления», «Филёнка
@@ -91,6 +103,12 @@ description: Настройка материалов наполнения вит
    «Стекло 4 мм» → стоимость считается по стеклу; «ХДФ 3 мм» → по ХДФ.
 3. **Примените замену** к одному фасаду через правое меню параметров или массово ко всем
    аналогичным через левое меню.
+
+
+
+<img src="/Tilda-PlanPlace/media/materialy_vitrin/06.gif" alt="Использование (дизайнер / менеджер / клиент на сайте)" style="max-width:100%;border-radius:8px;" />
+
+<img src="/Tilda-PlanPlace/media/materialy_vitrin/07.gif" alt="Использование (дизайнер / менеджер / клиент на сайте)" style="max-width:100%;border-radius:8px;" />
 
 ## Коротко
 

@@ -37,6 +37,20 @@ description: Объектно-ориентированные боксы (OBB) в
 позиционирование опирается только на элементы с галочкой **«Учитывать размер при
 позиционировании»**.
 
+
+
+<img src="/Tilda-PlanPlace/media/obb_management/01.gif" alt="Объектно-ориентированные боксы (OBB) в конструкторе" style="max-width:100%;border-radius:8px;" />
+
+<img src="/Tilda-PlanPlace/media/obb_management/02.gif" alt="Объектно-ориентированные боксы (OBB) в конструкторе" style="max-width:100%;border-radius:8px;" />
+
+![Шаг 1.](../../assets/obb_management/03.jpg)
+
+![Шаг 1.](../../assets/obb_management/04.jpg)
+
+![Шаг 1.](../../assets/obb_management/05.jpg)
+
+![Шаг 1.](../../assets/obb_management/06.jpg)
+
 ## Настройка режима пересечений (администратор / технолог)
 
 **Шаг 1. Активировать вращение и пересечения**
