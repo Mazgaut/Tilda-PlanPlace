@@ -1,9 +1,9 @@
 name: Deploy to GitHub Pages
 
 on:
-  # Деплой при пуше в основную ветку
+  # Деплой при пуше в основную или рабочую ветку
   push:
-    branches: [main]
+    branches: [main, claude/gallant-cori-cS0Ot]
   # Возможность запустить вручную из вкладки Actions
   workflow_dispatch:
 
