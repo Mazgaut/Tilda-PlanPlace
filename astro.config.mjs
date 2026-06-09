@@ -8,7 +8,7 @@ import starlight from '@astrojs/starlight';
 // на 'https://help.planplace.online' и удалите/очистите base ('/').
 export default defineConfig({
   site: 'https://mazgaut.github.io',
-  base: '/tilda-planplace',
+  base: '/Tilda-PlanPlace',
   integrations: [
     starlight({
       title: 'PlanPlace · Справка',
