@@ -1,0 +1,52 @@
+/* ───────────────────────────────────────────────────────────────────────────
+   Переопределение стилей форм Bitrix24 под тему сайта.
+   Подключается и на страницах справки (через theme.css), и на отдельной
+   странице формы /forma/. Использует переменные --pp-* (заданы в theme.css
+   для тёмной/светлой темы и в самой странице /forma/).
+
+   Если после публикации какой-то элемент формы не перекрасился — значит у
+   Bitrix24 другой класс; добавьте его в нужный селектор ниже (структура
+   формы задаётся их CDN-скриптом, поэтому набор классов может отличаться).
+   ─────────────────────────────────────────────────────────────────────────── */
+
+/* Кнопки формы (отправка и кнопка-триггер popup) — фирменный акцент */
+.b24-form-btn,
+.b24-window-button,
+button.b24-form-btn,
+.b24-form-wrapper .b24-form-btn {
+  background-color: var(--pp-accent) !important;
+  border-color: var(--pp-accent) !important;
+  color: var(--pp-on-accent) !important;
+  border-radius: 8px !important;
+  font-family: 'Roboto', Arial, sans-serif !important;
+  transition: filter 0.15s ease;
+}
+.b24-form-btn:hover,
+.b24-window-button:hover {
+  filter: brightness(1.08);
+}
+
+/* Ссылки/акценты внутри формы */
+.b24-form a,
+.b24-form-link {
+  color: var(--pp-accent) !important;
+}
+
+/* Текст и заголовки формы — цвет под тему */
+.b24-form,
+.b24-form-content,
+.b24-form-header-title,
+.b24-form-header-description,
+.b24-form-control-label,
+.b24-form-control-desc,
+.b24-form-field-agreement-text,
+.b24-form-state-text {
+  color: var(--pp-text) !important;
+  font-family: 'Roboto', Arial, sans-serif !important;
+}
+
+/* Фон панели формы — под тему (чтобы текст оставался читаемым) */
+.b24-form-wrapper,
+.b24-window-panel .b24-form-wrapper {
+  background-color: var(--pp-bg) !important;
+}

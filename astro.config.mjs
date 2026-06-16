@@ -15,6 +15,7 @@ export default defineConfig({
       title: 'PlanPlace · Справка',
       description:
         'Справочный центр PlanPlace: настройка материалов, конструктора и работа с системой.',
+      customCss: ['./src/styles/theme.css'],
       defaultLocale: 'root',
       locales: {
         root: { label: 'Русский', lang: 'ru' },
@@ -27,8 +28,9 @@ export default defineConfig({
       },
       // SEO: за счёт статической генерации каждая статья отдаётся готовым HTML,
       // sitemap.xml формируется автоматически, meta/canonical/OG проставляются Starlight.
-      // Меню генерируется из оглавления базы знаний (src/sidebar.mjs).
-      sidebar,
+      // Меню генерируется из оглавления базы знаний (src/sidebar.mjs),
+      // последним пунктом — страница формы обратной связи.
+      sidebar: [...sidebar, { label: 'Связаться с нами', slug: 'forma' }],
     }),
   ],
 });

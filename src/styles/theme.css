@@ -1,0 +1,32 @@
+/* ───────────────────────────────────────────────────────────────────────────
+   Тема справочного центра PlanPlace.
+   Фирменные цвета и шрифт сайта PlanPlace:
+     • акцент  #0077FF (синий)
+     • шрифт   Roboto
+   Starlight автоматически переключает data-theme=light/dark — цвета заданы
+   для обеих тем, поэтому акцент и кнопки форм адаптируются под тему.
+   ─────────────────────────────────────────────────────────────────────────── */
+
+@import './bitrix.css';
+
+/* Тёмная тема (по умолчанию в Starlight) */
+:root {
+  --sl-color-accent-low: #002a52;
+  --sl-color-accent: #0077ff;
+  --sl-color-accent-high: #bcd9ff;
+
+  --sl-font: 'Roboto', system-ui, -apple-system, Arial, sans-serif;
+
+  /* Переменные для адаптации сторонних виджетов (формы Bitrix24) под тему */
+  --pp-accent: var(--sl-color-accent);
+  --pp-on-accent: #ffffff;
+  --pp-text: var(--sl-color-text);
+  --pp-bg: var(--sl-color-bg);
+}
+
+/* Светлая тема */
+:root[data-theme='light'] {
+  --sl-color-accent-low: #cce2ff;
+  --sl-color-accent: #0062d6;
+  --sl-color-accent-high: #00305f;
+}

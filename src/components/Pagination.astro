@@ -1,21 +1,27 @@
 ---
 // Переопределение Pagination Starlight: над переключателем «назад/вперёд»
 // добавляется кнопка вызова формы обратной связи (Bitrix24, click/popup).
+// На самой странице формы (/forma/) кнопка не нужна — там форма уже встроена.
 import Default from '@astrojs/starlight/components/Pagination.astro';
+
+const slug = Astro.locals.starlightRoute?.entry?.slug;
+const showCta = slug !== 'forma';
 ---
 
-<div class="pp-cta">
-  <p class="pp-cta__text">Не нашли ответ или нужна помощь специалиста?</p>
-  {/* Bitrix24 — форма по клику (всплывающая) */}
-  <div class="pp-cta__btn">
-    <script is:inline data-b24-form="click/6/3bht4b" data-skip-moving="true">
-      (function(w,d,u){
-      var s=d.createElement('script');s.async=true;s.src=u+'?'+(Date.now()/180000|0);
-      var h=d.getElementsByTagName('script')[0];h.parentNode.insertBefore(s,h);
-      })(window,document,'https://cdn-ru.bitrix24.ru/b32590620/crm/form/loader_6.js');
-    </script>
+{showCta && (
+  <div class="pp-cta">
+    <p class="pp-cta__text">Не нашли ответ или нужна помощь специалиста?</p>
+    {/* Bitrix24 — форма по клику (всплывающая) */}
+    <div class="pp-cta__btn">
+      <script is:inline data-b24-form="click/6/3bht4b" data-skip-moving="true">
+        (function(w,d,u){
+        var s=d.createElement('script');s.async=true;s.src=u+'?'+(Date.now()/180000|0);
+        var h=d.getElementsByTagName('script')[0];h.parentNode.insertBefore(s,h);
+        })(window,document,'https://cdn-ru.bitrix24.ru/b32590620/crm/form/loader_6.js');
+      </script>
+    </div>
   </div>
-</div>
+)}
 
 <Default />
 
