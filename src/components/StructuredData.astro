@@ -1,0 +1,109 @@
+---
+/**
+ * Структурированные данные Schema.org (JSON-LD) для каждой страницы.
+ *
+ * Помогает поисковикам (rich results) и ИИ-роботам понимать тип и структуру
+ * контента. Граф включает:
+ *   • Organization / WebSite — издатель и сайт (на всех страницах);
+ *   • TechArticle — для статей справки;
+ *   • BreadcrumbList — хлебные крошки Главная → Раздел → Статья.
+ *
+ * Подключается из переопределённого Head.astro, поэтому попадает на все страницы.
+ */
+import { sidebar } from '../sidebar.mjs';
+
+const route = Astro.locals.starlightRoute;
+const entry = route?.entry;
+const data = entry?.data ?? {};
+const slug = entry?.slug ?? '';
+const isHome = slug === '' || slug === 'index';
+
+const site = Astro.site ?? new URL('https://mazgaut.github.io/Tilda-PlanPlace/');
+const homeUrl = new URL(import.meta.env.BASE_URL, site).href;
+const canonical = new URL(Astro.url.pathname, site).href;
+const lang = route?.lang ?? 'ru';
+const published = '2026-06-01T00:00:00Z';      // стабильная дата публикации
+const modified = new Date().toISOString();       // обновляется при пересборке
+
+const siteName = 'PlanPlace · Справка';
+const title = data.title ?? siteName;
+const description = data.description ?? '';
+
+// Издатель и сайт — общие узлы графа.
+const organization = {
+  '@type': 'Organization',
+  '@id': `${homeUrl}#organization`,
+  name: 'PlanPlace',
+  url: homeUrl,
+};
+const website = {
+  '@type': 'WebSite',
+  '@id': `${homeUrl}#website`,
+  url: homeUrl,
+  name: siteName,
+  inLanguage: lang,
+  publisher: { '@id': `${homeUrl}#organization` },
+};
+
+const graph: any[] = [organization, website];
+
+if (isHome) {
+  graph.push({
+    '@type': 'CollectionPage',
+    '@id': canonical,
+    url: canonical,
+    name: title,
+    description,
+    inLanguage: lang,
+    isPartOf: { '@id': `${homeUrl}#website` },
+    about: { '@id': `${homeUrl}#organization` },
+  });
+} else {
+  // Раздел, в котором находится статья (для хлебных крошек).
+  let section: string | undefined;
+  for (const group of sidebar) {
+    if (group?.items?.some((it: any) => it.slug === slug)) {
+      section = group.label;
+      break;
+    }
+  }
+
+  graph.push({
+    '@type': 'TechArticle',
+    '@id': `${canonical}#article`,
+    headline: title,
+    name: title,
+    description,
+    inLanguage: lang,
+    url: canonical,
+    mainEntityOfPage: canonical,
+    datePublished: published,
+    dateModified: modified,
+    author: { '@id': `${homeUrl}#organization` },
+    publisher: { '@id': `${homeUrl}#organization` },
+    isPartOf: { '@id': `${homeUrl}#website` },
+    ...(section ? { articleSection: section } : {}),
+  });
+
+  // Разделы меню не имеют отдельных страниц, поэтому крошки: Главная → Статья.
+  const crumbs = [
+    { name: 'Справочный центр', item: homeUrl },
+    { name: title, item: canonical },
+  ];
+
+  graph.push({
+    '@type': 'BreadcrumbList',
+    '@id': `${canonical}#breadcrumb`,
+    itemListElement: crumbs.map((c, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: c.name,
+      item: c.item,
+    })),
+  });
+}
+
+const jsonLd = { '@context': 'https://schema.org', '@graph': graph };
+---
+
+<script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />

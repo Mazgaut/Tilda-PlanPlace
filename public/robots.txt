@@ -1,0 +1,37 @@
+# Разрешаем индексацию всем поисковым роботам
+User-agent: *
+Allow: /
+
+# Явно разрешаем ИИ-краулерам читать контент (поиск через ИИ-ассистентов)
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+# Карта сайта (поменяйте домен, если подключите help.planplace.online)
+Sitemap: https://mazgaut.github.io/Tilda-PlanPlace/sitemap-index.xml

@@ -4,7 +4,9 @@
 // счётчики и виджеты из SiteAnalytics.astro — на каждой странице.
 import Default from '@astrojs/starlight/components/Head.astro';
 import SiteAnalytics from './SiteAnalytics.astro';
+import StructuredData from './StructuredData.astro';
 ---
 
 <Default><slot /></Default>
+<StructuredData />
 <SiteAnalytics />
