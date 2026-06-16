@@ -1,0 +1,93 @@
+// Сгенерировано scripts/import_kb.py из оглавления базы знаний.
+export const sidebar = [
+  {
+    label: 'Обзор и старт',
+    items: [
+      { label: 'Обзор системы и роли', slug: 'obzor-sistemy-i-roli' },
+      { label: 'Личный кабинет', slug: 'lichnyy-kabinet' },
+      { label: 'Код конструктора и основные параметры', slug: 'kod-konstruktora-i-osnovnye-parametry' },
+      { label: 'Настройки конструктора', slug: 'nastroyki-konstruktora' },
+      { label: 'Заявки на расчёт', slug: 'zayavki-na-raschet' },
+      { label: 'Форма заявки и шаблоны писем', slug: 'forma-zayavki-i-shablony-pisem' },
+      { label: 'Управление дилерами', slug: 'upravlenie-dilerami' },
+    ],
+  },
+  {
+    label: 'Управление материалами',
+    items: [
+      { label: 'Декоры и текстуры', slug: 'dekory-i-tekstury' },
+      { label: 'Плитные материалы (ЛДСП, ХДФ, ЛМДФ, стекло)', slug: 'plitnye-materialy' },
+      { label: 'Группы плитных материалов', slug: 'gruppy-plitnyh-materialov' },
+      { label: 'Массовое редактирование плит и массовый ввод цен', slug: 'massovoe-redaktirovanie-plit' },
+      { label: 'Кромочные ленты', slug: 'kromochnye-lenty' },
+      { label: 'Столешницы, плинтусы и цоколи', slug: 'stoleshnicy-plintusy-cokoli' },
+      { label: 'Материалы витрин', slug: 'materialy-vitrin' },
+    ],
+  },
+  {
+    label: 'Каталог элементов и переменные',
+    items: [
+      { label: 'Каталог элементов', slug: 'katalog-elementov' },
+      { label: 'Глобальные переменные', slug: 'globalnye-peremennye' },
+      { label: 'Массовые операции в каталоге', slug: 'massovye-operacii-v-kataloge' },
+    ],
+  },
+  {
+    label: 'Конфигуратор элементов',
+    items: [
+      { label: 'Основы конфигуратора', slug: 'osnovy-konfiguratora' },
+      { label: 'Секции и наполняемые секции', slug: 'sekcii-i-napolnyaemye-sekcii' },
+      { label: 'Детали', slug: 'detali' },
+      { label: 'Параметры, формулы и позиционирование', slug: 'parametry-formuly-pozicionirovanie' },
+      { label: 'Вращение и пересечения моделей', slug: 'vraschenie-i-peresecheniya-modeley' },
+      { label: 'Переменные модуля и переопределение', slug: 'peremennye-modulya' },
+      { label: 'Вычисляемые значения', slug: 'vychislyaemye-znacheniya' },
+      { label: 'Математические вычисления', slug: 'matematicheskie-vychisleniya' },
+      { label: 'Условия отображения и события', slug: 'usloviya-otobrazheniya-i-sobytiya' },
+      { label: 'Шаблоны модулей', slug: 'shablony-moduley' },
+      { label: 'Фасады и ручки', slug: 'fasady-i-ruchki' },
+      { label: 'Присадки и шаблоны присадок', slug: 'prisadki' },
+      { label: 'Пазы и вырезы', slug: 'pazy-i-vyrezy' },
+      { label: 'Аниматор: анимация мебели', slug: 'animator' },
+      { label: 'Размеры и точки прилипания', slug: 'razmery-i-tochki-prilipaniya' },
+      { label: '3D-модели: подготовка и настройка', slug: '3d-modeli' },
+    ],
+  },
+  {
+    label: 'Цены и расчёты',
+    items: [
+      { label: 'Доступные типы расчётов', slug: 'dostupnye-tipy-raschetov' },
+      { label: 'Прайс-листы и способы добавления цен', slug: 'prays-listy' },
+      { label: 'Правила расчёта цен (наценки)', slug: 'pravila-rascheta-cen-nacenki' },
+      { label: 'Настройка цен на фасады', slug: 'nastroyka-cen-na-fasady' },
+    ],
+  },
+  {
+    label: 'Работа на сцене и экспорт',
+    items: [
+      { label: 'Интерфейс сцены', slug: 'interfeys-sceny' },
+      { label: 'Настройка меню планировщика', slug: 'nastroyka-menyu-planirovschika' },
+      { label: 'Готовые проекты', slug: 'gotovye-proekty' },
+      { label: 'Спецификация и отправка на расчёт', slug: 'specifikaciya-i-otpravka-na-raschet' },
+      { label: 'Экспорт в производство', slug: 'eksport-v-proizvodstvo' },
+      { label: 'Рендеринг: визуализация ИИ', slug: 'rendering-vizualizaciya-ii' },
+    ],
+  },
+  {
+    label: 'Интеграции и кастомизация',
+    items: [
+      { label: 'Синхронизация по API', slug: 'sinhronizaciya-po-api' },
+      { label: 'Кастомизация интерфейса (CSS, JS, перевод)', slug: 'kastomizaciya-interfeysa' },
+    ],
+  },
+  {
+    label: 'Сценарии настройки и ценообразования',
+    items: [
+      { label: 'Какую модель ценообразования выбрать', slug: 'scenarii-vybor-modeli-cenoobrazovaniya' },
+      { label: 'Сценарий «Мебель на заказ»', slug: 'scenariy-mebel-na-zakaz' },
+      { label: 'Сценарий «Модульная / серийная мебель»', slug: 'scenariy-modulnaya-seriynaya' },
+      { label: 'Чек-листы настройки ценообразования', slug: 'chek-listy-nastroyki' },
+      { label: 'Неценовые сквозные сценарии', slug: 'necenovye-scenarii-nastroyki' },
+    ],
+  },
+];
