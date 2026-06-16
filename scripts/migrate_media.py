@@ -31,6 +31,44 @@ SLUGS = [
     "math_methods", "price_rules", "price-list", "calculation_principles", "fasady",
 ]
 
+# Маппинг: страница Tilda (источник медиа) -> слаг новой статьи базы знаний.
+# Перечислены только темы, которые есть на живом сайте help.planplace.online.
+MAPPING = {
+    "osnovnie_parametry": "kod-konstruktora-i-osnovnye-parametry",
+    "menuap-katalog_elementov": "katalog-elementov",
+    "menuap-globalnye_peremennye": "globalnye-peremennye",
+    "forma_i_pisma": "forma-zayavki-i-shablony-pisem",
+    "zyavky_na_raschet": "zayavki-na-raschet",
+    "diler_management": "upravlenie-dilerami",
+    "decors_2": "dekory-i-tekstury",
+    "upravlenie_plitami": "plitnye-materialy",
+    "mass_operations_pliti": "massovoe-redaktirovanie-plit",
+    "upravlenie_kromkami": "kromochnye-lenty",
+    "materialy_vitrin": "materialy-vitrin",
+    "configurator_basics": "osnovy-konfiguratora",
+    "obb_management": "vraschenie-i-peresecheniya-modeley",
+    "vychislaemie_znachenia": "vychislyaemye-znacheniya",
+    "math_methods": "matematicheskie-vychisleniya",
+    "price_rules": "pravila-rascheta-cen-nacenki",
+    "price-list": "prays-listy",
+    "calculation_principles": "dostupnye-tipy-raschetov",
+    "fasady": "nastroyka-cen-na-fasady",
+}
+
+# Встроенные видео для отдельных статей (raw iframe).
+VIDEO = {
+    "plitnye-materialy": (
+        '<iframe\n'
+        '  src="https://vkvideo.ru/video_ext.php?oid=-226790378&id=456239070&hd=2"\n'
+        '  width="100%"\n'
+        '  height="480"\n'
+        '  style="aspect-ratio: 16 / 9; height: auto; border: 0; border-radius: 8px;"\n'
+        '  allow="autoplay; encrypted-media; fullscreen; picture-in-picture"\n'
+        '  allowfullscreen\n'
+        '></iframe>'
+    ),
+}
+
 CTX = ssl.create_default_context()
 CTX.check_hostname = False
 CTX.verify_mode = ssl.CERT_NONE
@@ -146,13 +184,21 @@ def download(u, slug, counter):
     return ext, fname
 
 
-def process(slug):
+def process(tilda_slug, doc_slug):
+    slug = doc_slug  # картинки/импорты/выходной файл — под слаг новой статьи
     md_path = os.path.join(DOCS, slug + ".md")
     mdx_path = os.path.join(DOCS, slug + ".mdx")
     src_path = md_path if os.path.exists(md_path) else mdx_path
     if not os.path.exists(src_path):
         print(f"  ! нет файла {slug} — пропуск"); return
-    html = fetch("https://help.planplace.online/" + slug).decode('utf-8', 'ignore')
+    # HTML страницы берём из локального кэша, если он есть (избегаем 403/rate-limit)
+    cache = os.path.join("/tmp/pages", tilda_slug + ".html")
+    if not os.path.exists(cache) and tilda_slug == "upravlenie_plitami":
+        cache = "/tmp/page.html"
+    if os.path.exists(cache):
+        html = open(cache, encoding='utf-8', errors='ignore').read()
+    else:
+        html = fetch("https://help.planplace.online/" + tilda_slug).decode('utf-8', 'ignore')
     galleries = extract_galleries(html)
     if not galleries:
         print(f"  {slug}: галерей не найдено"); return
@@ -206,6 +252,8 @@ def process(slug):
         lines[nxt:nxt] = payload.split('\n')
     if unplaced:
         lines += ["", "\n\n".join(unplaced), ""]
+    if doc_slug in VIDEO:
+        lines += ["", "## Видео", "", VIDEO[doc_slug], ""]
 
     # вставляем импорты после фронт-маттера (нужно для .mdx)
     header = ["import Carousel from '../../components/Carousel.astro';"] + imports
@@ -228,10 +276,9 @@ def process(slug):
 
 
 if __name__ == "__main__":
-    targets = sys.argv[1:] or SLUGS
-    for s in targets:
-        print(f"→ {s}")
+    for tilda_slug, doc_slug in MAPPING.items():
+        print(f"→ {tilda_slug} → {doc_slug}")
         try:
-            process(s)
+            process(tilda_slug, doc_slug)
         except Exception as e:
-            print(f"  ОШИБКА {s}: {e}")
+            print(f"  ОШИБКА {doc_slug}: {e}")

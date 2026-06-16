@@ -3,6 +3,14 @@ title: "Основы конфигуратора элементов"
 description: "Конфигуратор элемента — это «мастерская», где каждый элемент каталога получает свои свойства, размеры, конструкцию, материалы и цену. Раньше такие объекты…"
 ---
 
+import Carousel from '../../components/Carousel.astro';
+import img2 from '../../assets/osnovy-konfiguratora/02.jpg';
+import img3 from '../../assets/osnovy-konfiguratora/03.jpg';
+import img4 from '../../assets/osnovy-konfiguratora/04.jpg';
+import img5 from '../../assets/osnovy-konfiguratora/05.jpg';
+import img6 from '../../assets/osnovy-konfiguratora/06.jpg';
+
+
 Конфигуратор элемента — это «мастерская», где каждый элемент каталога получает свои свойства, размеры, конструкцию, материалы и цену. Раньше такие объекты называли модулями, сейчас правильнее говорить «элементы». В этой статье дадим общую карту конфигуратора: какие у него вкладки, за что каждая отвечает и как они связаны. Это «оглавление» для всего раздела про конфигуратор.
 
 ## Интерфейс: две панели
@@ -20,6 +28,14 @@ description: "Конфигуратор элемента — это «масте�
 - показ/скрытие **кромок**;
 - переключение материалов для проверки, как конструкция подстраивается под разные толщины;
 - автоматическое создание **иконки** из текущего вида.
+
+
+
+<img src="/Tilda-PlanPlace/media/osnovy-konfiguratora/01.gif" alt="Как работает Конфигуратор элементов PlanPlace" style="max-width:100%;border-radius:8px;" />
+
+<Carousel images={[{src: img2, alt: "1. Основные"}, {src: img3, alt: "1. Основные"}]} />
+
+<Carousel images={[{src: img4, alt: "2. Размеры"}, {src: img5, alt: "2. Размеры"}]} />
 
 ## Вкладки конфигуратора и их смысл
 
@@ -73,3 +89,19 @@ description: "Конфигуратор элемента — это «масте�
 
 Конфигуратор элемента собирает изделие из частей и задаёт ему размеры, материалы и цену. Вкладки идут логической цепочкой: Основные → Размеры → Конструктор → Переменные/Вычисляемые → Материалы → Шаблоны → Позиции прайса → JSON. Начните с пяти базовых вкладок, а дальше двигайтесь по статьям этого раздела.
 
+
+
+
+<Carousel images={[{src: img6, alt: "3. Конструктор"}, {src: "/Tilda-PlanPlace/media/osnovy-konfiguratora/07.gif", alt: "3. Конструктор"}]} />
+
+![4. Вычисляемые значения](../../assets/osnovy-konfiguratora/08.jpg)
+
+![5. Переменные](../../assets/osnovy-konfiguratora/09.jpg)
+
+![6. Шаблоны](../../assets/osnovy-konfiguratora/10.jpg)
+
+![7. Материалы](../../assets/osnovy-konfiguratora/11.jpg)
+
+![8. Позиции прайса](../../assets/osnovy-konfiguratora/12.jpg)
+
+![9. Вкладка JSON](../../assets/osnovy-konfiguratora/13.jpg)

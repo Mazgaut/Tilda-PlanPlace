@@ -3,6 +3,12 @@ title: "Вращение и пересечения моделей"
 description: "Чтобы мебель на сцене стояла правильно и красиво, важны две вещи: как объекты вращаются и как они реагируют на пересечения друг с другом. В этой статье…"
 ---
 
+import Carousel from '../../components/Carousel.astro';
+import img3 from '../../assets/vraschenie-i-peresecheniya-modeley/03.jpg';
+import img4 from '../../assets/vraschenie-i-peresecheniya-modeley/04.jpg';
+import img5 from '../../assets/vraschenie-i-peresecheniya-modeley/05.jpg';
+
+
 Чтобы мебель на сцене стояла правильно и красиво, важны две вещи: как объекты **вращаются** и как они **реагируют на пересечения** друг с другом. В этой статье разберём оба механизма — и глобальные настройки, и вращение отдельных элементов в конфигураторе.
 
 ## Глобальные настройки (в кабинете)
@@ -15,6 +21,14 @@ description: "Чтобы мебель на сцене стояла правил�
 Рекомендуется также **вывести оси на сцену** и включить **отображение статуса пересечений**, чтобы было видно, какие объекты конфликтуют.
 
 > После изменения этих настроек сделайте [жёсткую перезагрузку](/Tilda-PlanPlace/lichnyy-kabinet/) и выгрузите настройки в планировщик.
+
+
+
+<Carousel images={[{src: "/Tilda-PlanPlace/media/vraschenie-i-peresecheniya-modeley/01.gif", alt: "Объектно-ориентированные боксы (OBB) в конструкторе"}, {src: "/Tilda-PlanPlace/media/vraschenie-i-peresecheniya-modeley/02.gif", alt: "Объектно-ориентированные боксы (OBB) в конструкторе"}]} />
+
+<Carousel images={[{src: img3, alt: "Шаг 1."}, {src: img4, alt: "Шаг 1."}, {src: img5, alt: "Шаг 1."}]} />
+
+![Шаг 1.](../../assets/vraschenie-i-peresecheniya-modeley/06.jpg)
 
 ## Вращение элементов в конфигураторе
 
