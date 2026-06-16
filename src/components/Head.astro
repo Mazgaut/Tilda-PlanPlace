@@ -1,0 +1,10 @@
+---
+// Переопределение стандартного <Head> Starlight.
+// Рендерит весь штатный head, а затем добавляет наши сайтовые
+// счётчики и виджеты из SiteAnalytics.astro — на каждой странице.
+import Default from '@astrojs/starlight/components/Head.astro';
+import SiteAnalytics from './SiteAnalytics.astro';
+---
+
+<Default><slot /></Default>
+<SiteAnalytics />

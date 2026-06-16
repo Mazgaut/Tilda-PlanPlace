@@ -1,0 +1,41 @@
+---
+/**
+ * ┌─────────────────────────────────────────────────────────────────────┐
+ * │  КОДЫ ВИДЖЕТОВ И СЧЁТЧИКОВ ДЛЯ ВСЕГО САЙТА                            │
+ * ├─────────────────────────────────────────────────────────────────────┤
+ * │  Это единственное место, где живут сторонние скрипты (аналитика,      │
+ * │  чаты, виджеты обратной связи и т.п.). Содержимое этого файла         │
+ * │  автоматически вставляется в <head> КАЖДОЙ страницы сайта.            │
+ * │                                                                       │
+ * │  Как редактировать:                                                   │
+ * │   • вставляйте код между метками-комментариями ниже;                  │
+ * │   • каждый <script> должен иметь атрибут  is:inline  — иначе Astro     │
+ * │     попытается его обработать/собрать, и сторонний код сломается;     │
+ * │   • после изменения закоммитьте и запушьте — сайт пересоберётся,      │
+ * │     и код появится сразу на всех страницах.                           │
+ * └─────────────────────────────────────────────────────────────────────┘
+ */
+---
+
+{/* ───────────────────────── Yandex.Metrika counter ───────────────────────── */}
+<script is:inline type="text/javascript">
+    (function(m,e,t,r,i,k,a){
+        m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+        m[i].l=1*new Date();
+        for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+        k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+    })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=107609530', 'ym');
+
+    ym(107609530, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/107609530" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+{/* ─────────────────────── /Yandex.Metrika counter ────────────────────────── */}
+
+{/* ─────────────────────── Bitrix24 — виджет CRM-кнопки ────────────────────── */}
+<script is:inline>
+        (function(w,d,u){
+                var s=d.createElement('script');s.async=true;s.src=u+'?'+(Date.now()/60000|0);
+                var h=d.getElementsByTagName('script')[0];h.parentNode.insertBefore(s,h);
+        })(window,document,'https://cdn-ru.bitrix24.ru/b32590620/crm/site_button/loader_2_ovw8wj.js');
+</script>
+{/* ────────────────────── /Bitrix24 — виджет CRM-кнопки ────────────────────── */}

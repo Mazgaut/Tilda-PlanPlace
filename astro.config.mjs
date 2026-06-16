@@ -19,6 +19,11 @@ export default defineConfig({
       locales: {
         root: { label: 'Русский', lang: 'ru' },
       },
+      // Сайтовые счётчики и виджеты подключаются через переопределённый
+      // компонент Head — он рендерит все коды из src/components/SiteAnalytics.astro.
+      components: {
+        Head: './src/components/Head.astro',
+      },
       // SEO: за счёт статической генерации каждая статья отдаётся готовым HTML,
       // sitemap.xml формируется автоматически, meta/canonical/OG проставляются Starlight.
       // Меню генерируется из оглавления базы знаний (src/sidebar.mjs).
