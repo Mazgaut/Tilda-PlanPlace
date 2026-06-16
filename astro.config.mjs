@@ -23,6 +23,7 @@ export default defineConfig({
       // компонент Head — он рендерит все коды из src/components/SiteAnalytics.astro.
       components: {
         Head: './src/components/Head.astro',
+        Pagination: './src/components/Pagination.astro',
       },
       // SEO: за счёт статической генерации каждая статья отдаётся готовым HTML,
       // sitemap.xml формируется автоматически, meta/canonical/OG проставляются Starlight.

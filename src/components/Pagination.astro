@@ -1,0 +1,41 @@
+---
+// Переопределение Pagination Starlight: над переключателем «назад/вперёд»
+// добавляется кнопка вызова формы обратной связи (Bitrix24, click/popup).
+import Default from '@astrojs/starlight/components/Pagination.astro';
+---
+
+<div class="pp-cta">
+  <p class="pp-cta__text">Не нашли ответ или нужна помощь специалиста?</p>
+  {/* Bitrix24 — форма по клику (всплывающая) */}
+  <div class="pp-cta__btn">
+    <script is:inline data-b24-form="click/6/3bht4b" data-skip-moving="true">
+      (function(w,d,u){
+      var s=d.createElement('script');s.async=true;s.src=u+'?'+(Date.now()/180000|0);
+      var h=d.getElementsByTagName('script')[0];h.parentNode.insertBefore(s,h);
+      })(window,document,'https://cdn-ru.bitrix24.ru/b32590620/crm/form/loader_6.js');
+    </script>
+  </div>
+</div>
+
+<Default />
+
+<style>
+  .pp-cta {
+    margin: 2.5rem 0 1.5rem;
+    padding: 1.5rem 1.25rem;
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 12px;
+    background: var(--sl-color-gray-6);
+    text-align: center;
+  }
+  .pp-cta__text {
+    margin: 0 0 1rem;
+    font-weight: 600;
+    font-size: 1.05rem;
+  }
+  /* Контейнер для кнопки, которую отрисовывает Bitrix24. */
+  .pp-cta__btn {
+    display: flex;
+    justify-content: center;
+  }
+</style>
