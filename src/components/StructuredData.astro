@@ -58,6 +58,14 @@ if (isHome) {
     isPartOf: { '@id': `${homeUrl}#website` },
     about: { '@id': `${homeUrl}#organization` },
   });
+  // Хлебные крошки и для главной — чтобы Rich Results Test распознавал тип.
+  graph.push({
+    '@type': 'BreadcrumbList',
+    '@id': `${canonical}#breadcrumb`,
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Справочный центр', item: canonical },
+    ],
+  });
 } else {
   // Раздел, в котором находится статья (для хлебных крошек).
   let section: string | undefined;
