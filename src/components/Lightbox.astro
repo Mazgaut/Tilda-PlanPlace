@@ -1,0 +1,176 @@
+---
+/**
+ * Лайтбокс: по клику любое изображение статьи (включая слайды каруселей и
+ * одиночные картинки) открывается поверх экрана с возможностью зума.
+ *
+ * Управление:
+ *   • колесо мыши — плавный зум;
+ *   • клик по картинке — переключение 1x ⇄ 2.5x;
+ *   • перетаскивание (мышь/палец) при увеличении — панорамирование;
+ *   • Esc, клик по фону или ✕ — закрыть.
+ *
+ * Подключается из Head.astro, поэтому работает на всех страницах.
+ */
+---
+
+<style is:global>
+  /* Подсказка кликабельности для всех картинок в тексте статьи. */
+  .sl-markdown-content img { cursor: zoom-in; }
+  /* Картинки-ссылки (например, иконки скачивания) — обычный курсор. */
+  .sl-markdown-content a img { cursor: pointer; }
+
+  /* Компактная ссылка-«скачать пример файла». */
+  .sl-markdown-content a.pp-download {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 500;
+    text-decoration: none;
+    padding: 0.4rem 0.75rem;
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 8px;
+    background: var(--sl-color-gray-6);
+  }
+  .sl-markdown-content a.pp-download:hover { background: var(--sl-color-gray-5); }
+  .sl-markdown-content a.pp-download img {
+    width: 28px;
+    height: 28px;
+    margin: 0;
+    flex: none;
+  }
+
+  .pp-lb {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: rgba(0, 0, 0, 0.92);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    touch-action: none;
+  }
+  .pp-lb.is-open { display: flex; }
+  .pp-lb__img {
+    max-width: 95vw;
+    max-height: 95vh;
+    transform-origin: center center;
+    transition: transform 0.05s linear;
+    cursor: zoom-in;
+    user-select: none;
+    -webkit-user-drag: none;
+    touch-action: none;
+    will-change: transform;
+  }
+  .pp-lb__img.is-zoomed { cursor: grab; }
+  .pp-lb__img.is-zoomed:active { cursor: grabbing; }
+  .pp-lb__close {
+    position: fixed;
+    top: 0.8rem;
+    right: 0.8rem;
+    width: 2.6rem;
+    height: 2.6rem;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.15);
+    color: #fff;
+    font-size: 1.4rem;
+    line-height: 1;
+    cursor: pointer;
+    z-index: 1;
+  }
+  .pp-lb__close:hover { background: rgba(255, 255, 255, 0.3); }
+  .pp-lb__hint {
+    position: fixed;
+    bottom: 0.8rem;
+    left: 50%;
+    transform: translateX(-50%);
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.8rem;
+    pointer-events: none;
+  }
+</style>
+
+<script>
+  function initLightbox() {
+    if ((window as any).__ppLightbox) return;
+    (window as any).__ppLightbox = true;
+
+    const ov = document.createElement('div');
+    ov.className = 'pp-lb';
+    ov.innerHTML =
+      '<button class="pp-lb__close" aria-label="Закрыть">✕</button>' +
+      '<img class="pp-lb__img" alt="">' +
+      '<div class="pp-lb__hint">Колесо или клик — зум, перетаскивание — сдвиг, Esc — закрыть</div>';
+    document.body.appendChild(ov);
+
+    const img = ov.querySelector('.pp-lb__img') as HTMLImageElement;
+    let scale = 1, tx = 0, ty = 0, dragging = false, sx = 0, sy = 0;
+
+    const apply = () => {
+      img.style.transform = `translate(${tx}px, ${ty}px) scale(${scale})`;
+      img.classList.toggle('is-zoomed', scale > 1);
+    };
+    const reset = () => { scale = 1; tx = 0; ty = 0; apply(); };
+    const open = (src: string, alt: string) => {
+      img.src = src; img.alt = alt; reset();
+      ov.classList.add('is-open');
+      document.body.style.overflow = 'hidden';
+    };
+    const close = () => {
+      ov.classList.remove('is-open');
+      document.body.style.overflow = '';
+      img.src = '';
+    };
+
+    ov.querySelector('.pp-lb__close')!.addEventListener('click', close);
+    ov.addEventListener('click', (e) => { if (e.target === ov) close(); });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && ov.classList.contains('is-open')) close();
+    });
+
+    // зум колесом
+    ov.addEventListener('wheel', (e) => {
+      if (!ov.classList.contains('is-open')) return;
+      e.preventDefault();
+      scale = Math.min(6, Math.max(1, scale - Math.sign(e.deltaY) * 0.25));
+      if (scale === 1) { tx = 0; ty = 0; }
+      apply();
+    }, { passive: false });
+
+    // клик по картинке — переключить зум
+    img.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (scale === 1) { scale = 2.5; } else { scale = 1; tx = 0; ty = 0; }
+      apply();
+    });
+
+    // панорамирование при увеличении
+    img.addEventListener('pointerdown', (e) => {
+      if (scale === 1) return;
+      dragging = true; sx = e.clientX - tx; sy = e.clientY - ty;
+      img.setPointerCapture(e.pointerId);
+    });
+    img.addEventListener('pointermove', (e) => {
+      if (!dragging) return;
+      tx = e.clientX - sx; ty = e.clientY - sy; apply();
+    });
+    const stop = () => { dragging = false; };
+    img.addEventListener('pointerup', stop);
+    img.addEventListener('pointercancel', stop);
+
+    // открыть по клику на любую картинку статьи (текст, карусели, одиночные)
+    document.addEventListener('click', (e) => {
+      const t = (e.target as HTMLElement).closest(
+        '.sl-markdown-content img, .pp-carousel img'
+      ) as HTMLImageElement | null;
+      if (!t) return;
+      // картинки-ссылки (иконки скачивания и т.п.) ведут по ссылке, не в зум
+      if (t.closest('a')) return;
+      e.preventDefault();
+      open(t.currentSrc || t.src, t.alt || '');
+    });
+  }
+  initLightbox();
+  document.addEventListener('astro:page-load', initLightbox);
+</script>

@@ -2,12 +2,15 @@
 /**
  * Карусель изображений (как галереи в Tilda).
  *
- * Все слайды присутствуют в HTML сразу — это сохраняет индексацию
- * поисковиками и чтение ИИ-ботами. JS отвечает только за прокрутку.
+ * Показывает один слайд за раз, поэтому высота карусели подстраивается под
+ * текущее изображение: на горизонтальном — ниже, на вертикальном — выше,
+ * ширина постоянна, кнопки управления остаются по вертикальному центру.
  *
- * Принимает массив images: { src, alt }, где src — это либо импортированное
- * изображение (ImageMetadata из src/assets, оптимизируется в WebP), либо
- * строка-URL (например, GIF из public/, чтобы не терять анимацию).
+ * Все слайды присутствуют в HTML сразу — индексация и чтение ИИ сохранены.
+ * По клику изображение открывается в лайтбоксе с зумом (см. Lightbox.astro).
+ *
+ * images: { src, alt }, где src — импортированное изображение (оптимизируется
+ * в WebP) или строка-URL (например, GIF из public/, чтобы сохранить анимацию).
  */
 import { Image } from 'astro:assets';
 
@@ -19,9 +22,9 @@ const { images = [] as Slide[] } = Astro.props;
 ---
 
 <div class="pp-carousel" data-pp-carousel>
-  <div class="pp-carousel__track">
-    {images.map((img: Slide) => (
-      <figure class="pp-carousel__slide">
+  <div class="pp-carousel__viewport">
+    {images.map((img: Slide, i: number) => (
+      <figure class={`pp-carousel__slide${i === 0 ? ' is-active' : ''}`} data-index={i}>
         {typeof img.src === 'string'
           ? <img src={img.src} alt={img.alt ?? ''} loading="lazy" />
           : <Image src={img.src} alt={img.alt ?? ''} />}
@@ -46,23 +49,23 @@ const { images = [] as Slide[] } = Astro.props;
     overflow: hidden;
     background: var(--sl-color-gray-6, #f1f1f1);
   }
-  .pp-carousel__track {
-    display: flex;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    scroll-behavior: smooth;
-    scrollbar-width: none;
+  /* Высота контейнера = высота активного слайда (остальные вне потока). */
+  .pp-carousel__viewport {
+    position: relative;
+    line-height: 0;
   }
-  .pp-carousel__track::-webkit-scrollbar { display: none; }
   .pp-carousel__slide {
-    flex: 0 0 100%;
-    scroll-snap-align: center;
     margin: 0;
+    display: none;
+  }
+  .pp-carousel__slide.is-active {
+    display: block;
   }
   .pp-carousel__slide :global(img) {
     display: block;
     width: 100%;
     height: auto;
+    cursor: zoom-in;
   }
   .pp-carousel__btn {
     position: absolute;
@@ -81,6 +84,7 @@ const { images = [] as Slide[] } = Astro.props;
     align-items: center;
     justify-content: center;
     transition: background 0.15s;
+    z-index: 2;
   }
   .pp-carousel__btn:hover { background: rgba(0, 0, 0, 0.8); }
   .pp-carousel__btn--prev { left: 0.6rem; }
@@ -94,29 +98,36 @@ const { images = [] as Slide[] } = Astro.props;
     background: rgba(0, 0, 0, 0.6);
     color: #fff;
     font-size: 0.8rem;
+    z-index: 2;
   }
 </style>
 
 <script>
-  // Инициализируется один раз и обслуживает все карусели на странице.
   function initCarousels() {
     document.querySelectorAll<HTMLElement>('[data-pp-carousel]').forEach((root) => {
       if (root.dataset.ppReady) return;
       root.dataset.ppReady = '1';
-      const track = root.querySelector<HTMLElement>('.pp-carousel__track');
+      const slides = Array.from(root.querySelectorAll<HTMLElement>('.pp-carousel__slide'));
       const prev = root.querySelector<HTMLElement>('.pp-carousel__btn--prev');
       const next = root.querySelector<HTMLElement>('.pp-carousel__btn--next');
-      const current = root.querySelector<HTMLElement>('[data-pp-current]');
-      if (!track) return;
-      const step = () => track.clientWidth;
-      prev?.addEventListener('click', () => track.scrollBy({ left: -step(), behavior: 'smooth' }));
-      next?.addEventListener('click', () => track.scrollBy({ left: step(), behavior: 'smooth' }));
-      if (current) {
-        track.addEventListener('scroll', () => {
-          const idx = Math.round(track.scrollLeft / step()) + 1;
-          current.textContent = String(idx);
-        }, { passive: true });
-      }
+      const cur = root.querySelector<HTMLElement>('[data-pp-current]');
+      let idx = 0;
+      const show = (i: number) => {
+        idx = (i + slides.length) % slides.length;
+        slides.forEach((s, j) => s.classList.toggle('is-active', j === idx));
+        if (cur) cur.textContent = String(idx + 1);
+      };
+      prev?.addEventListener('click', () => show(idx - 1));
+      next?.addEventListener('click', () => show(idx + 1));
+      // свайп на тачскрине
+      let x0: number | null = null;
+      root.addEventListener('touchstart', (e) => { x0 = e.touches[0].clientX; }, { passive: true });
+      root.addEventListener('touchend', (e) => {
+        if (x0 === null) return;
+        const dx = e.changedTouches[0].clientX - x0;
+        if (Math.abs(dx) > 40) show(dx < 0 ? idx + 1 : idx - 1);
+        x0 = null;
+      });
     });
   }
   initCarousels();
