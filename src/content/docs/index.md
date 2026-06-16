@@ -79,7 +79,7 @@ description: "Это полный набор инструкций по рабо�
 39. [Настройка меню планировщика](/Tilda-PlanPlace/nastroyka-menyu-planirovschika/) — состав и порядок разделов на сцене.
 40. [Готовые проекты](/Tilda-PlanPlace/gotovye-proekty/) — библиотека типовых комплектаций.
 41. [Спецификация и отправка на расчёт](/Tilda-PlanPlace/specifikaciya-i-otpravka-na-raschet/) — PDF-смета и заявка клиента.
-42. [Экспорт в производство](/Tilda-PlanPlace/eksport-v-proizvodstvo/) — Базис, ASA.Nest, Cut, интеграция с Аракс.
+42. [Экспорт в производство](/Tilda-PlanPlace/eksport-v-proizvodstvo/) — БАЗИС-Мебельщик, АСАИ.Раскрой, АСАИ.Нестинг и настройки модуля БАЗИС.
 43. [Рендеринг: визуализация ИИ](/Tilda-PlanPlace/rendering-vizualizaciya-ii/) — фотореалистичные изображения проекта.
 
 ## Раздел 7. Интеграции и кастомизация
