@@ -28,7 +28,7 @@ export default defineConfig({
   // - подгонка внутренних ссылок и путей к GIF под текущий base (чтобы они
   //   работали и в вебе с /Tilda-PlanPlace, и локально в режиме Keystatic).
   markdown: {
-    remarkPlugins: [remarkAutoImportComponents, remarkBaseLinks(base)],
+    remarkPlugins: [remarkAutoImportComponents, [remarkBaseLinks, base]],
   },
   integrations: [
     starlight({
