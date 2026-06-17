@@ -3,22 +3,6 @@ title: "Прайс-листы и способы добавления цен"
 description: "Прайс-лист — это единая таблица учёта всех изделий, плитных материалов, кромок, комплектующих, фурнитуры и крепежа. На его основе система по заданным…"
 ---
 
-import Carousel from '../../components/Carousel.astro';
-import img1 from '../../assets/prays-listy/01.jpg';
-import img2 from '../../assets/prays-listy/02.jpg';
-import img7 from '../../assets/prays-listy/07.jpg';
-import img8 from '../../assets/prays-listy/08.jpg';
-import img9 from '../../assets/prays-listy/09.jpg';
-import img10 from '../../assets/prays-listy/10.jpg';
-import img11 from '../../assets/prays-listy/11.jpg';
-import img12 from '../../assets/prays-listy/12.jpg';
-import img13 from '../../assets/prays-listy/13.jpg';
-import img14 from '../../assets/prays-listy/14.jpg';
-import img15 from '../../assets/prays-listy/15.jpg';
-import img16 from '../../assets/prays-listy/16.jpg';
-import img17 from '../../assets/prays-listy/17.jpg';
-
-
 Прайс-лист — это единая таблица учёта всех изделий, плитных материалов, кромок, комплектующих, фурнитуры и крепежа. На его основе система по заданным правилам считает стоимость каждой секции и изделия. Главная идея: позицию можно сколько угодно раз добавлять в разные секции, а цену менять **в одном месте** — в прайс-листе. В этой статье разберём, как его вести и привязывать к изделиям.
 
 ## Что умеет прайс-лист
@@ -32,30 +16,51 @@ import img17 from '../../assets/prays-listy/17.jpg';
 
 **Где находится:** меню слева → **«Прайс-лист»**. Есть фильтрация по категориям, поиск по названию и артикулу, выбор числа позиций на странице.
 
+<Carousel>
 
+![Создание каталога](../../assets/prays-listy/01.jpg)
 
-<Carousel images={[{src: img1, alt: "Создание каталога"}, {src: img2, alt: "Создание каталога"}]} />
+![Создание каталога](../../assets/prays-listy/02.jpg)
+
+</Carousel>
 
 ![Массовые операции через импорт/экспорт csv или xlsx](../../assets/prays-listy/03.jpg)
 
-<a
-  href="https://planplace.ru/site/help/menuap-komplekt_furny/komplektuyushchie-i-furnitura.xlsx"
-  class="pp-download"
-  download
-  target="_blank"
-  rel="noopener"
->
-  <img src="/Tilda-PlanPlace/media/prays-listy/excel.png" alt="" width="28" height="28" />
-  <span>Скачать пример в формате Excel</span>
-</a>
+<Download href="https://planplace.ru/site/help/menuap-komplekt_furny/komplektuyushchie-i-furnitura.xlsx" label="Скачать пример в формате Excel" />
 
 ![Массовые операции через импорт/экспорт csv или xlsx](../../assets/prays-listy/05.jpg)
 
 ![Массовые операции через импорт/экспорт csv или xlsx](../../assets/prays-listy/06.png)
 
-<Carousel images={[{src: img7, alt: "Массовые операции через импорт/экспорт csv или xlsx"}, {src: img8, alt: "Массовые операции через импорт/экспорт csv или xlsx"}]} />
+<Carousel>
 
-<Carousel images={[{src: img9, alt: "Добавление позиций прайс-листа к изделиям"}, {src: img10, alt: "Добавление позиций прайс-листа к изделиям"}, {src: img11, alt: "Добавление позиций прайс-листа к изделиям"}, {src: img12, alt: "Добавление позиций прайс-листа к изделиям"}, {src: img13, alt: "Добавление позиций прайс-листа к изделиям"}, {src: img14, alt: "Добавление позиций прайс-листа к изделиям"}, {src: img15, alt: "Добавление позиций прайс-листа к изделиям"}, {src: img16, alt: "Добавление позиций прайс-листа к изделиям"}, {src: img17, alt: "Добавление позиций прайс-листа к изделиям"}]} />
+![Массовые операции через импорт/экспорт csv или xlsx](../../assets/prays-listy/07.jpg)
+
+![Массовые операции через импорт/экспорт csv или xlsx](../../assets/prays-listy/08.jpg)
+
+</Carousel>
+
+<Carousel>
+
+![Добавление позиций прайс-листа к изделиям](../../assets/prays-listy/09.jpg)
+
+![Добавление позиций прайс-листа к изделиям](../../assets/prays-listy/10.jpg)
+
+![Добавление позиций прайс-листа к изделиям](../../assets/prays-listy/11.jpg)
+
+![Добавление позиций прайс-листа к изделиям](../../assets/prays-listy/12.jpg)
+
+![Добавление позиций прайс-листа к изделиям](../../assets/prays-listy/13.jpg)
+
+![Добавление позиций прайс-листа к изделиям](../../assets/prays-listy/14.jpg)
+
+![Добавление позиций прайс-листа к изделиям](../../assets/prays-listy/15.jpg)
+
+![Добавление позиций прайс-листа к изделиям](../../assets/prays-listy/16.jpg)
+
+![Добавление позиций прайс-листа к изделиям](../../assets/prays-listy/17.jpg)
+
+</Carousel>
 
 ![Добавление позиций прайс-листа к изделиям](../../assets/prays-listy/18.jpg)
 

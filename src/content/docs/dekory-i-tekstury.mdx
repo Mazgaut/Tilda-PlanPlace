@@ -3,23 +3,6 @@ title: "Декоры и текстуры"
 description: "Декоры — это «внешность» материалов в PlanPlace. Проще говоря, это картинки-текстуры, которые система натягивает на поверхности, чтобы мебель выглядела…"
 ---
 
-import Carousel from '../../components/Carousel.astro';
-import img1 from '../../assets/dekory-i-tekstury/01.jpg';
-import img2 from '../../assets/dekory-i-tekstury/02.jpg';
-import img3 from '../../assets/dekory-i-tekstury/03.jpg';
-import img5 from '../../assets/dekory-i-tekstury/05.jpg';
-import img6 from '../../assets/dekory-i-tekstury/06.png';
-import img7 from '../../assets/dekory-i-tekstury/07.png';
-import img8 from '../../assets/dekory-i-tekstury/08.png';
-import img9 from '../../assets/dekory-i-tekstury/09.jpg';
-import img10 from '../../assets/dekory-i-tekstury/10.jpg';
-import img11 from '../../assets/dekory-i-tekstury/11.png';
-import img12 from '../../assets/dekory-i-tekstury/12.jpg';
-import img13 from '../../assets/dekory-i-tekstury/13.jpg';
-import img14 from '../../assets/dekory-i-tekstury/14.jpg';
-import img15 from '../../assets/dekory-i-tekstury/15.jpg';
-
-
 Декоры — это «внешность» материалов в PlanPlace. Проще говоря, это картинки-текстуры, которые система натягивает на поверхности, чтобы мебель выглядела реалистично: дерево, мрамор, однотонный цвет, бетон. В этой статье разберём, что такое декоры, как их добавлять (по одному и массово) и как настроить, чтобы поверхности выглядели правдоподобно.
 
 ## Что такое декор и за что он отвечает
@@ -35,9 +18,15 @@ import img15 from '../../assets/dekory-i-tekstury/15.jpg';
 
 > **Немного истории.** Раньше вся информация о материалах хранилась в декорах. Сейчас архитектуру переработали: декоры выделены в отдельный раздел и выполняют роль чистых текстур. Это даёт больше гибкости.
 
+<Carousel>
 
+![Создание категории декоров](../../assets/dekory-i-tekstury/01.jpg)
 
-<Carousel images={[{src: img1, alt: "Создание категории декоров"}, {src: img2, alt: "Создание категории декоров"}, {src: img3, alt: "Создание категории декоров"}]} />
+![Создание категории декоров](../../assets/dekory-i-tekstury/02.jpg)
+
+![Создание категории декоров](../../assets/dekory-i-tekstury/03.jpg)
+
+</Carousel>
 
 ![Загрузка декоров](../../assets/dekory-i-tekstury/04.jpg)
 
@@ -84,15 +73,43 @@ import img15 from '../../assets/dekory-i-tekstury/15.jpg';
 
 **Оптимизация.** Конструктор работает в браузере, в том числе на слабых устройствах. Тяжёлые текстуры замедляют систему. Перед загрузкой оптимизируйте вес файлов — например, массовыми инструментами вроде Microsoft PowerToys для изменения размера.
 
+<Carousel>
 
+![Настройки текстуры](../../assets/dekory-i-tekstury/05.jpg)
 
-<Carousel images={[{src: img5, alt: "Настройки текстуры"}, {src: img6, alt: "Настройки текстуры"}, {src: img7, alt: "Настройки текстуры"}, {src: img8, alt: "Настройки текстуры"}, {src: img9, alt: "Настройки текстуры"}]} />
+![Настройки текстуры](../../assets/dekory-i-tekstury/06.png)
 
-<Carousel images={[{src: img10, alt: "Добавление текстур одним архивом"}, {src: img11, alt: "Добавление текстур одним архивом"}]} />
+![Настройки текстуры](../../assets/dekory-i-tekstury/07.png)
 
-<Carousel images={[{src: img12, alt: "Редактирование данных"}, {src: img13, alt: "Редактирование данных"}]} />
+![Настройки текстуры](../../assets/dekory-i-tekstury/08.png)
 
-<Carousel images={[{src: img14, alt: "Редактирование данных"}, {src: img15, alt: "Редактирование данных"}]} />
+![Настройки текстуры](../../assets/dekory-i-tekstury/09.jpg)
+
+</Carousel>
+
+<Carousel>
+
+![Добавление текстур одним архивом](../../assets/dekory-i-tekstury/10.jpg)
+
+![Добавление текстур одним архивом](../../assets/dekory-i-tekstury/11.png)
+
+</Carousel>
+
+<Carousel>
+
+![Редактирование данных](../../assets/dekory-i-tekstury/12.jpg)
+
+![Редактирование данных](../../assets/dekory-i-tekstury/13.jpg)
+
+</Carousel>
+
+<Carousel>
+
+![Редактирование данных](../../assets/dekory-i-tekstury/14.jpg)
+
+![Редактирование данных](../../assets/dekory-i-tekstury/15.jpg)
+
+</Carousel>
 
 ![Редактирование данных](../../assets/dekory-i-tekstury/16.jpg)
 

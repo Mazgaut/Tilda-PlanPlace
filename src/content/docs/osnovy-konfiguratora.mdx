@@ -3,14 +3,6 @@ title: "Основы конфигуратора элементов"
 description: "Конфигуратор элемента — это «мастерская», где каждый элемент каталога получает свои свойства, размеры, конструкцию, материалы и цену. Раньше такие объекты…"
 ---
 
-import Carousel from '../../components/Carousel.astro';
-import img2 from '../../assets/osnovy-konfiguratora/02.jpg';
-import img3 from '../../assets/osnovy-konfiguratora/03.jpg';
-import img4 from '../../assets/osnovy-konfiguratora/04.jpg';
-import img5 from '../../assets/osnovy-konfiguratora/05.jpg';
-import img6 from '../../assets/osnovy-konfiguratora/06.jpg';
-
-
 Конфигуратор элемента — это «мастерская», где каждый элемент каталога получает свои свойства, размеры, конструкцию, материалы и цену. Раньше такие объекты называли модулями, сейчас правильнее говорить «элементы». В этой статье дадим общую карту конфигуратора: какие у него вкладки, за что каждая отвечает и как они связаны. Это «оглавление» для всего раздела про конфигуратор.
 
 ## Интерфейс: две панели
@@ -29,13 +21,23 @@ import img6 from '../../assets/osnovy-konfiguratora/06.jpg';
 - переключение материалов для проверки, как конструкция подстраивается под разные толщины;
 - автоматическое создание **иконки** из текущего вида.
 
+![Как работает Конфигуратор элементов PlanPlace](/Tilda-PlanPlace/media/osnovy-konfiguratora/01.gif)
 
+<Carousel>
 
-<img src="/Tilda-PlanPlace/media/osnovy-konfiguratora/01.gif" alt="Как работает Конфигуратор элементов PlanPlace" style="max-width:100%;border-radius:8px;" />
+![1. Основные](../../assets/osnovy-konfiguratora/02.jpg)
 
-<Carousel images={[{src: img2, alt: "1. Основные"}, {src: img3, alt: "1. Основные"}]} />
+![1. Основные](../../assets/osnovy-konfiguratora/03.jpg)
 
-<Carousel images={[{src: img4, alt: "2. Размеры"}, {src: img5, alt: "2. Размеры"}]} />
+</Carousel>
+
+<Carousel>
+
+![2. Размеры](../../assets/osnovy-konfiguratora/04.jpg)
+
+![2. Размеры](../../assets/osnovy-konfiguratora/05.jpg)
+
+</Carousel>
 
 ## Вкладки конфигуратора и их смысл
 
@@ -89,10 +91,13 @@ import img6 from '../../assets/osnovy-konfiguratora/06.jpg';
 
 Конфигуратор элемента собирает изделие из частей и задаёт ему размеры, материалы и цену. Вкладки идут логической цепочкой: Основные → Размеры → Конструктор → Переменные/Вычисляемые → Материалы → Шаблоны → Позиции прайса → JSON. Начните с пяти базовых вкладок, а дальше двигайтесь по статьям этого раздела.
 
+<Carousel>
 
+![3. Конструктор](../../assets/osnovy-konfiguratora/06.jpg)
 
+![3. Конструктор](/Tilda-PlanPlace/media/osnovy-konfiguratora/07.gif)
 
-<Carousel images={[{src: img6, alt: "3. Конструктор"}, {src: "/Tilda-PlanPlace/media/osnovy-konfiguratora/07.gif", alt: "3. Конструктор"}]} />
+</Carousel>
 
 ![4. Вычисляемые значения](../../assets/osnovy-konfiguratora/08.jpg)
 

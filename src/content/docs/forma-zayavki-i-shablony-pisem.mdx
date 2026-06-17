@@ -3,21 +3,6 @@ title: "Форма заявки и шаблоны писем"
 description: "Когда клиент отправляет проект на расчёт, происходят три вещи: он заполняет форму заявки, вам приходит письмо дизайнеру (на ваши почты), а клиенту уходит…"
 ---
 
-import Carousel from '../../components/Carousel.astro';
-import img3 from '../../assets/forma-zayavki-i-shablony-pisem/03.png';
-import img4 from '../../assets/forma-zayavki-i-shablony-pisem/04.png';
-import img5 from '../../assets/forma-zayavki-i-shablony-pisem/05.png';
-import img15 from '../../assets/forma-zayavki-i-shablony-pisem/15.png';
-import img16 from '../../assets/forma-zayavki-i-shablony-pisem/16.png';
-import img17 from '../../assets/forma-zayavki-i-shablony-pisem/17.png';
-import img18 from '../../assets/forma-zayavki-i-shablony-pisem/18.png';
-import img19 from '../../assets/forma-zayavki-i-shablony-pisem/19.png';
-import img20 from '../../assets/forma-zayavki-i-shablony-pisem/20.png';
-import img21 from '../../assets/forma-zayavki-i-shablony-pisem/21.png';
-import img23 from '../../assets/forma-zayavki-i-shablony-pisem/23.png';
-import img24 from '../../assets/forma-zayavki-i-shablony-pisem/24.png';
-
-
 Когда клиент отправляет проект на расчёт, происходят три вещи: он заполняет **форму заявки**, вам приходит **письмо дизайнеру** (на ваши почты), а клиенту уходит **письмо клиенту**. Все три элемента можно настроить под себя. В этой статье разберём, как это сделать правильно и в правильном порядке.
 
 > **Главное правило порядка.** Сначала настройте **форму заявки** (какие поля заполняет клиент), и только потом — шаблоны писем. Потому что в письмах используются значения из полей формы. Если сделать наоборот, нужных тегов в письмах просто не будет.
@@ -72,13 +57,19 @@ import img24 from '../../assets/forma-zayavki-i-shablony-pisem/24.png';
 
 В блоке **«Тело письма»** доступен расширенный список тегов. Также можно настроить, **какие файлы вложить в письмо** (например, файл проекта и PDF-спецификацию).
 
-
-
 ![Письмо дизайнеру](../../assets/forma-zayavki-i-shablony-pisem/01.png)
 
 ![Письмо дизайнеру](../../assets/forma-zayavki-i-shablony-pisem/02.png)
 
-<Carousel images={[{src: img3, alt: "Письмо дизайнеру"}, {src: img4, alt: "Письмо дизайнеру"}, {src: img5, alt: "Письмо дизайнеру"}]} />
+<Carousel>
+
+![Письмо дизайнеру](../../assets/forma-zayavki-i-shablony-pisem/03.png)
+
+![Письмо дизайнеру](../../assets/forma-zayavki-i-shablony-pisem/04.png)
+
+![Письмо дизайнеру](../../assets/forma-zayavki-i-shablony-pisem/05.png)
+
+</Carousel>
 
 ![Письмо дизайнеру](../../assets/forma-zayavki-i-shablony-pisem/06.png)
 
@@ -87,8 +78,6 @@ import img24 from '../../assets/forma-zayavki-i-shablony-pisem/24.png';
 ## Письмо клиенту
 
 По умолчанию клиент получает стандартное письмо-подтверждение. Чтобы изменить его, включите **«Использовать свой шаблон»** на вкладке «Письмо клиенту». Принцип тот же: в теме и теле письма комбинируете теги, свой текст, картинки и ссылки, а в конце выбираете, какие файлы приложить.
-
-
 
 ![Письмо клиенту](../../assets/forma-zayavki-i-shablony-pisem/08.png)
 
@@ -104,13 +93,37 @@ import img24 from '../../assets/forma-zayavki-i-shablony-pisem/24.png';
 
 ![Форма оформления заявки на расчет](../../assets/forma-zayavki-i-shablony-pisem/14.png)
 
-<Carousel images={[{src: img15, alt: "Форма оформления заявки на расчет"}, {src: img16, alt: "Форма оформления заявки на расчет"}]} />
+<Carousel>
 
-<Carousel images={[{src: img17, alt: "Форма оформления заявки на расчет"}, {src: img18, alt: "Форма оформления заявки на расчет"}, {src: img19, alt: "Форма оформления заявки на расчет"}, {src: img20, alt: "Форма оформления заявки на расчет"}, {src: img21, alt: "Форма оформления заявки на расчет"}]} />
+![Форма оформления заявки на расчет](../../assets/forma-zayavki-i-shablony-pisem/15.png)
+
+![Форма оформления заявки на расчет](../../assets/forma-zayavki-i-shablony-pisem/16.png)
+
+</Carousel>
+
+<Carousel>
+
+![Форма оформления заявки на расчет](../../assets/forma-zayavki-i-shablony-pisem/17.png)
+
+![Форма оформления заявки на расчет](../../assets/forma-zayavki-i-shablony-pisem/18.png)
+
+![Форма оформления заявки на расчет](../../assets/forma-zayavki-i-shablony-pisem/19.png)
+
+![Форма оформления заявки на расчет](../../assets/forma-zayavki-i-shablony-pisem/20.png)
+
+![Форма оформления заявки на расчет](../../assets/forma-zayavki-i-shablony-pisem/21.png)
+
+</Carousel>
 
 ![Форма оформления заявки на расчет](../../assets/forma-zayavki-i-shablony-pisem/22.png)
 
-<Carousel images={[{src: img23, alt: "Форма оформления заявки на расчет"}, {src: img24, alt: "Форма оформления заявки на расчет"}]} />
+<Carousel>
+
+![Форма оформления заявки на расчет](../../assets/forma-zayavki-i-shablony-pisem/23.png)
+
+![Форма оформления заявки на расчет](../../assets/forma-zayavki-i-shablony-pisem/24.png)
+
+</Carousel>
 
 ![Блок Предпросмотр отображает результат настроек формы заявки на текущем этапе.](../../assets/forma-zayavki-i-shablony-pisem/25.png)
 

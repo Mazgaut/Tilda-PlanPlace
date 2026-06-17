@@ -9,7 +9,7 @@
 
 ## Как добавить новую статью
 
-1. Создайте файл `src/content/docs/<slug>.md`.
+1. Создайте файл `src/content/docs/<slug>.mdx`.
 2. В начале файла укажите «паспорт» статьи (front-matter):
 
    ```markdown
@@ -21,10 +21,42 @@
    Текст статьи в Markdown…
    ```
 
-3. Добавьте статью в меню в `astro.config.mjs` (массив `sidebar`).
+3. Добавьте статью в меню в `src/sidebar.mjs`.
 4. Закоммитьте и запушьте в ветку `main` — сайт пересоберётся и опубликуется сам.
 
 Готовый HTML вручную писать не нужно — его собирает сборщик.
+
+### Компоненты в статьях
+
+Статьи — формата `.mdx`, но **`import`-строки писать не нужно** (их не понимает
+визуальный редактор Keystatic). Нужные компоненты сборщик подключает сам
+(remark-плагин `src/remark/auto-import-components.mjs`). Доступны:
+
+```mdx
+<Carousel>
+
+![Подпись 1](../../assets/<slug>/02.jpg)
+![Подпись 2](/Tilda-PlanPlace/media/<slug>/03.gif)
+
+</Carousel>
+
+<Video src="https://vkvideo.ru/video_ext.php?oid=...&id=..." />
+
+<Download href="https://.../primer.xlsx" label="Скачать пример в формате Excel" />
+
+<Bitrix24InlineForm />
+```
+
+- **Carousel** — галерея: изображения внутри обычным markdown (`![](...)`).
+  Относительные пути Astro оптимизирует в WebP, GIF из `public/media` остаются
+  анимированными.
+- **Video** — адаптивное видео 16:9 (VK Видео, YouTube и т. п.).
+- **Download** — кнопка скачивания файла-примера.
+- **Bitrix24InlineForm** — встроенная форма обратной связи.
+
+Эти же компоненты доступны как блоки в редакторе Keystatic. Если добавляете
+новый компонент — пропишите его в `src/remark/auto-import-components.mjs`
+(для сборки) и в `keystatic.config.ts` → `components` (для админки).
 
 ## Визуальная панель управления (Keystatic)
 

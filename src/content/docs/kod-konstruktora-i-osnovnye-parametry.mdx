@@ -3,23 +3,6 @@ title: "Код конструктора и основные параметры"
 description: "В этом разделе кабинета настраивается «лицо» вашего конструктора: куда приходят заявки, какой логотип и контакты видит клиент, и как встроить планировщик на…"
 ---
 
-import Carousel from '../../components/Carousel.astro';
-import img1 from '../../assets/kod-konstruktora-i-osnovnye-parametry/01.png';
-import img2 from '../../assets/kod-konstruktora-i-osnovnye-parametry/02.png';
-import img4 from '../../assets/kod-konstruktora-i-osnovnye-parametry/04.png';
-import img5 from '../../assets/kod-konstruktora-i-osnovnye-parametry/05.png';
-import img6 from '../../assets/kod-konstruktora-i-osnovnye-parametry/06.png';
-import img7 from '../../assets/kod-konstruktora-i-osnovnye-parametry/07.png';
-import img8 from '../../assets/kod-konstruktora-i-osnovnye-parametry/08.png';
-import img9 from '../../assets/kod-konstruktora-i-osnovnye-parametry/09.png';
-import img10 from '../../assets/kod-konstruktora-i-osnovnye-parametry/10.jpg';
-import img11 from '../../assets/kod-konstruktora-i-osnovnye-parametry/11.jpg';
-import img13 from '../../assets/kod-konstruktora-i-osnovnye-parametry/13.jpg';
-import img14 from '../../assets/kod-konstruktora-i-osnovnye-parametry/14.jpg';
-import img15 from '../../assets/kod-konstruktora-i-osnovnye-parametry/15.jpg';
-import img16 from '../../assets/kod-konstruktora-i-osnovnye-parametry/16.jpg';
-
-
 В этом разделе кабинета настраивается «лицо» вашего конструктора: куда приходят заявки, какой логотип и контакты видит клиент, и как встроить планировщик на ваш сайт или в группу ВКонтакте. Это первое, что стоит заполнить после регистрации.
 
 ## E-mail для заявок
@@ -28,15 +11,17 @@ import img16 from '../../assets/kod-konstruktora-i-osnovnye-parametry/16.jpg';
 
 > **Важно.** Заявки приходят с адреса order@planplace.ru. Если их нет во «Входящих», проверьте папку «Спам» и добавьте этот адрес в надёжные отправители.
 
+<Carousel>
 
+![E-mail для заявок](../../assets/kod-konstruktora-i-osnovnye-parametry/01.png)
 
-<Carousel images={[{src: img1, alt: "E-mail для заявок"}, {src: img2, alt: "E-mail для заявок"}]} />
+![E-mail для заявок](../../assets/kod-konstruktora-i-osnovnye-parametry/02.png)
+
+</Carousel>
 
 ## Сайт установки
 
 Здесь укажите доменное имя вашего сайта (поле необязательное). Если вы пока не собираетесь встраивать конструктор на сайт, для работы используйте ссылку, которая открывается по кнопке **«Перейти в конструктор»**.
-
-
 
 ![Сайт установки](../../assets/kod-konstruktora-i-osnovnye-parametry/03.png)
 
@@ -44,9 +29,13 @@ import img16 from '../../assets/kod-konstruktora-i-osnovnye-parametry/16.jpg';
 
 Данные из этого поля отображаются **внизу каждого листа PDF-спецификации** и на скриншотах проектов. Сюда можно вписать не только телефон и адрес, но и любую полезную информацию: сайт, название бренда, режим работы.
 
+<Carousel>
 
+![Телефон, адрес](../../assets/kod-konstruktora-i-osnovnye-parametry/04.png)
 
-<Carousel images={[{src: img4, alt: "Телефон, адрес"}, {src: img5, alt: "Телефон, адрес"}]} />
+![Телефон, адрес](../../assets/kod-konstruktora-i-osnovnye-parametry/05.png)
+
+</Carousel>
 
 ## Логотип
 
@@ -59,9 +48,13 @@ import img16 from '../../assets/kod-konstruktora-i-osnovnye-parametry/16.jpg';
 
 > **Подсказка.** Если логотип не влезает в требования, быстро уменьшите его размер на сервисе iloveimg.com/ru/resize-image, а вес — на iloveimg.com/ru/compress-image.
 
+<Carousel>
 
+![Логотип](../../assets/kod-konstruktora-i-osnovnye-parametry/06.png)
 
-<Carousel images={[{src: img6, alt: "Логотип"}, {src: img7, alt: "Логотип"}]} />
+![Логотип](../../assets/kod-konstruktora-i-osnovnye-parametry/07.png)
+
+</Carousel>
 
 ## Код конструктора: встраивание на сайт
 
@@ -73,9 +66,13 @@ import img16 from '../../assets/kod-konstruktora-i-osnovnye-parametry/16.jpg';
 - Минимальная высота конструктора — **700 пикселей**. Меньше делать не стоит, иначе интерфейс будет неудобным.
 - Код можно вставить практически на любой сайт, включая конструкторы сайтов вроде Tilda.
 
+<Carousel>
 
+![Код конструктора](../../assets/kod-konstruktora-i-osnovnye-parametry/08.png)
 
-<Carousel images={[{src: img8, alt: "Код конструктора"}, {src: img9, alt: "Код конструктора"}]} />
+![Код конструктора](../../assets/kod-konstruktora-i-osnovnye-parametry/09.png)
+
+</Carousel>
 
 ## Встраивание приложения в сообщество ВКонтакте
 
@@ -94,13 +91,27 @@ import img16 from '../../assets/kod-konstruktora-i-osnovnye-parametry/16.jpg';
    - во вкладке **«Отображение»** задайте размер iframe 1000×700 px и сохраните.
 6. Проверьте результат: откройте сообщество и убедитесь, что карточка приложения появилась на странице группы.
 
+<Carousel>
 
+![Встраивание приложения в сообщество Вконтакте](../../assets/kod-konstruktora-i-osnovnye-parametry/10.jpg)
 
-<Carousel images={[{src: img10, alt: "Встраивание приложения в сообщество Вконтакте"}, {src: img11, alt: "Встраивание приложения в сообщество Вконтакте"}]} />
+![Встраивание приложения в сообщество Вконтакте](../../assets/kod-konstruktora-i-osnovnye-parametry/11.jpg)
+
+</Carousel>
 
 ![Встраивание приложения в сообщество Вконтакте](../../assets/kod-konstruktora-i-osnovnye-parametry/12.jpg)
 
-<Carousel images={[{src: img13, alt: "Встраивание приложения в сообщество Вконтакте"}, {src: img14, alt: "Встраивание приложения в сообщество Вконтакте"}, {src: img15, alt: "Встраивание приложения в сообщество Вконтакте"}, {src: img16, alt: "Встраивание приложения в сообщество Вконтакте"}]} />
+<Carousel>
+
+![Встраивание приложения в сообщество Вконтакте](../../assets/kod-konstruktora-i-osnovnye-parametry/13.jpg)
+
+![Встраивание приложения в сообщество Вконтакте](../../assets/kod-konstruktora-i-osnovnye-parametry/14.jpg)
+
+![Встраивание приложения в сообщество Вконтакте](../../assets/kod-konstruktora-i-osnovnye-parametry/15.jpg)
+
+![Встраивание приложения в сообщество Вконтакте](../../assets/kod-konstruktora-i-osnovnye-parametry/16.jpg)
+
+</Carousel>
 
 ![Встраивание приложения в сообщество Вконтакте](../../assets/kod-konstruktora-i-osnovnye-parametry/17.jpg)
 

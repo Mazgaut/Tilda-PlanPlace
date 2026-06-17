@@ -3,14 +3,6 @@ title: "Глобальные переменные"
 description: "Глобальные переменные — один из самых мощных инструментов PlanPlace. Они позволяют управлять поведением сразу всех модулей из одного места, без…"
 ---
 
-import Carousel from '../../components/Carousel.astro';
-import img2 from '../../assets/globalnye-peremennye/02.jpg';
-import img3 from '../../assets/globalnye-peremennye/03.jpg';
-import img4 from '../../assets/globalnye-peremennye/04.jpg';
-import img5 from '../../assets/globalnye-peremennye/05.jpg';
-import img7 from '../../assets/globalnye-peremennye/07.png';
-
-
 Глобальные переменные — один из самых мощных инструментов PlanPlace. Они позволяют управлять поведением сразу всех модулей из одного места, без программирования. Изменили одно значение — и обновились все элементы, которые его используют. В этой статье разберём, что это такое и как с ними работать.
 
 ## Что такое переменная простыми словами
@@ -63,15 +55,33 @@ import img7 from '../../assets/globalnye-peremennye/07.png';
 
 Значения переменных можно переопределять для вложенных модулей и элементов — настройки распространяются каскадно, сверху вниз. Это позволяет, например, задать всем вложенным ящикам одно поведение из родительского модуля. Подробнее эта механика разобрана в статье [«Переменные модуля»](/Tilda-PlanPlace/peremennye-modulya/).
 
-
-
 ![Создание новой переменной](../../assets/globalnye-peremennye/01.webp)
 
-<Carousel images={[{src: img2, alt: "Добавление глобальной переменной в новый элемент"}, {src: img3, alt: "Добавление глобальной переменной в новый элемент"}, {src: img4, alt: "Добавление глобальной переменной в новый элемент"}]} />
+<Carousel>
 
-<Carousel images={[{src: img5, alt: "Примеры использования глобальных переменных"}, {src: "/Tilda-PlanPlace/media/globalnye-peremennye/06.gif", alt: "Примеры использования глобальных переменных"}]} />
+![Добавление глобальной переменной в новый элемент](../../assets/globalnye-peremennye/02.jpg)
 
-<Carousel images={[{src: img7, alt: "Примеры использования глобальных переменных"}, {src: "/Tilda-PlanPlace/media/globalnye-peremennye/08.gif", alt: "Примеры использования глобальных переменных"}]} />
+![Добавление глобальной переменной в новый элемент](../../assets/globalnye-peremennye/03.jpg)
+
+![Добавление глобальной переменной в новый элемент](../../assets/globalnye-peremennye/04.jpg)
+
+</Carousel>
+
+<Carousel>
+
+![Примеры использования глобальных переменных](../../assets/globalnye-peremennye/05.jpg)
+
+![Примеры использования глобальных переменных](/Tilda-PlanPlace/media/globalnye-peremennye/06.gif)
+
+</Carousel>
+
+<Carousel>
+
+![Примеры использования глобальных переменных](../../assets/globalnye-peremennye/07.png)
+
+![Примеры использования глобальных переменных](/Tilda-PlanPlace/media/globalnye-peremennye/08.gif)
+
+</Carousel>
 
 ## Коротко
 

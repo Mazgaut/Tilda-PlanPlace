@@ -2,43 +2,27 @@
 /**
  * Карусель изображений (как галереи в Tilda).
  *
- * Показывает один слайд за раз, поэтому высота карусели подстраивается под
- * текущее изображение: на горизонтальном — ниже, на вертикальном — выше,
- * ширина постоянна, кнопки управления остаются по вертикальному центру.
+ * Изображения передаются как ВЛОЖЕННЫЙ markdown-контент (slot), а не пропсом —
+ * это нужно для визуального редактора Keystatic (он не умеет MDX-import и
+ * сложные JS-пропсы). Пример в статье:
  *
- * Все слайды присутствуют в HTML сразу — индексация и чтение ИИ сохранены.
- * По клику изображение открывается в лайтбоксе с зумом (см. Lightbox.astro).
+ *   <Carousel>
  *
- * images: { src, alt }, где src — импортированное изображение (оптимизируется
- * в WebP) или строка-URL (например, GIF из public/, чтобы сохранить анимацию).
+ *   ![Подпись 1](../../assets/slug/02.jpg)
+ *   ![Подпись 2](/Tilda-PlanPlace/media/slug/03.gif)
+ *
+ *   </Carousel>
+ *
+ * Относительные картинки Astro по-прежнему оптимизирует в WebP, GIF из public/
+ * остаются анимированными. Все изображения попадают в HTML сразу — индексация и
+ * чтение ИИ сохранены. Скрипт превращает каждое вложенное <img> в отдельный
+ * слайд, поэтому высота карусели подстраивается под текущее изображение.
+ * По клику картинка открывается в лайтбоксе с зумом (см. Lightbox.astro).
  */
-import { Image } from 'astro:assets';
-
-interface Slide {
-  src: ImageMetadata | string;
-  alt?: string;
-}
-const { images = [] as Slide[] } = Astro.props;
 ---
 
 <div class="pp-carousel" data-pp-carousel>
-  <div class="pp-carousel__viewport">
-    {images.map((img: Slide, i: number) => (
-      <figure class={`pp-carousel__slide${i === 0 ? ' is-active' : ''}`} data-index={i}>
-        {typeof img.src === 'string'
-          ? <img src={img.src} alt={img.alt ?? ''} loading="lazy" />
-          : <Image src={img.src} alt={img.alt ?? ''} />}
-      </figure>
-    ))}
-  </div>
-
-  {images.length > 1 && (
-    <>
-      <button class="pp-carousel__btn pp-carousel__btn--prev" aria-label="Предыдущее изображение">‹</button>
-      <button class="pp-carousel__btn pp-carousel__btn--next" aria-label="Следующее изображение">›</button>
-      <div class="pp-carousel__counter"><span data-pp-current>1</span> / {images.length}</div>
-    </>
-  )}
+  <div class="pp-carousel__viewport"><slot /></div>
 </div>
 
 <style>
@@ -54,6 +38,16 @@ const { images = [] as Slide[] } = Astro.props;
     position: relative;
     line-height: 0;
   }
+  /* До инициализации скриптом картинки просто идут стопкой (видны для SEO). */
+  .pp-carousel__viewport :global(p) {
+    margin: 0;
+  }
+  .pp-carousel__viewport :global(img) {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  /* После инициализации каждый слайд — отдельная figure, видна только активная. */
   .pp-carousel__slide {
     margin: 0;
     display: none;
@@ -106,19 +100,49 @@ const { images = [] as Slide[] } = Astro.props;
   function initCarousels() {
     document.querySelectorAll<HTMLElement>('[data-pp-carousel]').forEach((root) => {
       if (root.dataset.ppReady) return;
+      const viewport = root.querySelector<HTMLElement>('.pp-carousel__viewport');
+      if (!viewport) return;
+
+      // Все изображения из вложенного markdown превращаем в слайды.
+      const imgs = Array.from(viewport.querySelectorAll<HTMLImageElement>('img'));
+      if (!imgs.length) return;
       root.dataset.ppReady = '1';
-      const slides = Array.from(root.querySelectorAll<HTMLElement>('.pp-carousel__slide'));
-      const prev = root.querySelector<HTMLElement>('.pp-carousel__btn--prev');
-      const next = root.querySelector<HTMLElement>('.pp-carousel__btn--next');
-      const cur = root.querySelector<HTMLElement>('[data-pp-current]');
+
+      const slides = imgs.map((img, i) => {
+        const fig = document.createElement('figure');
+        fig.className = 'pp-carousel__slide' + (i === 0 ? ' is-active' : '');
+        fig.dataset.index = String(i);
+        fig.appendChild(img); // переносим картинку из обёртки <p> в слайд
+        return fig;
+      });
+      viewport.replaceChildren(...slides);
+
+      if (slides.length < 2) return;
+
+      const prev = document.createElement('button');
+      prev.className = 'pp-carousel__btn pp-carousel__btn--prev';
+      prev.setAttribute('aria-label', 'Предыдущее изображение');
+      prev.textContent = '‹';
+      const next = document.createElement('button');
+      next.className = 'pp-carousel__btn pp-carousel__btn--next';
+      next.setAttribute('aria-label', 'Следующее изображение');
+      next.textContent = '›';
+      const counter = document.createElement('div');
+      counter.className = 'pp-carousel__counter';
+      const cur = document.createElement('span');
+      cur.textContent = '1';
+      counter.append(cur, document.createTextNode(` / ${slides.length}`));
+      root.append(prev, next, counter);
+
       let idx = 0;
       const show = (i: number) => {
         idx = (i + slides.length) % slides.length;
         slides.forEach((s, j) => s.classList.toggle('is-active', j === idx));
-        if (cur) cur.textContent = String(idx + 1);
+        cur.textContent = String(idx + 1);
       };
-      prev?.addEventListener('click', () => show(idx - 1));
-      next?.addEventListener('click', () => show(idx + 1));
+      prev.addEventListener('click', () => show(idx - 1));
+      next.addEventListener('click', () => show(idx + 1));
+
       // свайп на тачскрине
       let x0: number | null = null;
       root.addEventListener('touchstart', (e) => { x0 = e.touches[0].clientX; }, { passive: true });

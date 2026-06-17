@@ -1,0 +1,22 @@
+---
+/**
+ * Кнопка-ссылка для скачивания файла-примера (например, шаблона Excel).
+ * Вынесена в компонент, чтобы блок редактировался в Keystatic, а не сырым HTML.
+ *
+ * Иконка фиксированная (Excel) и берётся из public с учётом base-пути, поэтому
+ * ссылка работает и на GitHub Pages, и в локальной админке.
+ *
+ * Пропсы: href — адрес файла, label — подпись кнопки.
+ */
+interface Props {
+  href: string;
+  label?: string;
+}
+const { href, label = 'Скачать пример в формате Excel' } = Astro.props;
+const icon = `${import.meta.env.BASE_URL}media/prays-listy/excel.png`.replace('//media', '/media');
+---
+
+<a class="pp-download" href={href} download target="_blank" rel="noopener">
+  <img src={icon} alt="" width="28" height="28" />
+  <span>{label}</span>
+</a>

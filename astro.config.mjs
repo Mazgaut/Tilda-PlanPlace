@@ -4,6 +4,7 @@ import starlight from '@astrojs/starlight';
 import react from '@astrojs/react';
 import keystatic from '@keystatic/astro';
 import { sidebar } from './src/sidebar.mjs';
+import { remarkAutoImportComponents } from './src/remark/auto-import-components.mjs';
 
 // Админка Keystatic включается только локально (`npm run cms`), чтобы
 // прод-сборка для GitHub Pages оставалась полностью статической.
@@ -15,6 +16,11 @@ const enableKeystatic = process.env.KEYSTATIC === 'true';
 // на 'https://help.planplace.online' и удалите/очистите base ('/').
 export default defineConfig({
   site: 'https://mazgaut.github.io',
+  // Авто-импорт кастомных компонентов в MDX: статьи без import (для Keystatic),
+  // а сборщик сам подставляет нужные импорты (Carousel, Video, Download и т. д.).
+  markdown: {
+    remarkPlugins: [remarkAutoImportComponents],
+  },
   // В режиме Keystatic (локальная админка) base отключаем: иначе API-маршруты
   // админки (/api/keystatic/...) не находятся и коллекция статей не загружается
   // («Unable to load collection»). Для прод-сборки GitHub Pages base обязателен.

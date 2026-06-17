@@ -3,11 +3,6 @@ title: "Вычисляемые значения"
 description: "Вычисляемое значение — это «переменная-калькулятор»: его значение не вводят вручную, а оно само рассчитывается на основе других параметров и переменных. Это…"
 ---
 
-import Carousel from '../../components/Carousel.astro';
-import img2 from '../../assets/vychislyaemye-znacheniya/02.jpg';
-import img3 from '../../assets/vychislyaemye-znacheniya/03.jpg';
-
-
 Вычисляемое значение — это «переменная-калькулятор»: его значение не вводят вручную, а оно само рассчитывается на основе других параметров и переменных. Это инструмент для аккуратной и масштабируемой настройки сложных модулей. В этой статье разберём, зачем он нужен и как им пользоваться.
 
 ## Чем вычисляемое значение отличается от переменной
@@ -16,8 +11,6 @@ import img3 from '../../assets/vychislyaemye-znacheniya/03.jpg';
 - **Вычисляемое значение** — это то, что система **сама считает** по формуле из других данных.
 
 Простой пример: пользователь выбирает общую ширину шкафа (переменная), а ширина каждого внутреннего отсека (вычисляемое значение) рассчитывается автоматически.
-
-
 
 ![Принцип работы вычисляемых значений и их зависимостей](../../assets/vychislyaemye-znacheniya/01.jpg)
 
@@ -49,15 +42,19 @@ import img3 from '../../assets/vychislyaemye-znacheniya/03.jpg';
 
 Доступны все [математические функции](/Tilda-PlanPlace/matematicheskie-vychisleniya/): арифметика, округление, минимум/максимум, тригонометрия и т. д.
 
+<Carousel>
 
+![Условия и порядок вычисления значений](../../assets/vychislyaemye-znacheniya/02.jpg)
 
-<Carousel images={[{src: img2, alt: "Условия и порядок вычисления значений"}, {src: img3, alt: "Условия и порядок вычисления значений"}]} />
+![Условия и порядок вычисления значений](../../assets/vychislyaemye-znacheniya/03.jpg)
 
-<img src="/Tilda-PlanPlace/media/vychislyaemye-znacheniya/04.gif" alt="Добавление нового вычисляемого значения" style="max-width:100%;border-radius:8px;" />
+</Carousel>
 
-<img src="/Tilda-PlanPlace/media/vychislyaemye-znacheniya/05.gif" alt="Использование вычисляемых значений" style="max-width:100%;border-radius:8px;" />
+![Добавление нового вычисляемого значения](/Tilda-PlanPlace/media/vychislyaemye-znacheniya/04.gif)
 
-<img src="/Tilda-PlanPlace/media/vychislyaemye-znacheniya/06.gif" alt="Примеры использования вычисляемых значений" style="max-width:100%;border-radius:8px;" />
+![Использование вычисляемых значений](/Tilda-PlanPlace/media/vychislyaemye-znacheniya/05.gif)
+
+![Примеры использования вычисляемых значений](/Tilda-PlanPlace/media/vychislyaemye-znacheniya/06.gif)
 
 ## Условия применения
 
