@@ -1,7 +1,13 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
+import react from '@astrojs/react';
+import keystatic from '@keystatic/astro';
 import { sidebar } from './src/sidebar.mjs';
+
+// Админка Keystatic включается только локально (`npm run cms`), чтобы
+// прод-сборка для GitHub Pages оставалась полностью статической.
+const enableKeystatic = process.env.KEYSTATIC === 'true';
 
 // Адрес публикации.
 // Для GitHub Pages по умолчанию: https://<пользователь>.github.io/<репозиторий>
@@ -32,5 +38,7 @@ export default defineConfig({
       // последним пунктом — страница формы обратной связи.
       sidebar: [...sidebar, { label: 'Связаться с нами', slug: 'forma' }],
     }),
+    // Локальная админка Keystatic (только при KEYSTATIC=true)
+    ...(enableKeystatic ? [react(), keystatic()] : []),
   ],
 });
