@@ -5,10 +5,16 @@ import react from '@astrojs/react';
 import keystatic from '@keystatic/astro';
 import { sidebar } from './src/sidebar.mjs';
 import { remarkAutoImportComponents } from './src/remark/auto-import-components.mjs';
+import { remarkBaseLinks } from './src/remark/base-links.mjs';
 
 // Админка Keystatic включается только локально (`npm run cms`), чтобы
 // прод-сборка для GitHub Pages оставалась полностью статической.
 const enableKeystatic = process.env.KEYSTATIC === 'true';
+
+// В режиме Keystatic (локальная админка) base отключаем: иначе API-маршруты
+// админки (/api/keystatic/...) не находятся и коллекция статей не загружается
+// («Unable to load collection»). Для прод-сборки GitHub Pages base обязателен.
+const base = enableKeystatic ? '/' : '/Tilda-PlanPlace';
 
 // Адрес публикации.
 // Для GitHub Pages по умолчанию: https://<пользователь>.github.io/<репозиторий>
@@ -16,15 +22,14 @@ const enableKeystatic = process.env.KEYSTATIC === 'true';
 // на 'https://help.planplace.online' и удалите/очистите base ('/').
 export default defineConfig({
   site: 'https://mazgaut.github.io',
-  // Авто-импорт кастомных компонентов в MDX: статьи без import (для Keystatic),
-  // а сборщик сам подставляет нужные импорты (Carousel, Video, Download и т. д.).
+  base,
+  // Remark-плагины:
+  // - авто-импорт кастомных компонентов (статьи без import — для Keystatic);
+  // - подгонка внутренних ссылок и путей к GIF под текущий base (чтобы они
+  //   работали и в вебе с /Tilda-PlanPlace, и локально в режиме Keystatic).
   markdown: {
-    remarkPlugins: [remarkAutoImportComponents],
+    remarkPlugins: [remarkAutoImportComponents, remarkBaseLinks(base)],
   },
-  // В режиме Keystatic (локальная админка) base отключаем: иначе API-маршруты
-  // админки (/api/keystatic/...) не находятся и коллекция статей не загружается
-  // («Unable to load collection»). Для прод-сборки GitHub Pages base обязателен.
-  base: enableKeystatic ? '/' : '/Tilda-PlanPlace',
   integrations: [
     starlight({
       title: 'PlanPlace · Справка',
