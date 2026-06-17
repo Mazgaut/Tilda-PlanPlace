@@ -15,7 +15,10 @@ const enableKeystatic = process.env.KEYSTATIC === 'true';
 // на 'https://help.planplace.online' и удалите/очистите base ('/').
 export default defineConfig({
   site: 'https://mazgaut.github.io',
-  base: '/Tilda-PlanPlace',
+  // В режиме Keystatic (локальная админка) base отключаем: иначе API-маршруты
+  // админки (/api/keystatic/...) не находятся и коллекция статей не загружается
+  // («Unable to load collection»). Для прод-сборки GitHub Pages base обязателен.
+  base: enableKeystatic ? '/' : '/Tilda-PlanPlace',
   integrations: [
     starlight({
       title: 'PlanPlace · Справка',
