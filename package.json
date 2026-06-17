@@ -8,11 +8,17 @@
     "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
+    "cms": "KEYSTATIC=true astro dev",
     "astro": "astro"
   },
   "dependencies": {
+    "@astrojs/react": "^5.0.7",
     "@astrojs/starlight": "^0.36.0",
+    "@keystatic/astro": "^5.1.0",
+    "@keystatic/core": "^0.5.50",
     "astro": "^5.16.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "sharp": "^0.34.0"
   }
 }
