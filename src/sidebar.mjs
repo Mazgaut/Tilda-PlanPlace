@@ -10,6 +10,7 @@ export const sidebar = [
       { label: 'Заявки на расчёт', slug: 'zayavki-na-raschet' },
       { label: 'Форма заявки и шаблоны писем', slug: 'forma-zayavki-i-shablony-pisem' },
       { label: 'Управление дилерами', slug: 'upravlenie-dilerami' },
+      { label: 'Переход с БАЗИС-Мебельщик', slug: 'perehod-s-bazis' },
     ],
   },
   {
