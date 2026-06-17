@@ -8,7 +8,7 @@
     "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "cms": "KEYSTATIC=true astro dev",
+    "cms": "cross-env KEYSTATIC=true astro dev",
     "astro": "astro"
   },
   "dependencies": {
@@ -20,5 +20,8 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "sharp": "^0.34.0"
+  },
+  "devDependencies": {
+    "cross-env": "^10.1.0"
   }
 }
