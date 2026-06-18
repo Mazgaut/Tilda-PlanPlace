@@ -80,21 +80,32 @@ button.b24-form-btn,
 }
 
 /* ── Выпадающий список («Тема обращения» и др.) ──────────────────────────────
-   Подложка списка и его пунктов не белая; ховер/выбор — мягкая подсветка. */
+   Подложка списка и его пунктов не белая; ховер/фокус/выбор — мягкая подсветка.
+   Реальная разметка Bitrix24:
+     [role="listbox"] > .b24-form-control-list-selector-item
+                          .b24-form-control-list-selector-item-focused (активный) */
 .b24-form-control-dropdown,
 .b24-form-control-list,
 .b24-form-dropdown-list,
 .b24-form-select-popup,
-.b24-form-control-select-options {
+.b24-form-control-select-options,
+.b24-form-control-list-selector,
+[role='listbox'] {
   background-color: var(--pp-field-bg) !important;
   border-color: var(--pp-field-border) !important;
 }
+.b24-form-control-list-selector-item,
+.b24-form-control-list-selector-item-title,
+.b24-form-control-list-selector-item-title span,
 .b24-form-control-list-item,
 .b24-form-dropdown-item,
 .b24-form-select-option {
-  background-color: var(--pp-field-bg) !important;
+  background-color: transparent !important;
   color: var(--pp-text) !important;
 }
+.b24-form-control-list-selector-item:hover,
+.b24-form-control-list-selector-item-focused,
+.b24-form-control-list-selector-item-selected,
 .b24-form-control-list-item:hover,
 .b24-form-dropdown-item:hover,
 .b24-form-select-option:hover,
