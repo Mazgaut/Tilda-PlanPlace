@@ -50,3 +50,72 @@ button.b24-form-btn,
 .b24-window-panel .b24-form-wrapper {
   background-color: var(--pp-bg) !important;
 }
+
+/* ── Поля ввода, textarea и select ──────────────────────────────────────────
+   По умолчанию Bitrix24 рисует поля ярко-белыми — в тёмной теме они слепят.
+   Приглушаем подложку и при фокусе/клике делаем чуть светлее, но без белизны. */
+.b24-form-control,
+.b24-form-control-input,
+.b24-form-control-textarea,
+.b24-form-control-select,
+.b24-form-control-string {
+  background-color: var(--pp-field-bg) !important;
+  border-color: var(--pp-field-border) !important;
+  color: var(--pp-text) !important;
+}
+.b24-form-control:focus,
+.b24-form-control:active,
+.b24-form-control-input:focus,
+.b24-form-control-textarea:focus,
+.b24-form-control-select:focus {
+  background-color: var(--pp-field-bg-focus) !important;
+  border-color: var(--pp-accent) !important;
+}
+
+/* Плейсхолдеры/«плавающие» подписи внутри полей — второстепенным цветом */
+.b24-form-control::placeholder,
+.b24-form-control-label-shifted,
+.b24-form-control-comment {
+  color: var(--pp-muted) !important;
+}
+
+/* ── Выпадающий список («Тема обращения» и др.) ──────────────────────────────
+   Подложка списка и его пунктов не белая; ховер/выбор — мягкая подсветка. */
+.b24-form-control-dropdown,
+.b24-form-control-list,
+.b24-form-dropdown-list,
+.b24-form-select-popup,
+.b24-form-control-select-options {
+  background-color: var(--pp-field-bg) !important;
+  border-color: var(--pp-field-border) !important;
+}
+.b24-form-control-list-item,
+.b24-form-dropdown-item,
+.b24-form-select-option {
+  background-color: var(--pp-field-bg) !important;
+  color: var(--pp-text) !important;
+}
+.b24-form-control-list-item:hover,
+.b24-form-dropdown-item:hover,
+.b24-form-select-option:hover,
+.b24-form-control-list-item.b24-form-control-list-item-selected,
+.b24-form-dropdown-item-selected {
+  background-color: var(--pp-field-bg-focus) !important;
+}
+
+/* ── Кнопка «+ Выбрать файл» ─────────────────────────────────────────────────
+   Текст по умолчанию чёрный и не читается на тёмном фоне — приводим к цвету
+   подсказок/заголовков полей. */
+.b24-form-control-file,
+.b24-form-control-file-button,
+.b24-form-control-file-button span,
+label.b24-form-control-file-button,
+.b24-form-control-upload-button {
+  color: var(--pp-muted) !important;
+  background-color: transparent !important;
+  border-color: var(--pp-field-border) !important;
+}
+.b24-form-control-file-button:hover,
+.b24-form-control-upload-button:hover {
+  color: var(--pp-text) !important;
+}

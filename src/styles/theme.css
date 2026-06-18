@@ -22,6 +22,14 @@
   --pp-on-accent: #ffffff;
   --pp-text: var(--sl-color-text);
   --pp-bg: var(--sl-color-bg);
+
+  /* Поля ввода и выпадающие списки формы (тёмная тема):
+     приглушённая подложка вместо ярко-белой, мягкая граница и
+     второстепенный текст для подсказок/плейсхолдеров/кнопки файла. */
+  --pp-field-bg: #1b2733;
+  --pp-field-bg-focus: #233140;
+  --pp-field-border: #33404d;
+  --pp-muted: #8a97a4;
 }
 
 /* Светлая тема */
@@ -29,4 +37,9 @@
   --sl-color-accent-low: #cce2ff;
   --sl-color-accent: #0062d6;
   --sl-color-accent-high: #00305f;
+
+  --pp-field-bg: #ffffff;
+  --pp-field-bg-focus: #f3f6fa;
+  --pp-field-border: #d0d7de;
+  --pp-muted: #5c6770;
 }
