@@ -12,6 +12,7 @@ export const sidebar = [
       { label: 'Форма заявки и шаблоны писем', slug: 'forma-zayavki-i-shablony-pisem' },
       { label: 'Управление дилерами', slug: 'upravlenie-dilerami' },
       { label: 'Переход с БАЗИС-Мебельщик', slug: 'perehod-s-bazis' },
+      { label: 'Вопросы и ответы (FAQ)', slug: 'voprosy-otvety' },
     ],
   },
   {
@@ -53,6 +54,7 @@ export const sidebar = [
       { label: 'Аниматор: анимация мебели', slug: 'animator' },
       { label: 'Размеры и точки прилипания', slug: 'razmery-i-tochki-prilipaniya' },
       { label: '3D-модели: подготовка и настройка', slug: '3d-modeli' },
+      { label: 'Мойки', slug: 'mojki' },
     ],
   },
   {
@@ -80,6 +82,7 @@ export const sidebar = [
     items: [
       { label: 'Синхронизация по API', slug: 'sinhronizaciya-po-api' },
       { label: 'Кастомизация интерфейса (CSS, JS, перевод)', slug: 'kastomizaciya-interfeysa' },
+      { label: 'Метрика и счётчики аналитики', slug: 'metrika' },
     ],
   },
   {
