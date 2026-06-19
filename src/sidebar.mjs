@@ -12,6 +12,7 @@ export const sidebar = [
       { label: 'Форма заявки и шаблоны писем', slug: 'forma-zayavki-i-shablony-pisem' },
       { label: 'Управление дилерами', slug: 'upravlenie-dilerami' },
       { label: 'Переход с БАЗИС-Мебельщик', slug: 'perehod-s-bazis' },
+      { label: 'Переход с версии 1.0 на 2.0', slug: 'perehod-s-versii-1-0' },
       { label: 'Вопросы и ответы (FAQ)', slug: 'voprosy-otvety' },
     ],
   },
