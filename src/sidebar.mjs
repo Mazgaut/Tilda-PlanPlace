@@ -4,6 +4,7 @@ export const sidebar = [
     label: 'Обзор и старт',
     items: [
       { label: 'Обзор системы и роли', slug: 'obzor-sistemy-i-roli' },
+      { label: 'Первый день: пять простых побед', slug: 'pervyy-den-bystryy-start' },
       { label: 'Проверить систему и браузер', slug: 'proverit-sistemu-i-brauzer' },
       { label: 'Личный кабинет', slug: 'lichnyy-kabinet' },
       { label: 'Код конструктора и основные параметры', slug: 'kod-konstruktora-i-osnovnye-parametry' },
