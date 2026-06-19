@@ -54,6 +54,8 @@ export const sidebar = [
       { label: 'Аниматор: анимация мебели', slug: 'animator' },
       { label: 'Размеры и точки прилипания', slug: 'razmery-i-tochki-prilipaniya' },
       { label: '3D-модели: подготовка и настройка', slug: '3d-modeli' },
+      { label: 'Встроенные 3D-модели: общие требования', slug: '3d-modeli-vstroennye' },
+      { label: '3D-модели фасадов (фрезеровки)', slug: '3d-modeli-fasadov' },
       { label: 'Мойки', slug: 'mojki' },
     ],
   },
