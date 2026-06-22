@@ -1,0 +1,63 @@
+---
+/**
+ * Картинка с выбором способа отображения:
+ *   - inline (по умолчанию для иконок) — встраивается прямо в строку текста,
+ *     не разрывая абзац; высота подгоняется под размер шрифта;
+ *   - блок — выносится на отдельную строку (как обычная markdown-картинка).
+ *
+ * Зачем компонент: Starlight рендерит markdown-картинки как блочные, поэтому
+ * маленькие иконки внутри предложения «прыгают» на отдельную строку. Здесь это
+ * управляется пропом `inline`.
+ *
+ * Путь к base: пропсы компонента не проходят через remark-плагин base-links,
+ * поэтому нормализуем `/Tilda-PlanPlace/...` под текущий base прямо тут — чтобы
+ * картинка находилась и в вебе, и в локальном режиме Keystatic.
+ *
+ * Пропсы: src — путь к файлу, alt — подпись, inline — встроить в текст (true)
+ * или вынести на отдельную строку (false), width/height — необязательный размер.
+ */
+interface Props {
+  src: string;
+  alt?: string;
+  inline?: boolean;
+  width?: number;
+  height?: number;
+}
+const { src, alt = '', inline = true, width, height } = Astro.props;
+
+const PREFIX = '/Tilda-PlanPlace';
+const base = (import.meta.env.BASE_URL || '/').replace(/\/$/, '');
+let url = src;
+if (base !== PREFIX) {
+  if (url === PREFIX) url = base || '/';
+  else if (url.startsWith(PREFIX + '/')) url = (base || '') + url.slice(PREFIX.length);
+}
+---
+
+<img
+  class={inline ? 'pp-img pp-img--inline' : 'pp-img pp-img--block'}
+  src={url}
+  alt={alt}
+  width={width}
+  height={height}
+  loading="lazy"
+  decoding="async"
+/>
+
+<style>
+  /* Встроенная в текст: ведёт себя как буква, высоту тянем от размера шрифта. */
+  .pp-img--inline {
+    display: inline-block;
+    vertical-align: text-bottom;
+    height: 1.3em;
+    width: auto;
+    margin: 0 0.15em;
+  }
+  /* На отдельной строке: обычная блочная картинка. */
+  .pp-img--block {
+    display: block;
+    height: auto;
+    max-width: 100%;
+    margin: 1rem 0;
+  }
+</style>

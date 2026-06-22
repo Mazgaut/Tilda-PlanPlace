@@ -1,5 +1,5 @@
 import { config, fields, collection } from '@keystatic/core';
-import { wrapper, block } from '@keystatic/core/content-components';
+import { wrapper, block, inline } from '@keystatic/core/content-components';
 
 /**
  * Конфигурация Keystatic — визуальная панель управления статьями справки.
@@ -57,6 +57,19 @@ export default config({
               schema: {
                 href: fields.url({ label: 'Ссылка на файл' }),
                 label: fields.text({ label: 'Подпись кнопки' }),
+              },
+            }),
+            // Картинка с выбором: встроить в строку текста или вынести на
+            // отдельную строку. Удобно для маленьких иконок внутри предложения.
+            Img: inline({
+              label: 'Картинка (в текст / на строку)',
+              schema: {
+                src: fields.text({ label: 'Путь к картинке (например, /Tilda-PlanPlace/media/…/icon.png)' }),
+                alt: fields.text({ label: 'Подпись (alt)' }),
+                inline: fields.checkbox({
+                  label: 'Встроить в текст (иначе — на отдельной строке)',
+                  defaultValue: true,
+                }),
               },
             }),
             // Встраиваемое видео (VK Видео, YouTube и т. п.).

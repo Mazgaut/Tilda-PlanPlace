@@ -14,6 +14,7 @@ const COMPONENTS = {
   Bitrix24InlineForm: '/src/components/Bitrix24InlineForm.astro',
   Download: '/src/components/Download.astro',
   Video: '/src/components/Video.astro',
+  Img: '/src/components/Img.astro',
 };
 
 export function remarkAutoImportComponents() {
