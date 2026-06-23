@@ -1,0 +1,60 @@
+name: Deploy to VPS (Nginx)
+
+# Прод-деплой на свой сервер. Срабатывает при пуше в main и вручную.
+# Пока ветки main нет и не заданы секреты — workflow не выполняется.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Одновременно — только один деплой.
+concurrency:
+  group: vps-deploy
+  cancel-in-progress: false
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      # Прод-сборка на свой домен в корень: site из переменной репозитория,
+      # base = '/'. Картинки и внутренние ссылки с префиксом /Tilda-PlanPlace
+      # автоматически нормализуются плагином base-links.
+      - name: Build site
+        env:
+          SITE_URL: ${{ vars.SITE_URL }}
+          BASE_PATH: '/'
+        run: npm run build
+
+      # Выкладка статики на сервер по SSH (rsync). Ключи/адрес — из секретов.
+      - name: Deploy via rsync over SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_PORT: ${{ secrets.SSH_PORT }}
+          DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
+        run: |
+          set -euo pipefail
+          mkdir -p "$HOME/.ssh"
+          printf '%s\n' "$SSH_PRIVATE_KEY" > "$HOME/.ssh/deploy_key"
+          chmod 600 "$HOME/.ssh/deploy_key"
+          printf '%s\n' "$SSH_KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
+          PORT="${SSH_PORT:-22}"
+          # --delete убирает на сервере файлы, которых больше нет в сборке.
+          # DEPLOY_PATH должен быть ОТДЕЛЬНЫМ web-root только под этот сайт.
+          rsync -az --delete \
+            -e "ssh -i $HOME/.ssh/deploy_key -p $PORT -o UserKnownHostsFile=$HOME/.ssh/known_hosts -o StrictHostKeyChecking=yes" \
+            dist/ "$SSH_USER@$SSH_HOST:$DEPLOY_PATH/"

@@ -13,15 +13,16 @@ const enableKeystatic = process.env.KEYSTATIC === 'true';
 
 // В режиме Keystatic (локальная админка) base отключаем: иначе API-маршруты
 // админки (/api/keystatic/...) не находятся и коллекция статей не загружается
-// («Unable to load collection»). Для прод-сборки GitHub Pages base обязателен.
-const base = enableKeystatic ? '/' : '/Tilda-PlanPlace';
+// («Unable to load collection»). Для прод-сборки base берётся из переменной
+// окружения BASE_PATH (по умолчанию '/Tilda-PlanPlace' — для GitHub Pages).
+// При деплое на свой домен в корень workflow задаёт BASE_PATH='/'.
+const base = enableKeystatic ? '/' : (process.env.BASE_PATH || '/Tilda-PlanPlace');
 
-// Адрес публикации.
-// Для GitHub Pages по умолчанию: https://<пользователь>.github.io/<репозиторий>
-// При подключении собственного домена (help.planplace.online) — поменяйте site
-// на 'https://help.planplace.online' и удалите/очистите base ('/').
+// Адрес публикации. По умолчанию — GitHub Pages. При деплое на свой домен
+// workflow задаёт SITE_URL='https://help.вашдомен' (и BASE_PATH='/').
+const site = process.env.SITE_URL || 'https://mazgaut.github.io';
 export default defineConfig({
-  site: 'https://mazgaut.github.io',
+  site,
   base,
   // Remark-плагины:
   // - авто-импорт кастомных компонентов (статьи без import — для Keystatic);
