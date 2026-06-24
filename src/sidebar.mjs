@@ -44,7 +44,7 @@ export const sidebar = [
       { label: 'Секции и наполняемые секции', slug: 'sekcii-i-napolnyaemye-sekcii' },
       { label: 'Детали', slug: 'detali' },
       { label: 'Параметры, формулы и позиционирование', slug: 'parametry-formuly-pozicionirovanie' },
-      { label: 'Вращение и пересечения моделей', slug: 'vraschenie-i-peresecheniya-modeley' },
+      { label: 'Пересечения и произвольное вращение модулей', slug: 'vraschenie-i-peresecheniya-modeley' },
       { label: 'Переменные модуля и переопределение', slug: 'peremennye-modulya' },
       { label: 'Вычисляемые значения', slug: 'vychislyaemye-znacheniya' },
       { label: 'Математические вычисления', slug: 'matematicheskie-vychisleniya' },
