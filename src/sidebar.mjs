@@ -13,6 +13,7 @@ export const sidebar = [
       { label: 'Форма заявки и шаблоны писем', slug: 'forma-zayavki-i-shablony-pisem' },
       { label: 'Управление дилерами', slug: 'upravlenie-dilerami' },
       { label: 'Переход с БАЗИС-Мебельщик', slug: 'perehod-s-bazis' },
+      { label: 'Чем PlanPlace 2.0 отличается от 1.0', slug: 'obzor-otlichiy-1-0-2-0' },
       { label: 'Переход с версии 1.0 на 2.0', slug: 'perehod-s-versii-1-0' },
       { label: 'Вопросы и ответы (FAQ)', slug: 'voprosy-otvety' },
     ],
