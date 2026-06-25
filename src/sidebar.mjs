@@ -51,18 +51,30 @@ export const sidebar = [
       { label: 'Математические вычисления', slug: 'matematicheskie-vychisleniya' },
       { label: 'Условия отображения и события', slug: 'usloviya-otobrazheniya-i-sobytiya' },
       { label: 'Шаблоны модулей', slug: 'shablony-moduley' },
-      { label: 'Фасады и ручки', slug: 'fasady-i-ruchki' },
-      { label: 'Редактор фасада: загрузка и настройка', slug: 'redaktor-fasada-zagruzka-nastroyka' },
+      // Вложенная подгруппа: всё про фасады.
+      {
+        label: 'Фасады',
+        items: [
+          { label: 'Фасады и ручки', slug: 'fasady-i-ruchki' },
+          { label: 'Редактор фасада: загрузка и настройка', slug: 'redaktor-fasada-zagruzka-nastroyka' },
+          { label: '3D-модели фасадов: требования и примеры', slug: '3d-modeli-fasadov' },
+        ],
+      },
       { label: 'Присадки и шаблоны присадок', slug: 'prisadki' },
       { label: 'Пазы и вырезы', slug: 'pazy-i-vyrezy' },
       { label: 'Аниматор: анимация мебели', slug: 'animator' },
       { label: 'Размеры и точки прилипания', slug: 'razmery-i-tochki-prilipaniya' },
-      { label: '3D-модели: подготовка и настройка', slug: '3d-modeli' },
-      { label: '3D-модели в 2.0: новый движок', slug: '3d-modeli-dvizhok-2-0' },
-      { label: 'Материалы 3D-моделей', slug: 'materialy-3d-modeley' },
-      { label: 'Встроенные 3D-модели: общие требования', slug: '3d-modeli-vstroennye' },
-      { label: '3D-модели фасадов (фрезеровки)', slug: '3d-modeli-fasadov' },
-      { label: 'Мойки', slug: 'mojki' },
+      // Вложенная подгруппа: общие статьи про 3D-модели.
+      {
+        label: '3D-Модели',
+        items: [
+          { label: '3D-модели: подготовка и настройка', slug: '3d-modeli' },
+          { label: '3D-модели в 2.0: новый движок', slug: '3d-modeli-dvizhok-2-0' },
+          { label: 'Материалы 3D-моделей', slug: 'materialy-3d-modeley' },
+          { label: 'Встроенные 3D-модели: общие требования', slug: '3d-modeli-vstroennye' },
+          { label: 'Мойки', slug: 'mojki' },
+        ],
+      },
     ],
   },
   {
@@ -72,6 +84,17 @@ export const sidebar = [
       { label: 'Прайс-листы и способы добавления цен', slug: 'prays-listy' },
       { label: 'Правила расчёта цен (наценки)', slug: 'pravila-rascheta-cen-nacenki' },
       { label: 'Настройка цен на фасады', slug: 'nastroyka-cen-na-fasady' },
+      // Вложенная подгруппа: сценарии настройки и ценообразования.
+      {
+        label: 'Сценарии настройки и ценообразования',
+        items: [
+          { label: 'Какую модель ценообразования выбрать', slug: 'scenarii-vybor-modeli-cenoobrazovaniya' },
+          { label: 'Сценарий «Мебель на заказ»', slug: 'scenariy-mebel-na-zakaz' },
+          { label: 'Сценарий «Модульная / серийная мебель»', slug: 'scenariy-modulnaya-seriynaya' },
+          { label: 'Чек-листы настройки ценообразования', slug: 'chek-listy-nastroyki' },
+          { label: 'Неценовые сквозные сценарии', slug: 'necenovye-scenarii-nastroyki' },
+        ],
+      },
     ],
   },
   {
@@ -91,35 +114,27 @@ export const sidebar = [
       { label: 'Синхронизация по API', slug: 'sinhronizaciya-po-api' },
       { label: 'Кастомизация интерфейса (CSS, JS, перевод)', slug: 'kastomizaciya-interfeysa' },
       { label: 'Метрика и счётчики аналитики', slug: 'metrika' },
-    ],
-  },
-  {
-    label: 'Разработчику (JS / HTML / CSS)',
-    items: [
-      { label: 'Основы кастомизации (JS / HTML / CSS)', slug: 'razrabotchiku-osnovy-api' },
-      { label: 'Справочник API core_2', slug: 'razrabotchiku-api-spravochnik' },
-      { label: 'Модальные окна и уведомления', slug: 'razrabotchiku-modalki-uvedomleniya' },
-      { label: 'Спецификация и артикулы на лету', slug: 'razrabotchiku-specifikaciya-artikuly' },
-      { label: 'Артикул из комбинации параметров', slug: 'razrabotchiku-artikul-iz-parametrov' },
-    ],
-  },
-  {
-    label: 'Публичное API (1С, CRM, интеграции)',
-    items: [
-      { label: 'Обзор и аутентификация', slug: 'api-publichnoe-obzor' },
-      { label: 'Цены', slug: 'api-ceny' },
-      { label: 'Заказы', slug: 'api-zakazy' },
-      { label: 'Каталог (материалы, фасады, модули)', slug: 'api-katalog' },
-    ],
-  },
-  {
-    label: 'Сценарии настройки и ценообразования',
-    items: [
-      { label: 'Какую модель ценообразования выбрать', slug: 'scenarii-vybor-modeli-cenoobrazovaniya' },
-      { label: 'Сценарий «Мебель на заказ»', slug: 'scenariy-mebel-na-zakaz' },
-      { label: 'Сценарий «Модульная / серийная мебель»', slug: 'scenariy-modulnaya-seriynaya' },
-      { label: 'Чек-листы настройки ценообразования', slug: 'chek-listy-nastroyki' },
-      { label: 'Неценовые сквозные сценарии', slug: 'necenovye-scenarii-nastroyki' },
+      // Вложенная подгруппа (3-й уровень) — Starlight рендерит её как
+      // сворачиваемый подраздел внутри «Интеграции и кастомизация».
+      {
+        label: 'Разработчику (JS / HTML / CSS)',
+        items: [
+          { label: 'Основы кастомизации (JS / HTML / CSS)', slug: 'razrabotchiku-osnovy-api' },
+          { label: 'Справочник API core_2', slug: 'razrabotchiku-api-spravochnik' },
+          { label: 'Модальные окна и уведомления', slug: 'razrabotchiku-modalki-uvedomleniya' },
+          { label: 'Спецификация и артикулы на лету', slug: 'razrabotchiku-specifikaciya-artikuly' },
+          { label: 'Артикул из комбинации параметров', slug: 'razrabotchiku-artikul-iz-parametrov' },
+        ],
+      },
+      {
+        label: 'Публичное API (1С, CRM, интеграции)',
+        items: [
+          { label: 'Обзор и аутентификация', slug: 'api-publichnoe-obzor' },
+          { label: 'Цены', slug: 'api-ceny' },
+          { label: 'Заказы', slug: 'api-zakazy' },
+          { label: 'Каталог (материалы, фасады, модули)', slug: 'api-katalog' },
+        ],
+      },
     ],
   },
 ];
