@@ -52,6 +52,7 @@ export const sidebar = [
       { label: 'Условия отображения и события', slug: 'usloviya-otobrazheniya-i-sobytiya' },
       { label: 'Шаблоны модулей', slug: 'shablony-moduley' },
       { label: 'Фасады и ручки', slug: 'fasady-i-ruchki' },
+      { label: 'Редактор фасада: загрузка и настройка', slug: 'redaktor-fasada-zagruzka-nastroyka' },
       { label: 'Присадки и шаблоны присадок', slug: 'prisadki' },
       { label: 'Пазы и вырезы', slug: 'pazy-i-vyrezy' },
       { label: 'Аниматор: анимация мебели', slug: 'animator' },
