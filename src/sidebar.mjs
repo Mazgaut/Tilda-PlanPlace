@@ -97,9 +97,19 @@ export const sidebar = [
     label: 'Разработчику (JS / HTML / CSS)',
     items: [
       { label: 'Основы кастомизации (JS / HTML / CSS)', slug: 'razrabotchiku-osnovy-api' },
+      { label: 'Справочник API core_2', slug: 'razrabotchiku-api-spravochnik' },
       { label: 'Модальные окна и уведомления', slug: 'razrabotchiku-modalki-uvedomleniya' },
       { label: 'Спецификация и артикулы на лету', slug: 'razrabotchiku-specifikaciya-artikuly' },
       { label: 'Артикул из комбинации параметров', slug: 'razrabotchiku-artikul-iz-parametrov' },
+    ],
+  },
+  {
+    label: 'Публичное API (1С, CRM, интеграции)',
+    items: [
+      { label: 'Обзор и аутентификация', slug: 'api-publichnoe-obzor' },
+      { label: 'Цены', slug: 'api-ceny' },
+      { label: 'Заказы', slug: 'api-zakazy' },
+      { label: 'Каталог (материалы, фасады, модули)', slug: 'api-katalog' },
     ],
   },
   {

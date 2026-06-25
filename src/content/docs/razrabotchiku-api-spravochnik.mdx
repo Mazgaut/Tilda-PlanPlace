@@ -1,0 +1,193 @@
+---
+title: "Разработчику: справочник API core_2"
+description: "Полный справочник реально доступных методов и объектов API сцены PlanPlace 2.0: объект pp, библиотеки каталога pp.libs, доступ к проекту, спецификации, цене, состоянию сцены и интерфейсу."
+---
+
+Это справочник по **реально доступному** API сцены PlanPlace версии 2.0 (ядро core_2). Здесь перечислено то, что действительно есть в коде сцены и чем можно пользоваться из `custom.js`. Базовые понятия (где живёт код, точка входа `PP_ready`) — в статье [«Основы кастомизации»](/Tilda-PlanPlace/razrabotchiku-osnovy-api/).
+
+> **Важно про доступ.** Часть API — это объект `pp`, часть — **глобальные переменные и функции** движка (`sc`, `d_objects`, `active_el`, `project_settings`, `get_total_price_test()` и т. д.). Они доступны **по имени** (это глобальные `let`/`var` и функции), а не через `window.`. Весь код пишите внутри обработчика `PP_ready`, иначе этих объектов ещё не будет.
+
+```js
+document.addEventListener('PP_ready', function (e) {
+    const pp = e.detail.pp;
+    // ...весь код здесь...
+});
+```
+
+## Объект `pp` — карта
+
+| Путь | Что это |
+|---|---|
+| `pp.core` | Версия ядра. Для 2.0 равно `2`. |
+| `pp.libs` | Библиотеки каталога (материалы, модули, фасады и др.) — см. ниже. |
+| `pp.events` | Слоты-хуки для вклинивания в логику (см. [«Спецификация и артикулы»](/Tilda-PlanPlace/razrabotchiku-specifikaciya-artikuly/)). |
+| `pp.interface` | Интерфейс: `pp.interface.root` — корневой Vue-инстанс (модалки, события UI). |
+| `pp.spec_settings` | Настройки цен: включены ли цены, наценки, округление. |
+| `pp.variables` | Глобальные переменные проекта (`pp.variables.current`, `pp.variables.current_hash`). |
+| `pp.const` | Ключи системных переменных (цоколь, столешница, карниз и т. п.). |
+| `pp.info` | Сводка по проекту, столешнице, цоколям. |
+| `pp.state` | Слои сцены (`pp.state.scene_layers`: столешница, комментарии, номера). |
+| `pp.storage` | Хранилище проектов (IndexedDB), async-методы. |
+| `pp.history` | История действий: `undo()`, `redo()`, `addStep()`. |
+| `pp.project_settings` | Настройки текущего проекта (та же ссылка, что глобальный `project_settings`). |
+| `pp.engine` | Реестр классов объектов сцены: `pp.engine.item_types`, `pp.engine.item_def_params`. |
+| `pp.custom` | Реестры кастомизаций: `components`, `item_types`, `wall_types`, `cab_types`, `settings`. |
+| `pp.run_event(group, name, ...args)` | Запустить обработчик(и) события (поддерживает async). |
+| `pp.add_event(group, name, fn)` | Добавить обработчик в событие-массив. |
+
+## Библиотеки каталога `pp.libs`
+
+`pp.libs` содержит каталоги, загруженные в кабинете. Основные:
+
+| Библиотека | Что внутри |
+|---|---|
+| **`pp.libs.decors`** | **Материалы/декоры.** Это основной каталог материалов. |
+| `pp.libs.modules` | Модули каталога. |
+| `pp.libs.handles` | Ручки. |
+| `pp.libs.tabletop` | Столешницы. |
+| `pp.libs.cornice` | Карнизы. |
+| `pp.libs.cokol` | Цоколи. |
+| `pp.libs.legs` | Опоры/ножки. |
+| `pp.libs.washes` | Мойки. |
+| `pp.libs.glass` | Наполнение витрин. |
+| `pp.libs.tech` / `interior` / `comms` | Техника / интерьер / коммуникации (3D-модели окружения). |
+| `pp.libs.furniture` | Фурнитура (присадки/комплектующие). |
+| `pp.libs.templates` | Шаблоны модулей. |
+| `pp.libs.bardesks` | Барные стойки. |
+| `pp.libs.icons` | Иконки. |
+
+> **Не используйте `pp.libs.materials`** — это пустой плейсхолдер. Для материалов всегда `pp.libs.decors`.
+
+### Методы библиотеки
+
+У каждой «настоящей» библиотеки есть одинаковый набор методов:
+
+| Метод | Возвращает |
+|---|---|
+| `get_item(id)` | **Копию** элемента по id (с гарантированным `add_params: {}`). Если нет — дефолтный элемент. |
+| `find_item(id)` | **Ссылку** на элемент (без копии). Если нет — дефолтный. |
+| `get_category(id)` | Копию категории. |
+| `find_category(id)` | Ссылку на категорию или `null`. |
+| `get_categories(ids)` | Массив категорий по массиву id. |
+| `get_item_name(id)` | Имя элемента или `''`. |
+| `find_available_categories(ids)` | Доступные категории (или все, если пусто). |
+| `find_all_available_categories(ids)` | Все категории и подкатегории рекурсивно. |
+
+```js
+// получить декор по id
+const decor = pp.libs.decors.get_item(45);
+console.log(decor.name, decor.code); // имя и артикул
+
+// у материалов есть дополнительный метод с путём категорий и кодом
+const data = pp.libs.decors.get_data(45); // { mat, cat, par_cat, str }
+```
+
+**Формат элемента** (общий): `{ id, category, code, name, params: {...}, add_params: {} }`. У материала в `params` лежат `color`, `transparent`, `opacity` и т. д. У моделей (техника/коммуникации) — `model`, `icon`, `variants`, `material`.
+
+## Доступ к текущему состоянию
+
+| Что нужно | Как получить |
+|---|---|
+| Все объекты на сцене | глобальный массив `d_objects`; активные объекты комнаты — `room.active_objects` |
+| Выбранный объект | глобальный `active_el`; в интерфейсе — `pp.interface.root.$selected_object` |
+| Настройки текущего проекта | `pp.project_settings` (≡ глобальный `project_settings`) |
+| Свои данные в проекте | `set_custom_userdata(data)` / `get_custom_userdata()` (сохраняются с проектом) |
+| Спецификация | `sc.get_specs(true)` (`sc` — глобальный контроллер сцены) |
+| Итоговая цена | `sc.get_price()` или численно `sc.get_specs(true).total_price`; глобально — `get_total_price_test()` |
+
+```js
+// пройтись по всем объектам сцены
+d_objects.forEach(function (obj) {
+    console.log(obj.userData?.params?.type);
+});
+
+// получить полную спецификацию
+const specs = sc.get_specs(true);
+console.log('Итог:', specs.total_price);
+// specs.sum[type][sum_key] — агрегированные позиции
+// specs.sum_arr — плоский список
+// specs.all[type] — все позиции до агрегации
+```
+
+### Структура спецификации (`sc.get_specs(true)`)
+
+```
+{
+  all:    { <type>: [позиция, ...] },        // все позиции
+  sum:    { <type>: { <sum_key>: позиция } },// агрегированные (рендерятся)
+  sum_arr:[ позиция, ... ],                  // плоский список
+  total_price: число,                        // итог (со скидкой)
+  total_services_price: число                // услуги
+}
+```
+
+Подробно про модификацию спецификации — в статье [«Спецификация и артикулы на лету»](/Tilda-PlanPlace/razrabotchiku-specifikaciya-artikuly/).
+
+## Глобальные функции-API
+
+| Функция | Что делает / возвращает |
+|---|---|
+| `get_custom_userdata()` | Возвращает ваши данные, сохранённые в проекте. |
+| `set_custom_userdata(data)` | Записывает ваши данные в проект. |
+| `get_total_price_test()` | Возвращает итоговую цену проекта (через `sc.get_price()`). |
+| `apply_rounding(value, mode)` | Округляет число по правилу системы (режимы 0–4: нет / матем. / вверх / вверх до 10 / фикс. 2 знака). Если `mode` не задан — берётся из настроек цен. |
+| `change_tabletop_thickness(val)` | Меняет толщину столешницы. |
+| `change_cokol_active(bool)` | Включает/выключает цоколь. |
+| `change_cornice_active(bool)` | Включает/выключает карниз. |
+
+## Интерфейс: `pp.interface.root`
+
+Корневой Vue-инстанс интерфейса. Через него — модалки, уведомления, выбор объектов. Наиболее полезные методы (полный разбор модалок — в [отдельной статье](/Tilda-PlanPlace/razrabotchiku-modalki-uvedomleniya/)):
+
+| Метод | Действие |
+|---|---|
+| `yn_modal({heading, body, fn, no_callback})` | Диалог «Да / Нет». |
+| `$emit('show_custom_modal', {...})` | Произвольная модалка. |
+| `$emit('notifications_add', {text})` | Добавить уведомление. |
+| `set_selected(obj)` | Программно выбрать объект на сцене. |
+| `add_custom_fn(key, fn)` | Зарегистрировать кастомную функцию (вызывается из меню/пикеров по ключу). |
+| `add_custom_option(key, data)` | Зарегистрировать кастомную опцию. |
+| `lang(key)` | Перевод строки по ключу. |
+| `format_price(num)` | Отформатировать цену. |
+
+После загрузки интерфейса все его `$refs` доступны как `pp.interface.<имя>` — например `pp.interface.main_menu`, `pp.interface.module_menu_v2`.
+
+## Хранилище и история
+
+- **`pp.storage`** (IndexedDB) — асинхронные методы: `getData(store, id)`, `putData(store, data)`, `getZipFile(id)`, `getJsonFromZip(zipId, path)`, `getStorageInfo()` и др. Используйте для доступа к сохранённым проектам.
+- **`pp.history`** — `undo()`, `redo()`, `addStep()`, `isUndo()`, `isRedo()`. Управление историей действий.
+
+## Практические рецепты
+
+**Залогировать структуру выбранного объекта** (чтобы найти нужные поля):
+
+```js
+document.addEventListener('PP_ready', function (e) {
+    const pp = e.detail.pp;
+    pp.interface.root.$watch('$selected_object', function (obj) {
+        if (obj) console.log('Выбран объект:', obj.userData);
+    });
+});
+```
+
+**Показать итоговую цену в уведомлении после загрузки проекта:**
+
+```js
+pp.events.global.after_scene_load = function () {
+    const total = sc.get_specs(true).total_price;
+    pp.interface.root.$emit('notifications_add', {
+        text: 'Стоимость проекта: ' + pp.interface.root.format_price(total),
+        read: false
+    });
+};
+```
+
+## Важные оговорки
+
+- API **не версионируется как публичный контракт** — это внутренние объекты движка. Перед использованием полей объектов (`obj.userData.params...`, `computed...`) логируйте их в консоль и проверяйте в вашей версии.
+- Не полагайтесь на недокументированные внутренние методы классов объектов (`CabinetWall`, `Module` и т. п.) — они могут меняться. Стабильнее работать через хуки `pp.events.*` и перечисленные выше точки доступа.
+- Тяжёлые операции в хуках, вызываемых на каждый пересчёт (спецификация, построение модуля), замедляют сцену — пишите их экономно.
+
+## Коротко
+
+API сцены — это объект `pp` (библиотеки `pp.libs`, хуки `pp.events`, интерфейс `pp.interface.root`, настройки и история) плюс глобальные переменные/функции движка (`sc`, `d_objects`, `active_el`, `project_settings`, `get_total_price_test()`, `apply_rounding()`). Материалы берутся из `pp.libs.decors`, спецификация — `sc.get_specs(true)`, цена — `sc.get_price()`. Весь код — внутри обработчика `PP_ready`; поля объектов проверяйте логированием, а в логику вклинивайтесь через хуки.

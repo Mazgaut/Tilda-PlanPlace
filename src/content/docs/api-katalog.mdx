@@ -1,0 +1,185 @@
+---
+title: "Публичное API: каталог (материалы, фасады, модули)"
+description: "CRUD-методы внешнего API PlanPlace: чтение, добавление, обновление и удаление материалов, декоров, категорий, фасадов, ручек, модулей, наборов модулей и моделей через 1С/CRM."
+---
+
+Раздел каталога внешнего API позволяет управлять элементами базы из внешней системы: материалами/декорами, фасадами, ручками, модулями, наборами модулей, моделями, моделями кухонь. Общие правила (базовый URL, `sync_key`, применение `apply_data`) — в статье [«Публичное API: обзор»](/Tilda-PlanPlace/api-publichnoe-obzor/).
+
+## Шаблон методов и поддержка по разделам
+
+Методы каталога построены по шаблону **действие + раздел**: `ОсновнойURL/api/<действие>/<раздел>`. Например, `api/get_items/materials`.
+
+> **Важно: не все действия доступны для всех разделов.** Это не недоработка — для части разделов через API реализованы только чтение и добавление. Ниже — точная матрица того, что реально поддерживается.
+
+| Раздел | `get_items` (чтение) | `add_items` (добавить) | `update_items` (обновить) | `remove_items` (удалить) |
+|---|:---:|:---:|:---:|:---:|
+| `materials` — материалы/декоры | ✅ | ✅ | ✅ | ✅ |
+| `facades` — фасады | ✅ | ✅ | ✅ | ✅ |
+| `handles` — ручки | ✅ | ✅ | ✅ | ✅ |
+| `accessories` — комплектующие | ✅ | ✅ | ✅ | ✅ |
+| `modules` — модули | ✅ | ✅ | — | — |
+| `modules_set` — наборы модулей | ✅ | ✅ | — | — |
+| `tech` — техника | ✅ | ✅ | — | — |
+| `interior` — интерьер | ✅ | ✅ | — | — |
+| `comms` — коммуникации | ✅ | ✅ | — | — |
+| `kitchen_models` — модели кухонь | ✅ | ✅ | — | — |
+| `orders` — заказы | ✅ (только чтение) | — | — | — |
+
+То есть **полный набор (включая обновление и удаление) есть только у `materials`, `facades`, `handles`, `accessories`.** Для остальных разделов через API доступны только чтение (`get_items`) и добавление (`add_items`) — обновлять и удалять их нужно в кабинете.
+
+**Категории** — `get_categories` / `add_categories` / `update_categories` / `remove_categories` для разделов, у которых есть категории (materials, facades, handles, modules, modules_sets и др.). Категория описывается полями `id`, `name`, `parent` (`"0"` — верхний уровень).
+
+> **Устаревший метод (наследие 1.0).** В системе остался legacy-метод `GET api/get_items/materials_v1` — он возвращает материалы в **старом формате версии 1.0**. Для 2.0 используйте `get_items/materials`; `materials_v1` нужен только для совместимости со старыми интеграциями и в новых разработках не применяется.
+
+Общие правила:
+
+- **GET** (чтение): `sync_key` передаётся параметром строки запроса;
+- **POST** (запись): тело содержит `data` (JSON) и `sync_key`;
+- ответ — JSON (для записи обычно `"success"` / `"error"`, для чтения — массив объектов);
+- после изменений вызывайте `GET api/apply_data?sync_key=...`.
+
+## Материалы и декоры
+
+### Получить материалы
+
+```
+GET  ОсновнойURL/api/get_items/materials?sync_key=ВАШ_КЛЮЧ
+```
+
+Ответ — массив материалов. Поля объекта:
+
+| Поле | Тип | Описание |
+|---|---|---|
+| `id` | number | ID материала |
+| `name` | string | название |
+| `code` | string | артикул |
+| `order` | number | порядок отображения |
+| `category` | number | id категории |
+| `params` | object | параметры отображения |
+| `add_params` | object | дополнительные параметры |
+
+Объект **`params`**:
+
+| Поле | Тип | Описание |
+|---|---|---|
+| `color` | string | HEX-код цвета |
+| `map` | string | URL изображения текстуры |
+| `roughness` | number | шероховатость, 0–1 |
+| `metalness` | number | металличность, 0–1 |
+| `transparent` | boolean | прозрачность (только для PNG с прозрачными участками) |
+
+Объект **`add_params`**:
+
+| Поле | Тип | Описание |
+|---|---|---|
+| `real_width` | number | реальная ширина текстуры в мм |
+| `real_height` | number | реальная высота текстуры в мм |
+| `stretch_width` | boolean | растягивать текстуру по ширине |
+| `stretch_height` | boolean | растягивать текстуру по высоте |
+| `wrapping` | string | тип наложения: `repeat` (повтор) или `mirror` (зеркальные края) |
+
+**Пример элемента ответа:**
+
+```json
+{
+  "id": 104,
+  "name": "2516-LArpa",
+  "code": "2516",
+  "category": 16,
+  "params": {
+    "color": "#ffffff",
+    "map": "https://test.com/images/image.jpg",
+    "roughness": 0.8,
+    "metalness": 0,
+    "transparent": false
+  },
+  "add_params": {
+    "real_width": 256,
+    "real_height": 256,
+    "stretch_width": false,
+    "stretch_height": false,
+    "wrapping": "mirror"
+  }
+}
+```
+
+### Добавить, обновить, удалить материалы
+
+```
+POST  ОсновнойURL/api/add_items/materials        (data + sync_key)
+POST  ОсновнойURL/api/update_items/materials     (data + sync_key)
+POST  ОсновнойURL/api/remove_items/materials     (data + sync_key)
+```
+
+Для добавления/обновления `data` — массив объектов материалов того же формата, что в ответе `get_items`. Для удаления — список идентификаторов.
+
+### Обновить только артикулы материалов
+
+Отдельный метод — массово обновить артикулы (полезно при смене кодов из 1С без правки остальных полей):
+
+```
+POST  ОсновнойURL/api/update_items_code/materials   (data + sync_key)
+```
+
+### Категории материалов
+
+```
+GET   ОсновнойURL/api/get_categories/materials?sync_key=ВАШ_КЛЮЧ
+POST  ОсновнойURL/api/add_categories/materials      (data + sync_key)
+POST  ОсновнойURL/api/update_categories/materials   (data + sync_key)
+POST  ОсновнойURL/api/remove_categories/materials   (data + sync_key)
+```
+
+Категория описывается полями `id`, `name`, `parent` (`"0"` — верхний уровень).
+
+## Фасады, ручки и другие разделы
+
+С полным набором действий (как у материалов) работают **фасады**, **ручки**, **комплектующие**:
+
+```
+GET   ОсновнойURL/api/get_items/facades?sync_key=...
+POST  ОсновнойURL/api/add_items/facades            (data + sync_key)
+POST  ОсновнойURL/api/update_items/facades         (data + sync_key)
+POST  ОсновнойURL/api/remove_items/facades         (data + sync_key)
+GET   ОсновнойURL/api/get_categories/facades?sync_key=...
+POST  ОсновнойURL/api/add_categories/facades       (data + sync_key)
+
+GET   ОсновнойURL/api/get_items/handles?sync_key=...
+POST  ОсновнойURL/api/add_items/handles            (data + sync_key)
+
+GET   ОсновнойURL/api/get_items/accessories?sync_key=...
+POST  ОсновнойURL/api/update_items/accessories     (data + sync_key)
+```
+
+Разделы **модули, наборы модулей, техника, интерьер, коммуникации, модели кухонь** доступны через API только на **чтение и добавление** (см. матрицу выше):
+
+```
+GET   ОсновнойURL/api/get_items/modules?sync_key=...
+POST  ОсновнойURL/api/add_items/modules            (data + sync_key)
+GET   ОсновнойURL/api/get_items/modules_set?sync_key=...&setId=<id>
+GET   ОсновнойURL/api/get_items/kitchen_models?sync_key=...
+```
+
+> Обновить или удалить эти разделы через API нельзя — это делается в кабинете.
+
+Точный формат объекта для каждого раздела (поля элемента) приведён в разделе API вашего кабинета — структура аналогична материалам: `id`, `name`, `code`, `category`, плюс специфичные для раздела поля.
+
+## Расширенное чтение (v2)
+
+Для части разделов (фасады, материалы, техника, коммуникации, интерьер) есть расширенный метод чтения, который возвращает данные в более удобном виде (с ключами `items`, `count` и именами категорий):
+
+```
+GET  ОсновнойURL/api/get_items_v2/<раздел>?sync_key=ВАШ_КЛЮЧ
+```
+
+Используйте его, если стандартного `get_items` не хватает.
+
+## Важные замечания
+
+- После любых изменений вызывайте **`GET api/apply_data?sync_key=...`** — иначе данные не попадут на сцену.
+- Поля `id` категорий — это **ключи связи**. Сначала читайте структуру (`get_categories` / `get_items`), затем шлите обновления по существующим id.
+- Точный перечень доступных методов и форматов для конкретного раздела всегда сверяйте с **разделом API в вашем кабинете** — он отражает актуальную версию.
+
+## Коротко
+
+Каталог управляется по шаблону `api/<действие>/<раздел>`. **Полный набор действий (get/add/update/remove) есть только у `materials`, `facades`, `handles`, `accessories`.** Разделы `modules`, `modules_set`, `tech`, `interior`, `comms`, `kitchen_models` доступны через API только на чтение и добавление; `orders` — только чтение. GET — чтение (`sync_key` в строке), POST — запись (`data` + `sync_key`). Материал содержит `params` (цвет, текстура, шероховатость…) и `add_params` (размеры текстуры, наложение). Legacy-метод `get_items/materials_v1` (формат 1.0) — только для совместимости. После изменений — `api/apply_data`.
