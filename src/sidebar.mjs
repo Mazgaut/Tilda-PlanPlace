@@ -57,6 +57,7 @@ export const sidebar = [
         items: [
           { label: 'Фасады и ручки', slug: 'fasady-i-ruchki' },
           { label: 'Редактор фасада: загрузка и настройка', slug: 'redaktor-fasada-zagruzka-nastroyka' },
+          { label: 'Применение фасадов и 3D-моделей в конструкторе', slug: 'primenenie-fasadov-i-modeley-v-konstruktore' },
           { label: '3D-модели фасадов: требования и примеры', slug: '3d-modeli-fasadov' },
         ],
       },
