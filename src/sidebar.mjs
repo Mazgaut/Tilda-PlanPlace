@@ -94,6 +94,15 @@ export const sidebar = [
     ],
   },
   {
+    label: 'Разработчику (JS / HTML / CSS)',
+    items: [
+      { label: 'Основы кастомизации (JS / HTML / CSS)', slug: 'razrabotchiku-osnovy-api' },
+      { label: 'Модальные окна и уведомления', slug: 'razrabotchiku-modalki-uvedomleniya' },
+      { label: 'Спецификация и артикулы на лету', slug: 'razrabotchiku-specifikaciya-artikuly' },
+      { label: 'Артикул из комбинации параметров', slug: 'razrabotchiku-artikul-iz-parametrov' },
+    ],
+  },
+  {
     label: 'Сценарии настройки и ценообразования',
     items: [
       { label: 'Какую модель ценообразования выбрать', slug: 'scenarii-vybor-modeli-cenoobrazovaniya' },
