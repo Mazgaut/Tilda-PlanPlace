@@ -1,7 +1,7 @@
 # Справочный центр PlanPlace
 
 Документация PlanPlace на [Astro Starlight](https://starlight.astro.build/) —
-статический сайт справки с авто-деплоем на GitHub Pages.
+статический сайт справки с авто-деплоем (GitHub Pages или свой VPS/сервер).
 
 Почему так: каждая статья генерируется в готовый HTML, поэтому страницы
 индексируются поисковиками и читаются ИИ-поисковиками, а меню и оформление
@@ -40,6 +40,9 @@
 
 </Carousel>
 
+<Img src="/Tilda-PlanPlace/media/<slug>/icon.png" alt="иконка" />            {/* в строку текста */}
+<Img src="/Tilda-PlanPlace/media/<slug>/screen.png" alt="скрин" inline={false} />  {/* на отдельной строке */}
+
 <Video src="https://vkvideo.ru/video_ext.php?oid=...&id=..." />
 
 <Download href="https://.../primer.xlsx" label="Скачать пример в формате Excel" />
@@ -50,8 +53,13 @@
 - **Carousel** — галерея: изображения внутри обычным markdown (`![](...)`).
   Относительные пути Astro оптимизирует в WebP, GIF из `public/media` остаются
   анимированными.
+- **Img** — картинка с выбором отображения: встроить в строку текста (по
+  умолчанию, удобно для иконок внутри предложения) или вынести на отдельную
+  строку (`inline={false}`). Путь к картинке — как обычно, с префиксом
+  `/Tilda-PlanPlace/...` (подгоняется под `base` автоматически).
 - **Video** — адаптивное видео 16:9 (VK Видео, YouTube и т. п.).
-- **Download** — кнопка скачивания файла-примера.
+- **Download** — кнопка скачивания файла-примера; тип файла (Excel или архив/3D)
+  определяется по расширению в ссылке.
 - **Bitrix24InlineForm** — встроенная форма обратной связи.
 
 Эти же компоненты доступны как блоки в редакторе Keystatic. Если добавляете
@@ -88,18 +96,32 @@ npm run build    # собрать статику в ./dist
 npm run preview  # посмотреть собранную статику
 ```
 
-## Публикация (GitHub Pages)
+## Публикация
 
-Деплой настроен в `.github/workflows/deploy.yml` и срабатывает при пуше в `main`.
+`npm run build` собирает статику в `./dist`. Адрес сайта и базовый путь
+задаются переменными окружения (по умолчанию — под GitHub Pages):
 
-Разовая настройка в репозитории на GitHub:
+- `SITE_URL` — адрес сайта (по умолчанию `https://mazgaut.github.io`);
+- `BASE_PATH` — базовый путь (по умолчанию `/Tilda-PlanPlace`; для своего
+  домена в корень — `/`).
 
-1. **Settings → Pages → Build and deployment → Source → GitHub Actions**.
-2. Запушьте в `main` (или запустите workflow вручную во вкладке **Actions**).
+Внутренние ссылки и пути к картинкам с префиксом `/Tilda-PlanPlace/...`
+автоматически подгоняются под текущий `base` (remark-плагин
+`src/remark/base-links.mjs`), поэтому при смене `BASE_PATH` переписывать статьи
+не нужно. Значения настраиваются в `astro.config.mjs`.
 
-Адрес сайта задаётся в `astro.config.mjs`:
+Настроены два варианта деплоя:
 
-- GitHub Pages по умолчанию: `site: 'https://<пользователь>.github.io'`,
-  `base: '/<репозиторий>'`.
-- Свой домен (например, `help.planplace.online`): `site: 'https://help.planplace.online'`,
-  `base: '/'`, плюс файл `public/CNAME` с доменом и DNS-запись на GitHub Pages.
+### GitHub Pages — `.github/workflows/deploy.yml`
+
+Срабатывает при пуше в `main` (и в текущую рабочую ветку). Разовая настройка:
+**Settings → Pages → Build and deployment → Source → GitHub Actions**. Для
+своего домена добавьте файл `public/CNAME` с доменом и DNS-запись на GitHub Pages.
+
+### Свой VPS/сервер (Nginx) — `.github/workflows/deploy-vps.yml`
+
+Срабатывает при пуше в `main`. Собирает сайт в корень (`BASE_PATH=/`, `SITE_URL`
+из переменной репозитория) и выкладывает `dist/` на сервер по SSH (`rsync`).
+Нужны секреты репозитория `SSH_PRIVATE_KEY`, `SSH_KNOWN_HOSTS`, `SSH_HOST`,
+`SSH_USER`, `SSH_PORT`, `DEPLOY_PATH` и переменная `SITE_URL`. Пока ветки `main`
+и секретов нет — workflow не выполняется.
