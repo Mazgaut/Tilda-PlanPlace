@@ -9,6 +9,7 @@ export const sidebar = [
       { label: 'Личный кабинет', slug: 'lichnyy-kabinet' },
       { label: 'Код конструктора и основные параметры', slug: 'kod-konstruktora-i-osnovnye-parametry' },
       { label: 'Настройки конструктора', slug: 'nastroyki-konstruktora' },
+      { label: 'Настройки по умолчанию', slug: 'nastroyki-po-umolchaniyu' },
       { label: 'Заявки на расчёт', slug: 'zayavki-na-raschet' },
       { label: 'Форма заявки и шаблоны писем', slug: 'forma-zayavki-i-shablony-pisem' },
       { label: 'Управление дилерами', slug: 'upravlenie-dilerami' },
