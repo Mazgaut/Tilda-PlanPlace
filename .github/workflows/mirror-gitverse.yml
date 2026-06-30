@@ -1,0 +1,18 @@
+name: Mirror to GitVerse
+
+on:
+  push:
+    branches: ['**']
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Push mirror to GitVerse
+        run: |
+          git remote add gitverse https://oauth2:${{ secrets.GITVERSE_TOKEN }}@gitverse.ru/max41125/PlanPlace-information.git
+          git push gitverse --mirror
