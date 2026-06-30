@@ -12,7 +12,27 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Push mirror to GitVerse
+      - name: Set up GitVerse remote
         run: |
           git remote add gitverse https://alexberez:${{ secrets.GITVERSE_TOKEN }}@gitverse.ru/max41125/PlanPlace-information.git
-          git push gitverse --mirror
+
+      - name: Save GitVerse deploy.yml
+        run: |
+          git fetch gitverse || true
+          git show gitverse/main:.github/workflows/deploy.yml > /tmp/gitverse-deploy.yml 2>/dev/null || echo "not found" > /tmp/gitverse-deploy.yml
+
+      - name: Push mirror to GitVerse
+        run: |
+          git push gitverse --mirror --force
+
+      - name: Restore GitVerse deploy.yml
+        run: |
+          if [ "$(cat /tmp/gitverse-deploy.yml)" != "not found" ]; then
+            git fetch gitverse
+            git checkout -b restore-deploy gitverse/main
+            mkdir -p .github/workflows
+            cp /tmp/gitverse-deploy.yml .github/workflows/deploy.yml
+            git add .github/workflows/deploy.yml
+            git -c user.email="mirror@github" -c user.name="Mirror Bot" commit -m "Restore GitVerse deploy.yml"
+            git push gitverse HEAD:main
+          fi
