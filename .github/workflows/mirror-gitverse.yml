@@ -12,20 +12,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Set up GitVerse remote
-        run: |
-          git remote add gitverse https://alexberez:${{ secrets.GITVERSE_TOKEN }}@gitverse.ru/max41125/PlanPlace-information.git
-
       - name: Push mirror to GitVerse
         run: |
+          git remote add gitverse https://alexberez:${{ secrets.GITVERSE_TOKEN }}@gitverse.ru/max41125/PlanPlace-information.git
           git push gitverse --mirror --force
-
-      - name: Restore K8s deploy.yml on GitVerse
-        run: |
-          git fetch gitverse
-          DEFAULT_BRANCH=$(git remote show gitverse | grep 'HEAD branch' | awk '{print $NF}')
-          git checkout -b restore-deploy "gitverse/$DEFAULT_BRANCH"
-          cp .github/workflows/deploy-k8s.yml .github/workflows/deploy.yml
-          git add .github/workflows/deploy.yml
-          git -c user.email="mirror@github.com" -c user.name="Mirror Bot" commit -m "Restore K8s deploy.yml" || echo "No changes to restore"
-          git push gitverse "HEAD:$DEFAULT_BRANCH"
