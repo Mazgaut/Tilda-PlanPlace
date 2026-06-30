@@ -139,10 +139,5 @@ export const sidebar = [
       },
     ],
   },
-  {
-    label: 'Поддержка',
-    items: [
-      { label: 'Связаться с нами', slug: 'support_form' },
-    ],
-  },
+  { label: 'Связаться с нами', slug: 'support_form' },
 ];
