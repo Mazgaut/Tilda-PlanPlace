@@ -15,4 +15,5 @@ jobs:
       - name: Push mirror to GitVerse
         run: |
           git remote add gitverse https://alexberez:${{ secrets.GITVERSE_TOKEN }}@gitverse.ru/max41125/PlanPlace-information.git
-          git push gitverse --mirror --force
+          git push gitverse --all --force
+          git push gitverse --tags --force
