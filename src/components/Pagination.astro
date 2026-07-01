@@ -1,11 +1,11 @@
 ---
 // Переопределение Pagination Starlight: над переключателем «назад/вперёд»
 // добавляется кнопка вызова формы обратной связи (Bitrix24, click/popup).
-// На самой странице формы (/forma/) кнопка не нужна — там форма уже встроена.
+// На самой странице формы (/support_form/) кнопка не нужна — там форма уже встроена.
 import Default from '@astrojs/starlight/components/Pagination.astro';
 
 const slug = Astro.locals.starlightRoute?.entry?.slug;
-const showCta = slug !== 'forma';
+const showCta = slug !== 'support_form';
 ---
 
 {showCta && (

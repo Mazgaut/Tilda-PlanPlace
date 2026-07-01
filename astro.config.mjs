@@ -51,7 +51,7 @@ export default defineConfig({
       // sitemap.xml формируется автоматически, meta/canonical/OG проставляются Starlight.
       // Меню генерируется из оглавления базы знаний (src/sidebar.mjs),
       // последним пунктом — страница формы обратной связи.
-      sidebar: [...sidebar, { label: 'Связаться с нами', slug: 'forma' }],
+      sidebar,
     }),
     // Локальная админка Keystatic (только при KEYSTATIC=true)
     ...(enableKeystatic ? [react(), keystatic()] : []),
