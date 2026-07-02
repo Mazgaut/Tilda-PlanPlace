@@ -27,23 +27,36 @@ import Lightbox from './Lightbox.astro';
   var siteValue = sessionStorage.getItem(key);
   if (!siteValue) return;
 
-  function fillField() {
-    // Bitrix24 рендерит поля с атрибутом name вида "b24-form-field-1"
-    var field = document.querySelector(
+  function fillFields() {
+    document.querySelectorAll(
       '[name="b24-form-field-1"], #b24-form-field-1'
-    );
-    if (field && field.value === '') {
-      field.value = siteValue;
-      field.dispatchEvent(new Event('input', { bubbles: true }));
-      field.dispatchEvent(new Event('change', { bubbles: true }));
-    }
+    ).forEach(function (field) {
+      if (field.value === '') {
+        field.value = siteValue;
+        field.dispatchEvent(new Event('input', { bubbles: true }));
+        field.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+    });
   }
 
-  // Наблюдаем за появлением формы в DOM (popup открывается динамически)
-  var observer = new MutationObserver(fillField);
+  // MutationObserver — ловит появление формы в DOM при любом сценарии
+  var observer = new MutationObserver(fillFields);
   observer.observe(document.documentElement, { childList: true, subtree: true });
 
-  // Пробуем сразу — для встроенной формы на странице support_form
-  document.addEventListener('DOMContentLoaded', fillField);
+  // Polling после клика на кнопку Bitrix24 — popup рендерится с задержкой,
+  // и MutationObserver иногда срабатывает раньше, чем поле готово к записи
+  document.addEventListener('click', function (e) {
+    var btn = e.target && e.target.closest
+      ? e.target.closest('[data-b24-form], .b24-form-btn, .pp-cta__btn')
+      : null;
+    if (!btn) return;
+    var attempts = 0;
+    var timer = setInterval(function () {
+      fillFields();
+      if (++attempts >= 30) clearInterval(timer);
+    }, 100);
+  }, true);
+
+  document.addEventListener('DOMContentLoaded', fillFields);
 })();
 </script>
