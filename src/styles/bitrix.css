@@ -130,3 +130,38 @@ label.b24-form-control-file-button,
 .b24-form-control-upload-button:hover {
   color: var(--pp-text) !important;
 }
+
+/* ── Текст, вводимый пользователем в поля ────────────────────────────────────
+   Браузеры используют -webkit-text-fill-color поверх color для input/textarea,
+   поэтому задаём оба свойства. */
+.b24-form-wrapper input,
+.b24-form-wrapper input[type='text'],
+.b24-form-wrapper input[type='email'],
+.b24-form-wrapper input[type='tel'],
+.b24-form-wrapper textarea {
+  color: var(--pp-text) !important;
+  -webkit-text-fill-color: var(--pp-text) !important;
+  background-color: var(--pp-field-bg) !important;
+}
+.b24-form-wrapper input::placeholder,
+.b24-form-wrapper textarea::placeholder {
+  color: var(--pp-muted) !important;
+  -webkit-text-fill-color: var(--pp-muted) !important;
+  opacity: 1 !important;
+}
+
+/* ── Имена загруженных файлов ────────────────────────────────────────────────
+   Блок со списком прикреплённых файлов и именами — Bitrix24 рисует их тёмным
+   цветом, который не читается на тёмном фоне. */
+.b24-form-control-file-list,
+.b24-form-control-file-list-item,
+.b24-form-control-file-list-item-name,
+.b24-form-uploader-file-name,
+.b24-form-uploader-file-list,
+.b24-form-uploader-file-list-item,
+.b24-form-uploader-file-list-item-name,
+.b24-form-control-upload-file-name,
+.b24-form-control-file-item,
+.b24-form-control-file-item-name {
+  color: var(--pp-text) !important;
+}
