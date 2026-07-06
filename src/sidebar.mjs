@@ -67,6 +67,7 @@ export const sidebar = [
       { label: 'Пазы и вырезы', slug: 'pazy-i-vyrezy' },
       { label: 'Аниматор: анимация мебели', slug: 'animator' },
       { label: 'Размеры и точки прилипания', slug: 'razmery-i-tochki-prilipaniya' },
+      { label: 'Горячие клавиши в конфигураторе', slug: 'goryachie-klavishi-konfigurator' },
       // Вложенная подгруппа: общие статьи про 3D-модели.
       {
         label: '3D-Модели',
@@ -104,6 +105,7 @@ export const sidebar = [
     label: 'Работа на сцене и экспорт',
     items: [
       { label: 'Интерфейс сцены', slug: 'interfeys-sceny' },
+      { label: 'Горячие клавиши на сцене', slug: 'goryachie-klavishi-scena' },
       { label: 'Настройка меню планировщика', slug: 'nastroyka-menyu-planirovschika' },
       { label: 'Готовые проекты', slug: 'gotovye-proekty' },
       { label: 'Спецификация и отправка на расчёт', slug: 'specifikaciya-i-otpravka-na-raschet' },
