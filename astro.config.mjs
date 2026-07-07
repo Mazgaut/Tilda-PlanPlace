@@ -37,6 +37,9 @@ export default defineConfig({
       description:
         'Справочный центр PlanPlace: настройка материалов, конструктора и работа с системой.',
       customCss: ['./src/styles/theme.css'],
+      // Фирменный favicon (тот же, что на help-planplace.tilda.ws);
+      // файл лежит в public/, base подставляется Starlight автоматически.
+      favicon: '/favicon.ico',
       defaultLocale: 'root',
       locales: {
         root: { label: 'Русский', lang: 'ru' },

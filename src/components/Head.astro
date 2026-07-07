@@ -9,6 +9,8 @@ import Lightbox from './Lightbox.astro';
 ---
 
 <Default><slot /></Default>
+{/* Иконка для iOS/Android-закладок (favicon.ico подключает Starlight через опцию favicon) */}
+<link rel="apple-touch-icon" href={`${import.meta.env.BASE_URL.replace(/\/$/, '')}/apple-touch-icon.png`} />
 {/* Фирменный шрифт PlanPlace — Roboto */}
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
