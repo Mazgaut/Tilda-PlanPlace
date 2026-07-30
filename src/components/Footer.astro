@@ -1,0 +1,27 @@
+---
+// Переопределение подвала статьи. Рендерит штатный подвал Starlight
+// (ссылки «Редактировать», пагинация), а под ним — блок ссылок на
+// соц.сети и видео-каналы PlanPlace. В отличие от правой панели «На этой
+// странице», подвал виден на ВСЕХ страницах и при любой ширине экрана,
+// поэтому соц.блок показывается и на десктопе, и на мобильном.
+import Default from '@astrojs/starlight/components/Footer.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const socials = [
+  { href: 'https://www.youtube.com/@planplace9272', alt: 'youtube', icon: `${base}/social/youtube.png` },
+  { href: 'https://rutube.ru/channel/52167970/', alt: 'RUTUBE', icon: `${base}/social/rutube.png` },
+  { href: 'https://vk.com/planplace', alt: 'vkontakte', icon: `${base}/social/vk.png` },
+  { href: 'https://t.me/planplace', alt: 'telegram', icon: `${base}/social/telegram.png` },
+];
+---
+
+<Default {...Astro.props}><slot /></Default>
+
+<div class="pp-socials" aria-label="Соцсети и видео-каналы PlanPlace">
+  {socials.map((s) => (
+    <a class="pp-social-link" href={s.href} target="_blank" rel="noopener" aria-label={s.alt}>
+      <img src={s.icon} alt={s.alt} width="28" height="28" loading="lazy" />
+    </a>
+  ))}
+</div>

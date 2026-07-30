@@ -83,23 +83,35 @@
   display: none;
 }
 
-/* ─── Блок соц.сетей в панели «На этой странице» ─────────────────── */
-
-/* Обёртка вокруг штатного оглавления. На десктопе тянется на всю высоту
-   правой панели, чтобы соц.блок можно было прижать к низу. */
-.pp-toc-wrapper {
-  display: flex;
-  flex-direction: column;
-  min-height: 100%;
+/* Подпись «Справочный центр» справа от логотипа. */
+.pp-logo-caption {
+  margin-inline-start: 10px;
+  font-weight: 600;
+  font-size: var(--sl-text-sm, 0.875rem);
+  line-height: 1.15;
+  color: var(--sl-color-white, var(--sl-color-text));
+  white-space: nowrap;
 }
 
+/* На узких экранах подпись прячем, чтобы не ломать шапку — остаётся логотип. */
+@media (max-width: 30rem) {
+  .pp-logo-caption {
+    display: none;
+  }
+}
+
+/* ─── Блок соц.сетей в подвале статьи ─────────────────────────────── */
+
+/* Идёт под штатным подвалом Starlight (пагинация, «Редактировать»).
+   Виден на всех страницах и при любой ширине экрана. */
 .pp-socials {
   display: flex;
-  gap: 14px;
+  gap: 16px;
   align-items: center;
+  justify-content: center;
   flex-wrap: wrap;
-  padding-top: 16px;
-  margin-top: 16px;
+  padding-top: 20px;
+  margin-top: 8px;
   border-top: 1px solid var(--sl-color-hairline, var(--pp-field-border));
 }
 
@@ -117,29 +129,4 @@
   width: 28px;
   height: 28px;
   display: block;
-}
-
-/* Десктоп (панель справа видима): прижимаем соц.блок к низу экрана.
-   Правая панель Starlight — sticky на высоту вьюпорта. */
-@media (min-width: 72rem) {
-  .pp-toc-wrapper {
-    /* высота липкой панели минус её вертикальные отступы */
-    min-height: calc(100vh - var(--sl-nav-height) - 2 * var(--sl-sidebar-pad-x, 1rem));
-  }
-  .pp-socials {
-    margin-top: auto; /* уводит блок в самый низ */
-  }
-}
-
-/* Мобильная/планшетная версия: оглавление отображается компактным
-   блоком над контентом. Соц.блок идёт сразу после него в потоке —
-   т.е. «сразу после текста оглавления». Убираем растяжку по высоте. */
-@media (max-width: 71.99rem) {
-  .pp-toc-wrapper {
-    min-height: 0;
-  }
-  .pp-socials {
-    padding-top: 12px;
-    margin-top: 12px;
-  }
 }

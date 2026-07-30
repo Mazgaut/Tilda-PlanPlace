@@ -49,8 +49,8 @@ export default defineConfig({
       components: {
         Head: './src/components/Head.astro',
         Pagination: './src/components/Pagination.astro',
-        // Правая панель «На этой странице» + блок соц.сетей внизу.
-        TableOfContents: './src/components/TableOfContents.astro',
+        // Подвал статьи + блок ссылок на соц.сети (виден на всех экранах).
+        Footer: './src/components/Footer.astro',
         // Логотип в шапке вместо текста «PlanPlace».
         SiteTitle: './src/components/SiteTitle.astro',
       },
