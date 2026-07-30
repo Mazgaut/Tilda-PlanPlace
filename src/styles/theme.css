@@ -43,3 +43,103 @@
   --pp-field-border: #d0d7de;
   --pp-muted: #5c6770;
 }
+
+/* ─── Логотип в шапке ─────────────────────────────────────────────── */
+
+/* Ссылка-логотип: занимает место текста «PlanPlace» в шапке.
+   Отступ 10px от логотипа до любого соседнего элемента/края. */
+.pp-logo-link {
+  display: inline-flex;
+  align-items: center;
+  margin: 10px;
+  max-width: calc(100% - 20px); /* не прижиматься к краям ближе 10px */
+}
+
+/* Само изображение логотипа:
+   • адаптируется по ширине и высоте (height:auto + max-width);
+   • пропорции заблокированы через aspect-ratio + object-fit;
+   • ширина не более 100 мм (≈ 378px при 96 dpi). */
+.pp-logo {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: min(100mm, 100%);
+  max-height: 40px;
+  object-fit: contain;
+}
+
+/* Переключение версий логотипа по теме.
+   Тёмная тема — Starlight по умолчанию (без data-theme и при data-theme='dark'). */
+.pp-logo--light {
+  display: none;
+}
+.pp-logo--dark {
+  display: block;
+}
+:root[data-theme='light'] .pp-logo--light {
+  display: block;
+}
+:root[data-theme='light'] .pp-logo--dark {
+  display: none;
+}
+
+/* ─── Блок соц.сетей в панели «На этой странице» ─────────────────── */
+
+/* Обёртка вокруг штатного оглавления. На десктопе тянется на всю высоту
+   правой панели, чтобы соц.блок можно было прижать к низу. */
+.pp-toc-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+.pp-socials {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  flex-wrap: wrap;
+  padding-top: 16px;
+  margin-top: 16px;
+  border-top: 1px solid var(--sl-color-hairline, var(--pp-field-border));
+}
+
+.pp-social-link {
+  display: inline-flex;
+  line-height: 0;
+  opacity: 0.85;
+  transition: opacity 0.15s ease;
+}
+.pp-social-link:hover {
+  opacity: 1;
+}
+
+.pp-social-link img {
+  width: 28px;
+  height: 28px;
+  display: block;
+}
+
+/* Десктоп (панель справа видима): прижимаем соц.блок к низу экрана.
+   Правая панель Starlight — sticky на высоту вьюпорта. */
+@media (min-width: 72rem) {
+  .pp-toc-wrapper {
+    /* высота липкой панели минус её вертикальные отступы */
+    min-height: calc(100vh - var(--sl-nav-height) - 2 * var(--sl-sidebar-pad-x, 1rem));
+  }
+  .pp-socials {
+    margin-top: auto; /* уводит блок в самый низ */
+  }
+}
+
+/* Мобильная/планшетная версия: оглавление отображается компактным
+   блоком над контентом. Соц.блок идёт сразу после него в потоке —
+   т.е. «сразу после текста оглавления». Убираем растяжку по высоте. */
+@media (max-width: 71.99rem) {
+  .pp-toc-wrapper {
+    min-height: 0;
+  }
+  .pp-socials {
+    padding-top: 12px;
+    margin-top: 12px;
+  }
+}

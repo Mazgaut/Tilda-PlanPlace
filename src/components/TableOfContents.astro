@@ -1,0 +1,33 @@
+---
+// Переопределение правой панели «На этой странице».
+// Рендерит штатный Starlight-компонент оглавления, а снизу добавляет
+// блок ссылок на соц.сети и видео-каналы PlanPlace.
+// - на десктопе блок прижат к низу панели;
+// - на мобильном показывается сразу после текста статьи (оглавление
+//   там отображается над контентом, поэтому блок выносится под него
+//   через CSS-порядок — см. src/styles/theme.css).
+import Default from '@astrojs/starlight/components/TableOfContents.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const socials = [
+  { href: 'https://www.youtube.com/@planplace9272', alt: 'youtube', icon: `${base}/social/youtube.png` },
+  { href: 'https://rutube.ru/channel/52167970/', alt: 'RUTUBE', icon: `${base}/social/rutube.png` },
+  { href: 'https://vk.com/planplace', alt: 'vkontakte', icon: `${base}/social/vk.png` },
+  { href: 'https://t.me/planplace', alt: 'telegram', icon: `${base}/social/telegram.png` },
+];
+---
+
+<div class="pp-toc-wrapper">
+  <div class="pp-toc-default">
+    <Default {...Astro.props}><slot /></Default>
+  </div>
+
+  <div class="pp-socials" aria-label="Соцсети и видео-каналы PlanPlace">
+    {socials.map((s) => (
+      <a class="pp-social-link" href={s.href} target="_blank" rel="noopener" aria-label={s.alt}>
+        <img src={s.icon} alt={s.alt} width="28" height="28" loading="lazy" />
+      </a>
+    ))}
+  </div>
+</div>

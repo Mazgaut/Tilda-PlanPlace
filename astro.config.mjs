@@ -49,6 +49,10 @@ export default defineConfig({
       components: {
         Head: './src/components/Head.astro',
         Pagination: './src/components/Pagination.astro',
+        // Правая панель «На этой странице» + блок соц.сетей внизу.
+        TableOfContents: './src/components/TableOfContents.astro',
+        // Логотип в шапке вместо текста «PlanPlace».
+        SiteTitle: './src/components/SiteTitle.astro',
       },
       // SEO: за счёт статической генерации каждая статья отдаётся готовым HTML,
       // sitemap.xml формируется автоматически, meta/canonical/OG проставляются Starlight.

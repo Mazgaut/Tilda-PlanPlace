@@ -1,0 +1,11 @@
+---
+// Переопределение заголовка сайта в шапке: вместо текста «PlanPlace»
+// показываем логотип PlanPlace. Отдельные файлы для светлой и тёмной темы.
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const href = `${base}/`;
+---
+
+<a href={href} class="site-title pp-logo-link" aria-label="PlanPlace · Справка">
+  <img class="pp-logo pp-logo--light" src={`${base}/logo/logo-light.svg`} alt="PlanPlace" />
+  <img class="pp-logo pp-logo--dark" src={`${base}/logo/logo-dark.svg`} alt="PlanPlace" />
+</a>
