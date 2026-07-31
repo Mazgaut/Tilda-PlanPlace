@@ -9,19 +9,20 @@ import Default from '@astrojs/starlight/components/Footer.astro';
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 const socials = [
-  { href: 'https://www.youtube.com/@planplace9272', alt: 'youtube', icon: `${base}/social/youtube.png` },
-  { href: 'https://rutube.ru/channel/52167970/', alt: 'RUTUBE', icon: `${base}/social/rutube.png` },
-  { href: 'https://vk.com/planplace', alt: 'vkontakte', icon: `${base}/social/vk.png` },
-  { href: 'https://t.me/planplace', alt: 'telegram', icon: `${base}/social/telegram.png` },
+  { href: 'https://www.youtube.com/@planplace9272', alt: 'youtube', icon: 'youtube' },
+  { href: 'https://rutube.ru/channel/52167970/', alt: 'RUTUBE', icon: 'rutube' },
+  { href: 'https://vk.com/planplace', alt: 'vkontakte', icon: 'vk' },
+  { href: 'https://t.me/planplace', alt: 'telegram', icon: 'telegram' },
 ];
 ---
 
 <Default {...Astro.props}><slot /></Default>
 
 <div class="pp-socials" aria-label="Соцсети и видео-каналы PlanPlace">
-  {socials.map((s) => (
-    <a class="pp-social-link" href={s.href} target="_blank" rel="noopener" aria-label={s.alt}>
-      <img src={s.icon} alt={s.alt} width="28" height="28" loading="lazy" />
-    </a>
+    {socials.map((s) => (
+      <a class="pp-social-link" href={s.href} target="_blank" rel="noopener" aria-label={s.alt}>
+        <img class="pp-social-icon pp-social-icon--dark" src={`${base}/social/${s.icon}.png`} alt={s.alt} width="28" height="28" loading="lazy" />
+        <img class="pp-social-icon pp-social-icon--light" src={`${base}/social/${s.icon}-light.png`} alt="" width="28" height="28" loading="lazy" aria-hidden="true" />
+      </a>
   ))}
 </div>

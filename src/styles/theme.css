@@ -144,6 +144,19 @@
   display: block;
 }
 
+/* На светлой теме белые иконки заменяются инверсными чёрными вариантами. */
+.pp-social-icon--light {
+  display: none !important;
+}
+
+:root[data-theme='light'] .pp-social-icon--dark {
+  display: none;
+}
+
+:root[data-theme='light'] .pp-social-icon--light {
+  display: block !important;
+}
+
 /* Десктоп: прижимаем блок к низу липкой правой панели. */
 @media (min-width: 72rem) {
   .pp-toc-wrapper {
