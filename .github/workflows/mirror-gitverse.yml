@@ -6,6 +6,9 @@ on:
 
 jobs:
   mirror:
+    # This workflow is copied to GitVerse together with the repository. Run it
+    # only in the source GitHub repository; GitVerse is the mirror target.
+    if: github.repository_owner == 'Mazgaut'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
