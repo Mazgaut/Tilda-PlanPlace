@@ -1,7 +1,8 @@
 # Справочный центр PlanPlace
 
 Документация PlanPlace на [Astro Starlight](https://starlight.astro.build/) —
-статический сайт справки с авто-деплоем (GitHub Pages или свой VPS/сервер).
+статический сайт справки с production-деплоем через GitVerse на
+[help.planplace.online](https://help.planplace.online/).
 
 Почему так: каждая статья генерируется в готовый HTML, поэтому страницы
 индексируются поисковиками и читаются ИИ-поисковиками, а меню и оформление
@@ -96,32 +97,31 @@ npm run build    # собрать статику в ./dist
 npm run preview  # посмотреть собранную статику
 ```
 
-## Публикация
+## Публикация и production-деплой
 
-`npm run build` собирает статику в `./dist`. Адрес сайта и базовый путь
-задаются переменными окружения (по умолчанию — под GitHub Pages):
+Актуальная цепочка публикации:
 
-- `SITE_URL` — адрес сайта (по умолчанию `https://mazgaut.github.io`);
-- `BASE_PATH` — базовый путь (по умолчанию `/Tilda-PlanPlace`; для своего
-  домена в корень — `/`).
+1. Исходный репозиторий —
+   [Mazgaut/Tilda-PlanPlace](https://github.com/Mazgaut/Tilda-PlanPlace) на
+   GitHub. Изменения коммитятся и отправляются сюда.
+2. Workflow `.github/workflows/mirror-gitverse.yml` при каждом push зеркалирует
+   текущий `HEAD` в ветку `master` репозитория
+   [max41125/PlanPlace-information](https://gitverse.ru/max41125/PlanPlace-information)
+   на GitVerse.
+3. GitVerse является источником production-деплоя. Из его ветки `master`
+   запускается обновление приложения на целевом сервере.
+4. Публичный production-сайт — [help.planplace.online](https://help.planplace.online/).
+
+> **Обязательное правило для следующих изменений:** GitHub Pages не входит в
+> актуальную цепочку production-деплоя. Не нужно обновлять, запускать или
+> настраивать деплой GitHub Pages, если отдельная задача явно этого не требует.
+> Проверять результат следует локально и на `help.planplace.online` после
+> прохождения зеркалирования и production-деплоя.
+
+`npm run build` собирает статику в `./dist`. Для production сайт собирается в
+корне домена: `SITE_URL=https://help.planplace.online`, `BASE_PATH=/`.
 
 Внутренние ссылки и пути к картинкам с префиксом `/Tilda-PlanPlace/...`
 автоматически подгоняются под текущий `base` (remark-плагин
 `src/remark/base-links.mjs`), поэтому при смене `BASE_PATH` переписывать статьи
 не нужно. Значения настраиваются в `astro.config.mjs`.
-
-Настроены два варианта деплоя:
-
-### GitHub Pages — `.github/workflows/deploy.yml`
-
-Срабатывает при пуше в `main` (и в текущую рабочую ветку). Разовая настройка:
-**Settings → Pages → Build and deployment → Source → GitHub Actions**. Для
-своего домена добавьте файл `public/CNAME` с доменом и DNS-запись на GitHub Pages.
-
-### Свой VPS/сервер (Nginx) — `.github/workflows/deploy-vps.yml`
-
-Срабатывает при пуше в `main`. Собирает сайт в корень (`BASE_PATH=/`, `SITE_URL`
-из переменной репозитория) и выкладывает `dist/` на сервер по SSH (`rsync`).
-Нужны секреты репозитория `SSH_PRIVATE_KEY`, `SSH_KNOWN_HOSTS`, `SSH_HOST`,
-`SSH_USER`, `SSH_PORT`, `DEPLOY_PATH` и переменная `SITE_URL`. Пока ветки `main`
-и секретов нет — workflow не выполняется.

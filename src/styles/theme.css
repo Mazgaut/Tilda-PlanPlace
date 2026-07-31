@@ -100,7 +100,15 @@
   }
 }
 
-/* ─── Блок соц.сетей в подвале статьи ─────────────────────────────── */
+/* ─── Блок соц.сетей в правой панели и подвале статьи ─────────────── */
+
+/* Обёртка вокруг штатного оглавления. На десктопе тянется на всю высоту
+   правой панели, чтобы соц.блок можно было прижать к низу. */
+.pp-toc-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
 
 /* Идёт под штатным подвалом Starlight (пагинация, «Редактировать»).
    Виден на всех страницах и при любой ширине экрана. */
@@ -129,4 +137,25 @@
   width: 28px;
   height: 28px;
   display: block;
+}
+
+/* Десктоп: прижимаем блок к низу липкой правой панели. */
+@media (min-width: 72rem) {
+  .pp-toc-wrapper {
+    min-height: calc(100vh - var(--sl-nav-height) - 2 * var(--sl-sidebar-pad-x, 1rem));
+  }
+  .pp-toc-wrapper .pp-socials {
+    margin-top: auto;
+  }
+}
+
+/* Мобильная/планшетная версия: соцсети идут сразу после оглавления. */
+@media (max-width: 71.99rem) {
+  .pp-toc-wrapper {
+    min-height: 0;
+  }
+  .pp-toc-wrapper .pp-socials {
+    padding-top: 12px;
+    margin-top: 12px;
+  }
 }
