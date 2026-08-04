@@ -55,6 +55,8 @@ export default defineConfig({
         TableOfContents: './src/components/TableOfContents.astro',
         // Логотип в шапке вместо текста «PlanPlace».
         SiteTitle: './src/components/SiteTitle.astro',
+        // Дата из front matter сразу под заголовком статьи.
+        PageTitle: './src/components/PageTitle.astro',
       },
       // SEO: за счёт статической генерации каждая статья отдаётся готовым HTML,
       // sitemap.xml формируется автоматически, meta/canonical/OG проставляются Starlight.

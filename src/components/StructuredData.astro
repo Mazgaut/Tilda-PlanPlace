@@ -23,7 +23,12 @@ const homeUrl = new URL(import.meta.env.BASE_URL, site).href;
 const canonical = new URL(Astro.url.pathname, site).href;
 const lang = route?.lang ?? 'ru';
 const published = '2026-06-01T00:00:00Z';      // стабильная дата публикации
-const modified = new Date().toISOString();       // обновляется при пересборке
+// Берём редакционную дату из front matter (`lastUpdated`). Нельзя подставлять
+// время сборки: иначе поисковики будут видеть ложное «обновление» всех статей
+// при каждом деплое сайта.
+const modified = route?.lastUpdated instanceof Date
+  ? route.lastUpdated.toISOString()
+  : undefined;
 
 const siteName = 'PlanPlace · Справка';
 const title = data.title ?? siteName;
@@ -86,7 +91,7 @@ if (isHome) {
     url: canonical,
     mainEntityOfPage: canonical,
     datePublished: published,
-    dateModified: modified,
+    ...(modified ? { dateModified: modified } : {}),
     author: { '@id': `${homeUrl}#organization` },
     publisher: { '@id': `${homeUrl}#organization` },
     isPartOf: { '@id': `${homeUrl}#website` },

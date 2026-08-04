@@ -35,6 +35,12 @@ export default config({
           label: 'Описание (для SEO и сниппетов)',
           multiline: true,
         }),
+        lastUpdated: fields.date({
+          label: 'Дата обновления',
+          description: 'Обязательная редакционная дата. Показывается под заголовком статьи и передаётся в Schema.org.',
+          defaultValue: { kind: 'today' },
+          validation: { isRequired: true },
+        }),
         content: fields.mdx({
           label: 'Содержание',
           // Кастомные Astro-компоненты, которые встречаются в статьях.
