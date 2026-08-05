@@ -65,6 +65,7 @@ export const sidebar = [
       },
       { label: 'Присадки и шаблоны присадок', slug: 'prisadki' },
       { label: 'Пазы и вырезы', slug: 'pazy-i-vyrezy' },
+      { label: 'Вырезы: ключи и исключения', slug: 'vyrezy' },
       { label: 'Аниматор: анимация мебели', slug: 'animator' },
       { label: 'Размеры и точки прилипания', slug: 'razmery-i-tochki-prilipaniya' },
       { label: 'Горячие клавиши в конфигураторе', slug: 'goryachie-klavishi-konfigurator' },
