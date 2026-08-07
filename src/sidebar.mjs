@@ -136,6 +136,7 @@ export const sidebar = [
         label: 'Публичное API (1С, CRM, интеграции)',
         items: [
           { label: 'Обзор и аутентификация', slug: 'api-publichnoe-obzor' },
+          { label: 'Интеграция с Битрикс24', slug: 'integraciya-s-bitrix24' },
           { label: 'Цены', slug: 'api-ceny' },
           { label: 'Заказы', slug: 'api-zakazy' },
           { label: 'Отправка заявки (APIv2)', slug: 'api-zayavki-v2' },
