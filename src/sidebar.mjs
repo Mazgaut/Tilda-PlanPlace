@@ -138,6 +138,7 @@ export const sidebar = [
           { label: 'Обзор и аутентификация', slug: 'api-publichnoe-obzor' },
           { label: 'Цены', slug: 'api-ceny' },
           { label: 'Заказы', slug: 'api-zakazy' },
+          { label: 'Отправка заявки (APIv2)', slug: 'api-zayavki-v2' },
           { label: 'Каталог (материалы, фасады, модули)', slug: 'api-katalog' },
         ],
       },
