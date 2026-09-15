@@ -1,0 +1,4 @@
+interface:
+  display_name: "Писатель инструкций для пользователей PlanPlace"
+  short_description: "Пишет и проверяет справку PlanPlace"
+  default_prompt: "Используй $planplace-user-docs-writer, чтобы подготовить или проверить статью справки PlanPlace по актуальному коду core_2."
