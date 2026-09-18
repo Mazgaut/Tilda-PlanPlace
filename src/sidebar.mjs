@@ -130,6 +130,7 @@ export const sidebar = [
           { label: 'Модальные окна и уведомления', slug: 'razrabotchiku-modalki-uvedomleniya' },
           { label: 'Спецификация и артикулы на лету', slug: 'razrabotchiku-specifikaciya-artikuly' },
           { label: 'Артикул из комбинации параметров', slug: 'razrabotchiku-artikul-iz-parametrov' },
+          { label: 'Каталог таблиц: пользовательские формы и интеграции', slug: 'katalog-tablic-custom-table' },
         ],
       },
       {
