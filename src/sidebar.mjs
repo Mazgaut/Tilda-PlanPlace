@@ -107,6 +107,7 @@ export const sidebar = [
     items: [
       { label: 'Интерфейс сцены', slug: 'interfeys-sceny' },
       { label: 'Горячие клавиши и мышь на сцене', slug: 'goryachie-klavishi-scena' },
+      { label: 'Разрезы цоколей на сцене', slug: 'razrezy-cokoley-na-scene' },
       { label: 'Настройка меню планировщика', slug: 'nastroyka-menyu-planirovschika' },
       { label: 'Готовые проекты', slug: 'gotovye-proekty' },
       { label: 'Спецификация и отправка на расчёт', slug: 'specifikaciya-i-otpravka-na-raschet' },
