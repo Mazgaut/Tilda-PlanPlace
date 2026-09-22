@@ -1,0 +1,28 @@
+---
+/**
+ * Локальное видео из public/media. В отличие от Video.astro не создаёт iframe
+ * и подходит для коротких роликов, которые хранятся вместе со справкой.
+ */
+interface Props {
+  src: string;
+  title: string;
+}
+
+const { src, title } = Astro.props;
+---
+
+<video class="pp-local-video" controls preload="metadata" playsinline aria-label={title}>
+  <source src={src} type="video/mp4" />
+</video>
+
+<style>
+  .pp-local-video {
+    display: block;
+    width: 100%;
+    max-width: 1100px;
+    margin: 1.25rem 0;
+    border: 1px solid var(--sl-color-hairline-light);
+    border-radius: 8px;
+    background: #000;
+  }
+</style>

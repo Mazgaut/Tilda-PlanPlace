@@ -103,6 +103,8 @@ JSON-LD. Она формируется централизованно компо
 
 <Video src="https://vkvideo.ru/video_ext.php?oid=...&id=..." />
 
+<LocalVideo src="/Tilda-PlanPlace/media/<slug>/primer.mp4" title="Краткое описание действия в ролике" />
+
 <Download href="https://.../primer.xlsx" label="Скачать пример в формате Excel" />
 
 <Bitrix24InlineForm />
@@ -116,6 +118,7 @@ JSON-LD. Она формируется централизованно компо
   строку (`inline={false}`). Путь к картинке — как обычно, с префиксом
   `/Tilda-PlanPlace/...` (подгоняется под `base` автоматически).
 - **Video** — адаптивное видео 16:9 (VK Видео, YouTube и т. п.).
+- **LocalVideo** — видеофайл MP4 из `public/media`, которое воспроизводится встроенным плеером браузера.
 - **Download** — кнопка скачивания файла-примера; тип файла (Excel или архив/3D)
   определяется по расширению в ссылке.
 - **Bitrix24InlineForm** — встроенная форма обратной связи.

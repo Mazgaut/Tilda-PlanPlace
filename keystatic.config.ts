@@ -85,6 +85,14 @@ export default config({
                 src: fields.url({ label: 'Ссылка на плеер (src у iframe)' }),
               },
             }),
+            // Ролик, который хранится в public/media и воспроизводится нативным плеером.
+            LocalVideo: block({
+              label: 'Видео из файлов сайта',
+              schema: {
+                src: fields.text({ label: 'Путь к MP4-файлу' }),
+                title: fields.text({ label: 'Описание видео для доступности' }),
+              },
+            }),
           },
         }),
       },
