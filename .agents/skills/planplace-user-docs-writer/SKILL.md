@@ -1,6 +1,6 @@
 ---
 name: planplace-user-docs-writer
-description: Create, update, and audit Russian-language end-user help articles for PlanPlace using the current core_2 code and UI as the source of truth. Use for documentation work in the Tilda-PlanPlace repository; do not modify the PlanPlace application code or publish changes unless explicitly requested.
+description: Create, update, and audit Russian-language end-user help articles for PlanPlace using validated UI hints, current core_2 code, and the UI. Use for documentation work in the Tilda-PlanPlace repository; do not modify the PlanPlace application code or publish changes unless explicitly requested.
 ---
 
 # Писатель инструкций для пользователей PlanPlace
@@ -11,8 +11,9 @@ description: Create, update, and audit Russian-language end-user help articles f
 
 ## Границы работы
 
-- Редактируй документацию в `D:\Documents\Claude\Tilda-PlanPlace`, прежде всего в `src\content\docs`.
-- Используй `D:\Documents\PP\_Source\_Code\kit` только для исследования актуального PlanPlace core_2. Никогда не изменяй код, конфигурацию или данные этого репозитория.
+- Редактируй локальный репозиторий справки `Tilda-PlanPlace`, прежде всего `<корень Tilda-PlanPlace>\src\content\docs`. На одном из устройств он расположен в `D:\Documents\Claude\Tilda-PlanPlace`; на другом путь может отличаться. Определи корень по `README.md`, `src\content\docs` и Git-репозиторию.
+- Найди локальный репозиторий `kit` на текущем устройстве и используй его только для исследования актуального PlanPlace core_2. Подтверждённое расположение на одном компьютере: `D:\Documents\PP_Source_Code\kit`; на другом путь может отличаться. Определи корень по Git-репозиторию и наличию `common_assets\hints`. Никогда не изменяй код, конфигурацию или данные этого репозитория.
+- Авторитетный источник содержания подсказок — `<корень kit>\common_assets\hints`, изображения — `<корень kit>\common_assets\hints\images`. Тексты HTML-подсказок и изображения рекомендуются для наполнения справочных статей. Подсказки публикует и проверяет специалист, непосредственно знакомый с функциями и их применением; в объяснении назначения и практического использования они приоритетнее существующих статей и выводов только по коду.
 - Проверяй поведение по основной ветке исходного кода. Если рабочая копия находится на другой ветке, исследуй `master` или `origin/master` через команды чтения Git, не переключая ветку и не затрагивая незакоммиченные изменения.
 - Обращайся к core_1 только для материалов, где пользователь прямо просит сравнение версий или описывает переход с 1.0 на 2.0.
 - Оставляй изменения справки локальными. Создавай коммит и запускай публикацию только по отдельной прямой команде пользователя.
@@ -21,7 +22,7 @@ description: Create, update, and audit Russian-language end-user help articles f
 
 1. Прочитай `README.md` репозитория справки и [правила оформления](references/article-format.md).
 2. Прочитай целевую статью, связанные подробные статьи и соответствующую часть `src/sidebar.mjs`.
-3. Проверь факты по [правилам исследования PlanPlace](references/research-and-verification.md).
+3. Найди относящиеся к теме подсказки в `common_assets\hints`, затем проверь факты по [правилам исследования PlanPlace](references/research-and-verification.md).
 4. Если задача связана с недавно реализованной функцией, прочитай [внутренние материалы разработчиков](references/developer-materials.md) и используй только разрешённые там сведения.
 5. Проверь состояние обоих репозиториев и сохрани все посторонние пользовательские изменения.
 
