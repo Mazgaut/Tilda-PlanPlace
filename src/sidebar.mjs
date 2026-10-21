@@ -45,6 +45,7 @@ export const sidebar = [
     items: [
       { label: 'Основы конфигуратора', slug: 'osnovy-konfiguratora' },
       { label: 'Секции и наполняемые секции', slug: 'sekcii-i-napolnyaemye-sekcii' },
+      { label: 'Элементы наполнения', slug: 'elementy-napolneniya' },
       { label: 'Детали', slug: 'detali' },
       { label: 'Параметры, формулы и позиционирование', slug: 'parametry-formuly-pozicionirovanie' },
       { label: 'Пересечения и произвольное вращение модулей', slug: 'vraschenie-i-peresecheniya-modeley' },
