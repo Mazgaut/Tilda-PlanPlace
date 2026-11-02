@@ -1,6 +1,7 @@
 ---
 title: "Публичное API: каталог (материалы, фасады и комплектующие)"
 description: "CRUD-методы внешнего API PlanPlace: чтение, добавление, обновление и удаление материалов, декоров, категорий, фасадов, ручек и комплектующих через 1С/CRM."
+lastUpdated: 2026-11-02
 ---
 
 Раздел каталога внешнего API позволяет управлять материалами/декорами, фасадами, ручками и комплектующими. Общие правила (базовый URL, `sync_key`, применение `apply_data`) — в статье [«Публичное API: обзор»](/Tilda-PlanPlace/api-publichnoe-obzor/).
@@ -157,6 +158,956 @@ POST  ОсновнойURL/api/update_items/accessories     (data + sync_key)
 
 Точный формат объекта для каждого раздела (поля элемента) приведён в разделе API вашего кабинета — структура аналогична материалам: `id`, `name`, `code`, `category`, плюс специфичные для раздела поля.
 
+## Модули пользовательского каталога
+
+Для модулей из пользовательского каталога используются отдельные методы. Параметр `key` — ключ каталога, например `_kmodule`. Его нужно получить из настроек конкретного каталога; подставлять название категории вместо ключа нельзя. Сохраняйте начальные подчёркивания в ключе.
+
+### Получить список модулей
+
+```http
+GET ОсновнойURL/api/get_catalog_module_items?sync_key=ВАШ_КЛЮЧ&key=_kmodule
+```
+
+Необязательные параметры:
+
+- `limit` или `per_page` — сколько элементов вернуть;
+- `offset` или `start` — с какого элемента начать выборку.
+
+Ответ содержит массив `items`, общее количество `count`, ключ каталога и применённые параметры пагинации. Элементы идут по полю `order`, затем по `id`.
+
+### Получить один модуль
+
+```http
+GET ОсновнойURL/api/get_catalog_module_item?sync_key=ВАШ_КЛЮЧ&key=_kmodule&id=22
+```
+
+В успешном ответе объект модуля находится в поле `item`. Если каталог или запись не найдены, API вернёт ответ с `result: "error"` и описанием причины.
+
+### Добавить или изменить модуль
+
+```http
+POST ОсновнойURL/api/add_catalog_module_item
+POST ОсновнойURL/api/update_catalog_module_item
+```
+
+Передавайте `sync_key` и `key` в теле запроса. Для изменения также обязателен `id`. Поддерживаются поля:
+
+| Поле | Назначение |
+|---|---|
+| `name` | название модуля |
+| `order` | порядок в каталоге |
+| `active` | `1` — показывать модуль, `0` — отключить |
+| `data` | полный объект параметров модуля в JSON |
+
+`data` можно передать как JSON-строку или объект. При изменении указывайте только те верхнеуровневые поля, которые действительно нужно заменить. Если передаёте новый объект `data`, сначала получите текущую запись и сохраните в нём все необходимые параметры конструкции.
+
+<details>
+<summary>Краткий пример `data` и назначение полей</summary>
+
+Ниже сокращённый фрагмент ответа для модуля «Верхний модуль 1 дверь» (`key=_kmodule`, `id=22`). Значения взяты из реальной записи, а остальные поля и элементы массивов опущены. Полный `item.data` этого модуля значительно больше. Для изменения своего модуля получите его полный объект методом `get_catalog_module_item` и используйте `item.data` как основу.
+
+```json
+{
+  "name": "Верхний модуль 1 дверь",
+  "active": "1",
+  "order": 1,
+  "category": ["12"],
+  "code": "В1Д-{s:y}-{s:x}",
+  "element_type": "_kmodule",
+  "params": {
+    "type": "module",
+    "name": "Верхний модуль 1 дверь",
+    "size": { "x": 400, "y": 720, "z": 300 },
+    "spec": {
+      "cabinet_tag": "top",
+      "selected_variant": 4,
+      "selected_template": -1,
+      "templates": [{ "template": { "tree": { "type": "module" } } }],
+      "variants": [{
+        "name": "Верхний модуль 1 дверь {s:y}-{s:x}",
+        "size": { "x": "200", "y": "v:_top_h", "z": "v:_top_d" },
+        "default": 1,
+        "active": 1
+      }]
+    }
+  }
+}
+```
+
+- `name`, `active`, `order`, `category` — название, доступность, порядок и категория; часть этих значений также хранится в отдельных полях записи.
+- `code` — шаблон артикула: обозначения в фигурных скобках подставляют значения при формировании артикула.
+- `element_type` — ключ типа элемента каталога; здесь `_kmodule`, в отличие от `params.type`, который обозначает тип корневого узла конструкции.
+- `params.size` — текущие размеры модуля в миллиметрах по осям X, Y и Z.
+- `params.spec.templates` — шаблоны конструкции; внутри `template.tree` находится дерево модуля. Дочерние узлы в примере опущены.
+- `params.spec.variants` — варианты типоразмеров. Размер может быть числом или выражением с переменной, как `v:_top_h`.
+- `selected_variant` и `selected_template` — значения выбора варианта и шаблона в этой записи; не меняйте их без проверки связанных массивов.
+
+При передаче `data` в запросе обновления объект заменяется целиком. Не отправляйте сокращённый пример вместо полученного `item.data`: так можно потерять настройки конструкции.
+
+</details>
+
+> **Удаление этим набором методов не предусмотрено.** Чтобы временно убрать модуль из каталога, измените `active` на `0`. После пакетных изменений вызовите `api/apply_data`, затем проверьте один модуль на сцене.
+
+
+<details>
+<summary>Полный `data` модуля №22</summary>
+
+Это весь объект `item.data` модуля «Верхний модуль 1 дверь» из каталога `_kmodule` на 02.11.2026. Используйте его для изучения структуры. Для изменения своего модуля сначала получите его актуальные данные: отправка этого объекта вместо них заменит настройки модуля.
+
+```json
+{
+  "active": "1",
+  "order": 1,
+  "category": [
+    "12"
+  ],
+  "icon": "files/auto_icons/catalog__kmodule/22.jpg",
+  "id": "22",
+  "name": "Верхний модуль 1 дверь",
+  "code": "В1Д-{s:y}-{s:x}",
+  "cabinet_tag": "top",
+  "element_type": "_kmodule",
+  "catalog_type": "",
+  "stock": "1",
+  "params": {
+    "type": "module",
+    "name": "Верхний модуль 1 дверь",
+    "id": "",
+    "lib": "",
+    "tags": "",
+    "interactive": 0,
+    "spec": {
+      "cabinet_tag": "top",
+      "cabinet_group": "top",
+      "drag_mode": "surface",
+      "element_type": "_kmodule",
+      "catalog_type": "",
+      "mat_groups": [
+        {
+          "active": 1,
+          "name": "Корпус",
+          "key": "g0",
+          "modules_groups": [
+            "bottom",
+            "top",
+            "antresol",
+            "penal",
+            "section"
+          ],
+          "show_all_values": 0,
+          "local": 0,
+          "default": 1
+        }
+      ],
+      "defaults": [],
+      "selected_variant": 4,
+      "variants": [
+        {
+          "code": "В1Д-{s:y}-{s:x}",
+          "name": "Верхний модуль 1 дверь {s:y}-{s:x}",
+          "size": {
+            "x": "200",
+            "y": "v:_top_h",
+            "z": "v:_top_d"
+          },
+          "price": 0,
+          "default": 1,
+          "active": 1,
+          "accessories": [],
+          "width": "200",
+          "height": "v:_top_h",
+          "depth": "v:_top_d",
+          "variables": [],
+          "params_item": []
+        },
+        {
+          "name": "Верхний модуль 1 дверь {s:y}-{s:x}",
+          "code": "В1Д-{s:y}-{s:x}",
+          "price": 0,
+          "variables": [],
+          "active": 1,
+          "accessories": [],
+          "size": {
+            "x": "250",
+            "y": "v:_top_h",
+            "z": "v:_top_d"
+          },
+          "width": "250",
+          "height": "v:_top_h",
+          "depth": "v:_top_d",
+          "params_item": []
+        },
+        {
+          "name": "Верхний модуль 1 дверь {s:y}-{s:x}",
+          "code": "В1Д-{s:y}-{s:x}",
+          "price": 0,
+          "variables": [],
+          "active": 1,
+          "accessories": [],
+          "size": {
+            "x": "300",
+            "y": "v:_top_h",
+            "z": "v:_top_d"
+          },
+          "width": "300",
+          "height": "v:_top_h",
+          "depth": "v:_top_d",
+          "params_item": []
+        },
+        {
+          "name": "Верхний модуль 1 дверь {s:y}-{s:x}",
+          "code": "В1Д-{s:y}-{s:x}",
+          "price": 0,
+          "variables": [],
+          "active": 1,
+          "accessories": [],
+          "size": {
+            "x": "350",
+            "y": "v:_top_h",
+            "z": "v:_top_d"
+          },
+          "width": "350",
+          "height": "v:_top_h",
+          "depth": "v:_top_d",
+          "params_item": []
+        },
+        {
+          "name": "Верхний модуль 1 дверь {s:y}-{s:x}",
+          "code": "В1Д-{s:y}-{s:x}",
+          "price": 0,
+          "variables": [],
+          "active": 1,
+          "accessories": [],
+          "size": {
+            "x": "400",
+            "y": "v:_top_h",
+            "z": "v:_top_d"
+          },
+          "width": "400",
+          "height": "v:_top_h",
+          "depth": "v:_top_d",
+          "params_item": []
+        },
+        {
+          "name": "Верхний модуль 1 дверь {s:y}-{s:x}",
+          "code": "В1Д-{s:y}-{s:x}",
+          "price": 0,
+          "variables": [],
+          "active": 1,
+          "accessories": [],
+          "size": {
+            "x": "450",
+            "y": "v:_top_h",
+            "z": "v:_top_d"
+          },
+          "width": "450",
+          "height": "v:_top_h",
+          "depth": "v:_top_d",
+          "params_item": []
+        },
+        {
+          "name": "Верхний модуль 1 дверь {s:y}-{s:x}",
+          "code": "В1Д-{s:y}-{s:x}",
+          "price": 0,
+          "variables": [],
+          "active": 1,
+          "accessories": [],
+          "size": {
+            "x": "500",
+            "y": "v:_top_h",
+            "z": "v:_top_d"
+          },
+          "width": "500",
+          "height": "v:_top_h",
+          "depth": "v:_top_d",
+          "params_item": []
+        },
+        {
+          "name": "Верхний модуль 1 дверь {s:y}-{s:x}",
+          "code": "В1Д-{s:y}-{s:x}",
+          "price": 0,
+          "variables": [],
+          "active": 1,
+          "accessories": [],
+          "size": {
+            "x": "550",
+            "y": "v:_top_h",
+            "z": "v:_top_d"
+          },
+          "width": "550",
+          "height": "v:_top_h",
+          "depth": "v:_top_d",
+          "params_item": []
+        },
+        {
+          "name": "Верхний модуль 1 дверь {s:y}-{s:x}",
+          "code": "В1Д-{s:y}-{s:x}",
+          "price": 0,
+          "variables": [],
+          "active": 1,
+          "accessories": [],
+          "size": {
+            "x": "600",
+            "y": "v:_top_h",
+            "z": "v:_top_d"
+          },
+          "width": "600",
+          "height": "v:_top_h",
+          "depth": "v:_top_d",
+          "params_item": []
+        }
+      ],
+      "selected_template": -1,
+      "templates": [
+        {
+          "name": "",
+          "code": "",
+          "min": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "max": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "template": {
+            "tree": [
+              {
+                "spec": {
+                  "id": "63",
+                  "element_type": "_ktemplates",
+                  "fill_content": {
+                    "facad_one": {
+                      "name": "Секция систем Открывания",
+                      "key": "facad_one",
+                      "children": [
+                        {
+                          "spec": {
+                            "id": "1",
+                            "element_type": "_door",
+                            "fill_content": [],
+                            "add_linked_item": 1,
+                            "linked_item_id": 2
+                          },
+                          "type": "module",
+                          "size": {
+                            "x": "s:x",
+                            "y": "s:y",
+                            "z": "s:z"
+                          },
+                          "pos": {
+                            "z": "s:z",
+                            "x": 0,
+                            "y": 0
+                          },
+                          "rot": {
+                            "x": 0,
+                            "y": 0,
+                            "z": 0
+                          },
+                          "name": "Дверь Н →"
+                        }
+                      ]
+                    }
+                  },
+                  "linked_item_id": 0
+                },
+                "type": "module",
+                "size": {
+                  "x": "s:x",
+                  "y": "s:y",
+                  "z": "s:z"
+                },
+                "pos": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "rot": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "name": "Верхний прямой"
+              }
+            ],
+            "variables": [],
+            "accessories": []
+          }
+        }
+      ],
+      "module_types": {
+        "_ktemplates": {
+          "visible": 0
+        },
+        "el_korp": {
+          "visible": 0
+        }
+      },
+      "fill_content": [],
+      "can_change": {
+        "id": 1
+      },
+      "movement_locked": 0,
+      "not_load_default": 0,
+      "version": 1,
+      "is_fill": 0,
+      "fill_fix_mats": 0,
+      "fill_size_x": 0,
+      "fill_size_y": 0,
+      "fill_size_z": 0,
+      "fill_pivot": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "rotate_free": 1,
+      "nested_elements": 0,
+      "not_inersec_size": 0,
+      "params_item": [],
+      "id": "22",
+      "shortName": "Верхний модуль 1 дверь"
+    },
+    "custom": [],
+    "children": [],
+    "condition": null,
+    "visible": 1,
+    "helpers_visible": 0,
+    "active": 1,
+    "variables": {
+      "visible": 1,
+      "main": {
+        "levaya_bokovina_tip": {
+          "name": "Левая боковина (тип)",
+          "key": "levaya_bokovina_tip",
+          "value": "0",
+          "local": 0,
+          "editable": 1,
+          "variants": 0,
+          "fixed": 0,
+          "params": {
+            "options": [
+              {
+                "name": "Корпус",
+                "value": "0",
+                "orderId": 0
+              },
+              {
+                "name": "Фасад",
+                "value": "2",
+                "orderId": 2
+              }
+            ]
+          },
+          "type": "select"
+        },
+        "pravaya_bokovina_tip": {
+          "name": "Правая боковина (тип)",
+          "key": "pravaya_bokovina_tip",
+          "value": "0",
+          "local": 0,
+          "editable": 1,
+          "variants": 0,
+          "fixed": 0,
+          "params": {
+            "options": [
+              {
+                "name": "Корпус",
+                "value": "0",
+                "orderId": 0
+              },
+              {
+                "name": "Фасад",
+                "value": "2",
+                "orderId": 2
+              }
+            ]
+          },
+          "type": "select"
+        },
+        "_bw_path_o": {
+          "name": "Отступ до паза задней стенки",
+          "key": "_bw_path_o",
+          "value": "16",
+          "local": 0,
+          "editable": 0,
+          "variants": 0,
+          "fixed": 0,
+          "params": {
+            "min": "0",
+            "max": "",
+            "step": 1
+          },
+          "type": "number"
+        },
+        "_bw_path_w": {
+          "name": "Ширина паза под заднюю стенку",
+          "key": "_bw_path_w",
+          "value": "4",
+          "local": 0,
+          "editable": 0,
+          "variants": 0,
+          "fixed": 0,
+          "params": {
+            "min": "4",
+            "max": "20",
+            "step": 1
+          },
+          "type": "number"
+        },
+        "segment_prisadki": {
+          "name": "Сегментация присадки",
+          "key": "segment_prisadki",
+          "value": "280",
+          "local": 0,
+          "editable": 0,
+          "variants": 0,
+          "fixed": 0,
+          "params": {
+            "min": "280",
+            "max": "280",
+            "step": 1
+          },
+          "type": "number"
+        },
+        "baz_otstup_prisadki": {
+          "name": "Базовый отступ присадки",
+          "key": "baz_otstup_prisadki",
+          "value": "69",
+          "local": 0,
+          "editable": 0,
+          "variants": 0,
+          "fixed": 0,
+          "params": {
+            "min": "69",
+            "max": "69",
+            "step": 1
+          },
+          "type": "number"
+        },
+        "sistema32": {
+          "name": "Система расстановки присадки",
+          "key": "sistema32",
+          "value": "1",
+          "local": 0,
+          "editable": 1,
+          "variants": 0,
+          "fixed": 0,
+          "params": {
+            "options": [
+              {
+                "name": "Система 32",
+                "value": "0",
+                "orderId": 0
+              },
+              {
+                "name": "Свободная",
+                "value": "1",
+                "orderId": 1
+              }
+            ]
+          },
+          "type": "select"
+        },
+        "polozhenie_eksa": {
+          "name": "Положение экса",
+          "key": "polozhenie_eksa",
+          "value": "2",
+          "local": 0,
+          "editable": 0,
+          "variants": 0,
+          "fixed": 0,
+          "params": {
+            "options": [
+              {
+                "name": "Положение 1",
+                "value": "1",
+                "orderId": 0
+              },
+              {
+                "name": "Положение 2",
+                "value": "2",
+                "orderId": 1
+              }
+            ]
+          },
+          "type": "select"
+        },
+        "otstup_navesa_ot_kryshki": {
+          "name": "Отступ навеса от крышки",
+          "key": "otstup_navesa_ot_kryshki",
+          "value": "0.5",
+          "local": 0,
+          "editable": 0,
+          "variants": 0,
+          "fixed": 0,
+          "params": {
+            "min": "0",
+            "max": "",
+            "step": "0.1"
+          },
+          "type": "number"
+        },
+        "paz_dlya_led_glubina": {
+          "name": "Паз для LED Глубина",
+          "key": "paz_dlya_led_glubina",
+          "value": 8,
+          "local": 0,
+          "editable": 1,
+          "variants": 0,
+          "fixed": 0,
+          "params": {
+            "min": 1,
+            "max": "",
+            "step": 1
+          },
+          "type": "number"
+        },
+        "otstup_petley": {
+          "name": "Отступ петлей",
+          "key": "otstup_petley",
+          "value": "120",
+          "local": 0,
+          "editable": 1,
+          "variants": 0,
+          "fixed": 0,
+          "params": {
+            "options": [
+              {
+                "name": "120",
+                "value": "120",
+                "orderId": 0
+              },
+              {
+                "name": "70",
+                "value": "70",
+                "orderId": 1
+              },
+              {
+                "name": "100",
+                "value": "100",
+                "orderId": 2
+              }
+            ]
+          },
+          "type": "select"
+        }
+      },
+      "global": [
+        {
+          "key": "_top_h",
+          "value": null,
+          "editable": 1,
+          "local": 0,
+          "fixed": 0
+        },
+        {
+          "key": "_top_d",
+          "value": null,
+          "editable": 1,
+          "local": 0,
+          "fixed": 0
+        },
+        {
+          "key": "_dno_t",
+          "value": null,
+          "editable": 1,
+          "local": 0,
+          "fixed": 0
+        },
+        {
+          "key": "_bwall_t",
+          "value": "",
+          "editable": 1,
+          "local": 0,
+          "fixed": 0
+        },
+        {
+          "key": "_groove_d",
+          "value": null,
+          "editable": 0,
+          "local": 0,
+          "fixed": 0
+        },
+        {
+          "key": "__facade_side_thickness",
+          "value": null,
+          "editable": 0,
+          "local": 0,
+          "fixed": 0
+        },
+        {
+          "key": "_dno_light",
+          "value": null,
+          "editable": 1,
+          "local": 0,
+          "fixed": 0
+        },
+        {
+          "key": "_facoff_h",
+          "value": null,
+          "editable": 0,
+          "local": 0,
+          "fixed": 0
+        },
+        {
+          "key": "_facoff_v",
+          "value": null,
+          "editable": 0,
+          "local": 0,
+          "fixed": 0
+        },
+        {
+          "key": "_otstup_dempfer",
+          "value": null,
+          "editable": 0,
+          "local": 0,
+          "fixed": 0
+        }
+      ],
+      "tree": [
+        {
+          "key": "_top_h",
+          "is_global": 1
+        },
+        {
+          "key": "_top_d",
+          "is_global": 1
+        },
+        {
+          "name": "Параметры корпуса",
+          "is_group": 1,
+          "children": [
+            {
+              "key": "_dno_t",
+              "is_global": 1
+            },
+            {
+              "key": "_bwall_t",
+              "is_global": 1
+            },
+            {
+              "key": "_groove_d",
+              "is_global": 1
+            },
+            {
+              "key": "__facade_side_thickness",
+              "is_global": 1
+            },
+            {
+              "key": "_dno_light",
+              "is_global": 1
+            },
+            {
+              "key": "_facoff_h",
+              "is_global": 1
+            },
+            {
+              "key": "_facoff_v",
+              "is_global": 1
+            },
+            {
+              "key": "_otstup_dempfer",
+              "is_global": 1
+            },
+            {
+              "key": "levaya_bokovina_tip"
+            },
+            {
+              "key": "pravaya_bokovina_tip"
+            },
+            {
+              "key": "_bw_path_o"
+            },
+            {
+              "key": "_bw_path_w"
+            },
+            {
+              "key": "segment_prisadki"
+            },
+            {
+              "key": "baz_otstup_prisadki"
+            },
+            {
+              "key": "sistema32"
+            },
+            {
+              "key": "polozhenie_eksa"
+            },
+            {
+              "key": "otstup_navesa_ot_kryshki"
+            },
+            {
+              "key": "paz_dlya_led_glubina"
+            },
+            {
+              "key": "otstup_petley"
+            }
+          ]
+        }
+      ]
+    },
+    "interaction": {
+      "auto_rotation": 1,
+      "check_intersection": 0,
+      "raycast": 1,
+      "rotate_free": 0
+    },
+    "resizable": {
+      "enabled": 1,
+      "locks": [],
+      "minmax": {
+        "min": {
+          "x": 200,
+          "y": 0,
+          "z": 0
+        },
+        "max": {
+          "x": 600,
+          "y": 0,
+          "z": 0
+        }
+      }
+    },
+    "auto_generate": {
+      "enabled": 0,
+      "element_id": null,
+      "element_type": "",
+      "auto_by": 0,
+      "size_step": 0,
+      "select_variant": 0,
+      "enabled_variants": 1,
+      "step": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "count": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "size": {
+        "x": "s:x",
+        "y": "s:y",
+        "z": "s:z"
+      },
+      "min_step": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "max_step": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "min_size": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "max_size": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "min_count": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "max_count": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "start_offset": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "end_offset": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "pivot_section": {
+        "x": -1,
+        "y": -1,
+        "z": -1
+      },
+      "edge_damper": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "pivot": {
+        "x": -1,
+        "y": -1,
+        "z": -1
+      },
+      "rot": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "size": {
+      "x": 400,
+      "y": 720,
+      "z": 300
+    },
+    "pos": {
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "pivot": {
+      "x": -1,
+      "y": -1,
+      "z": -1
+    },
+    "scale": {
+      "x": 1,
+      "y": 1,
+      "z": 1
+    },
+    "rot": {
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "c_rot": {
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "events": {
+      "on_before_params": "",
+      "on_before_build": "",
+      "on_after_build": "",
+      "on_drag_end": ""
+    },
+    "accessories": [],
+    "comments": "",
+    "section_key": "",
+    "params_key": "",
+    "holes": [],
+    "show_in_spec": 1,
+    "nested_in_spec": 1,
+    "accessories_types": [],
+    "fill": [],
+    "code": "В1Д-{s:y}-{s:x}",
+    "icon": "files/auto_icons/catalog__kmodule/22.jpg"
+  }
+}
+```
+
+</details>
+
 ## Расширенное чтение (v2)
 
 Для части разделов (фасады, материалы, техника, коммуникации, интерьер) есть расширенный метод чтения, который возвращает данные в более удобном виде (с ключами `items`, `count` и именами категорий):
@@ -167,6 +1118,81 @@ GET  ОсновнойURL/api/get_items_v2/<раздел>?sync_key=ВАШ_КЛЮ�
 
 Используйте его, если стандартного `get_items` не хватает.
 
+
+Пример с одной записью из каталога материалов:
+
+```http
+GET ОсновнойURL/api/get_items_v2/materials?sync_key=ВАШ_КЛЮЧ&per_page=1&start=0
+```
+
+<details>
+<summary>Пример полного ответа</summary>
+
+Ответ получен для одной записи 02.11.2026. Общее количество `count` может измениться при обновлении каталога.
+
+```json
+{
+  "items": [
+    {
+      "id": "726",
+      "name": "Зелёно-бежевый",
+      "category": "2",
+      "categoryName": "Цвета RAL Classic / Желтые тона",
+      "code": "RAL 1000",
+      "active": "1",
+      "map": null,
+      "color": "#ccc58f",
+      "roughness": "0.8",
+      "metalness": "0",
+      "real_width": null,
+      "real_height": null,
+      "stretch_width": null,
+      "stretch_height": null,
+      "wrapping": null,
+      "transparent": "0",
+      "order": "1",
+      "data": {
+        "id": "726",
+        "name": "Зелёно-бежевый",
+        "code": "RAL 1000",
+        "order": 1,
+        "category": "2",
+        "active": "1",
+        "params": {
+          "icon": null,
+          "alphaMap": null,
+          "color": "#ccc58f",
+          "map": null,
+          "metalness": "0.0",
+          "normalMap": null,
+          "roughness": "0.8",
+          "roughnessMap": null,
+          "transparent": "0",
+          "opacity": 1
+        },
+        "add_params": {
+          "real_width": 0,
+          "real_height": 0,
+          "rotation": "normal",
+          "stretch_width": 0,
+          "stretch_height": 0,
+          "normal_scale": false,
+          "wrapping": "mirror",
+          "normal_wrapping": "mirror",
+          "roughness_wrapping": "mirror"
+        },
+        "type": "Standard"
+      }
+    }
+  ],
+  "count": 7131
+}
+```
+
+</details>
+
+`items` содержит записи текущей страницы, а `count` — общее число найденных записей. `category` хранит идентификатор категории, `categoryName` — её полный путь. Поле `data` уже разобрано в JSON-объект: внутри него находятся параметры отображения и дополнительные настройки материала. Для следующей страницы увеличьте `start` на значение `per_page`.
+
 ## Важные замечания
 
 - После любых изменений вызывайте **`GET api/apply_data?sync_key=...`** — иначе данные не попадут на сцену.
@@ -175,4 +1201,4 @@ GET  ОсновнойURL/api/get_items_v2/<раздел>?sync_key=ВАШ_КЛЮ�
 
 ## Коротко
 
-Каталог управляется по шаблону `api/<действие>/<раздел>`. **Полный набор действий (get/add/update/remove) есть только у `materials`, `facades`, `handles`, `accessories`.** Разделы `tech`, `interior`, `comms` доступны через API только на чтение и добавление; `orders` — только чтение. GET — чтение (`sync_key` в строке), POST — запись (`data` + `sync_key`). Материал содержит `params` (цвет, текстура, шероховатость…) и `add_params` (размеры текстуры, наложение). Legacy-метод `get_items/materials_v1` (формат 1.0) — только для совместимости. После изменений — `api/apply_data`.
+Каталог управляется по шаблону `api/<действие>/<раздел>`. **Полный набор действий (get/add/update/remove) есть только у `materials`, `facades`, `handles`, `accessories`.** Разделы `tech`, `interior`, `comms` доступны через API только на чтение и добавление; `orders` — только чтение. Для модулей пользовательского каталога есть отдельные методы получения списка и записи, чтения одного модуля, добавления и изменения; удаление не поддерживается. GET — чтение (`sync_key` в строке), POST — запись (`data` + `sync_key`). После изменений вызывайте `api/apply_data`.
