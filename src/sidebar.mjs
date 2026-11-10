@@ -36,6 +36,7 @@ export const sidebar = [
     label: 'Каталог элементов и переменные',
     items: [
       { label: 'Каталог элементов', slug: 'katalog-elementov' },
+      { label: 'Коллекции в PlanPlace 2', slug: 'kollekcii-planplace-2' },
       { label: 'Глобальные переменные', slug: 'globalnye-peremennye' },
       { label: 'Массовые операции в каталоге', slug: 'massovye-operacii-v-kataloge' },
     ],
@@ -91,6 +92,7 @@ export const sidebar = [
       { label: 'Прайс-листы и способы добавления цен', slug: 'prays-listy' },
       { label: 'Правила расчёта цен (наценки)', slug: 'pravila-rascheta-cen-nacenki' },
       { label: 'Настройка цен на фасады', slug: 'nastroyka-cen-na-fasady' },
+      { label: 'Коллекции в PlanPlace 2', slug: 'kollekcii-planplace-2' },
       // Вложенная подгруппа: сценарии настройки и ценообразования.
       {
         label: 'Сценарии настройки и ценообразования',
